@@ -2,22 +2,22 @@
 require '../dbconnection.php';
 require '../session_check.php';
 
-if (isset($_POST['district_id'])) {
-    $district_id = $_POST['district_id'];
+if (isset($_POST['vidhansabha_id'])) {
+    $vidhansabha_id = $_POST['vidhansabha_id'];
 
     // Prepare and execute the query securely using prepared statements
-    $query = "SELECT vidhansabha_id, vidhansabha_name FROM vidhansabha_master WHERE district_id = ?";
+    $query = "SELECT vikaskhand_id, vikaskhand_name FROM vikaskhand_master WHERE vidhansabha_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $district_id);
+    $stmt->bind_param("i", $vidhansabha_id);
     $stmt->execute();
     $result = $stmt->get_result();
     
-    $vidhansabha = [];
+    $vikaskhands = [];
     while ($row = $result->fetch_assoc()) {
-        $vidhansabha[] = $row;
+        $vikaskhands[] = $row;
     }
 
     // Encode the result as JSON
-    echo json_encode($vidhansabha);
+    echo json_encode($vikaskhands);
 }
 ?>

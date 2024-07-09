@@ -8,10 +8,6 @@ $tblkey = "id";
 $pagename = "आवेदक";
 
 
-
-
-
-
 ?><!-- End Main Php For This Page  -->
 <!-- Includes -->
 <?php include('includes/header.php'); ?>
@@ -50,8 +46,9 @@ $district_result = mysqli_query($conn, $district_query);
             </div>
 
             <div class="col-lg-4 text-center mb-3">
-                <select name="vikaskhand_id" class="form-select form-control border-success" required>
+                <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control border-success" required>
                     <option selected>विकासखंड का नाम चुनें</option>
+                    <!-- Option Load By AJAX -->
               
                 </select>
             </div>
@@ -128,10 +125,28 @@ $district_result = mysqli_query($conn, $district_query);
             });
         });
     });
+
 // For Vikaskhand
-
-
-
+$('#vidhansabhaSelect').change(function() {
+            var vidhansabha_id = $(this).val();
+            alert("Selected Vidhansabha ID: " + vidhansabha_id);
+            $.ajax({
+                url: 'get_vikaskhand.php',
+                type: 'POST',
+                data: { vidhansabha_id: vidhansabha_id },
+                success: function(data) {
+                    var vikaskhand = JSON.parse(data);
+                    $('#vikaskhandSelect').empty();
+                    $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
+                    $.each(vikaskhand, function(index, vikaskhand) {
+                        $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error: ' + status + ' - ' + error);
+                }
+            });
+        });
 
 
 
