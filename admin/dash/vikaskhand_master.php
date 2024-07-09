@@ -81,21 +81,8 @@ $district_result = mysqli_query($conn, $district_query);
            
             <div class="col-lg-6 text-center mb-3">
     <select name="vidhansabha_id" id="vidhansabhaSelect"class="form-select form-control border-success" required>
+    <option selected>विधानसभा का नाम चुनें</option>
 <!-- Option Load By AJAX -->
-<?php
-            // Embedded PHP to fetch initial vidhansabha options
-            if (isset($_POST['district_id'])) {
-                $district_id = $_POST['district_id'];
-                $query = "SELECT vidhansabha_id, vidhansabha_name FROM vidhansabha WHERE district_id = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("i", $district_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value='" . $row['vidhansabha_id'] . "'>" . $row['vidhansabha_name'] . "</option>";
-                }
-            }
-            ?>
     </select>
      </div>
             <div class="col-lg-6 text-center mb-3">
@@ -160,14 +147,18 @@ $district_result = mysqli_query($conn, $district_query);
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert(district_id);
+            alert("Selected District ID: " + district_id);
             $.ajax({
+                url: 'get_vidhansabha.php',
                 type: 'POST',
-                url:, // Post to the same page
-                data: { district_id: district_id },
-                dataType:"html",
+                data: {district_id: district_id},
                 success: function(data) {
-                    $('#vidhansabhaSelect').html(data); // Replace options in vidhansabhaSelect
+                    var vidhansabha = JSON.parse(data);
+                    $('#vidhansabhaSelect').empty();
+                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
+                    $.each(vidhansabha, function(index, vidhansabha) {
+                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
+                    });
                 }
             });
         });
