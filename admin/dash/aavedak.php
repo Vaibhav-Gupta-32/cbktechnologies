@@ -88,8 +88,9 @@ $pagename = "आवेदक";
             </div>
             <div class="col-lg-4 text-center">
                 <div class="form-group">
+                    <a href="swechanudan.php" target="_blank" rel="noopener noreferrer">
                     <button class=" text-white btn  text-center shadow" type="submit" style="background-color:#5ca7fb;"><b>Add New</b></button>
-
+                    </a>
                 </div>
             </div>
             <div class="col-lg-4 text-center">
