@@ -26,8 +26,20 @@
                      <a href="asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
+
              <div class="nav-item dropdown">
-                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>सेटिंग्स</a>
+                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>निर्माण</a>
+                 <div class="dropdown-menu bg-transparent border-0">
+                     <a href="swechanudan.php" class="dropdown-item"><b>नया आवेदन</b></a>
+                     <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
+                     <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="element.html" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                 </div>
+             </div>
+             <div class="nav-item dropdown">
+                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>मास्टर सेटिंग्स</a>
                  <div class="dropdown-menu bg-transparent border-0">
                      <a href="district_master.php" class="dropdown-item">डिस्ट्रिक्ट मास्टर</a>
                      <a href="vidhansabha_master.php" class="dropdown-item">विधानसभा मास्टर</a>

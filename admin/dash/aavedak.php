@@ -97,7 +97,7 @@ $pagename = "प्राप्त आवेदन";
             </div>
 <!-- 3 -->
             <div class="col-lg-4 text-center mb-3">
-                <button name="Search" class="form-control text-center text-white btn text-center shadow bg-warning" type="submit"><b>Search</b></button>
+                <button name="Search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
             </div>
 
         </div>
