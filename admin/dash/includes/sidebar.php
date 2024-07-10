@@ -20,10 +20,10 @@
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>स्वेच्छानुदान</a>
                  <div class="dropdown-menu bg-transparent border-0">
                      <a href="swechanudan.php" class="dropdown-item">नया आवेदन</a>
-                     <a href="typography.html" class="dropdown-item">प्रस्तावित आवेदन</a>
-                     <a href="element.html" class="dropdown-item">स्वीकृत आवेदन</a>
+                     <a href="prastavit_aavedan.php" class="dropdown-item">प्रस्तावित आवेदन</a>
+                     <a href="sveekrt_aavedan.php" class="dropdown-item">स्वीकृत आवेदन</a>
                      <a href="element.html" class="dropdown-item">स्वीकृत आवेदन ( प्रेषित )</a>
-                     <a href="element.html" class="dropdown-item">अस्वीकृत आवेदन</a>
+                     <a href="asveekrt_aavedan.php" class="dropdown-item">अस्वीकृत आवेदन</a>
                  </div>
              </div>
              <div class="nav-item dropdown">

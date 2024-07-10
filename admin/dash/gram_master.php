@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tr>
                             <th scope="col">क्रमाक</th>
                             <th scope="col">ग्राम का नाम</th>
-                            <!-- <th scope="col">ग्राम पंचायत</th> -->
+                            <th scope="col">ग्राम पंचायत</th>
                             <th scope="col">सेक्टर</th>
                             <th scope="col">विकासखंड</th>
                             <th scope="col">विधानसभा</th>
@@ -130,13 +130,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </thead>
                     <tbody>
     <?php
-    $sql = "SELECT g.gram_id, g.gram_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name, s.sector_name
-            FROM gram_master g
-            JOIN vikaskhand_master v ON g.vikaskhand_id = v.vikaskhand_id
-            JOIN vidhansabha_master vs ON g.vidhansabha_id = vs.vidhansabha_id
-            JOIN district_master d ON g.district_id = d.district_id
-            JOIN sector_master s ON g.sector_id = s.sector_id
-            ORDER BY g.gram_id DESC";
+    $sql = "SELECT g.gram_id, g.gram_name, gp.gram_panchayat_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name, s.sector_name
+        FROM gram_master g
+        JOIN vikaskhand_master v ON g.vikaskhand_id = v.vikaskhand_id
+        JOIN vidhansabha_master vs ON g.vidhansabha_id = vs.vidhansabha_id
+        JOIN district_master d ON g.district_id = d.district_id
+        JOIN sector_master s ON g.sector_id = s.sector_id
+        JOIN gram_panchayat_master gp ON g.gram_panchayat_id = gp.gram_panchayat_id
+        ORDER BY g.gram_id DESC";
     $fetch = mysqli_query($conn, $sql);
     $i = 1;
     while ($row = mysqli_fetch_array($fetch)) {
@@ -144,6 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <tr>
             <td><?= $i++ ?></td>
             <td><?= $row['gram_name'] ?></td>
+            <td><?= $row['gram_panchayat_name'] ?></td>
             <td><?= $row['sector_name'] ?></td>
             <td><?= $row['vikaskhand_name'] ?></td>
             <td><?= $row['vidhansabha_name'] ?></td>
