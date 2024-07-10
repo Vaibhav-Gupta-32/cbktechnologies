@@ -15,15 +15,15 @@
          </div>
          <div class="navbar-nav w-100">
              <a href="dashboard.php" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>डैशबोर्ड</a>
-             <a href="aavedak.php" class="nav-item nav-link"><i class="fas fa-desktop me-2"></i>आवेदक</a>
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>स्वेच्छानुदान</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="swechanudan.php" class="dropdown-item">नया आवेदन</a>
-                     <a href="prastavit_aavedan.php" class="dropdown-item">प्रस्तावित आवेदन</a>
-                     <a href="sveekrt_aavedan.php" class="dropdown-item">स्वीकृत आवेदन</a>
-                     <a href="element.html" class="dropdown-item">स्वीकृत आवेदन ( प्रेषित )</a>
-                     <a href="asveekrt_aavedan.php" class="dropdown-item">अस्वीकृत आवेदन</a>
+                     <a href="swechanudan.php" class="dropdown-item"><b>नया आवेदन</b></a>
+                     <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
+                     <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="element.html" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
              <div class="nav-item dropdown">

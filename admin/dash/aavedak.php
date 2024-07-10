@@ -3,7 +3,7 @@
 <?php
 $tblname = "Aavedak";
 $tblkey = "id";
-$pagename = "आवेदक";
+$pagename = "प्राप्त आवेदन";
 ?>
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
@@ -86,24 +86,20 @@ $pagename = "आवेदक";
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-center">
-                <div class="form-group">
-                    <a href="swechanudan.php" target="_blank" rel="noopener noreferrer">
-                    <button class=" text-white btn  text-center shadow" type="submit" style="background-color:#5ca7fb;"><b>Add New</b></button>
-                    </a>
-                </div>
+        <!-- btn -->
+   <!-- 1 -->
+        <div class="col-lg-4 text-center mb-3">
+                <button name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary"  style="background-color:#4ac387;"><b>Add New</b></button>
             </div>
-            <div class="col-lg-4 text-center">
-                <div class="form-group ">
-                    <button class="col-lg-4 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;"><b>Approve</b></button>
+            <!-- 2 -->
+            <div class="col-lg-4 text-center mb-3">
+                <button name="Approve" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Approve</b></button>
+            </div>
+<!-- 3 -->
+            <div class="col-lg-4 text-center mb-3">
+                <button name="Search" class="form-control text-center text-white btn text-center shadow bg-warning" type="submit"><b>Search</b></button>
+            </div>
 
-                </div>
-            </div>
-            <div class="col-lg-4 text-center">
-                <div class="form-group ">
-                    <button class="col-lg-4 text-white btn  text-center shadow" type="submit" style="background-color:#57c2fc;"><b>Search</b></button>
-                </div>
-            </div>
         </div>
     </form>
 </div>
@@ -114,7 +110,7 @@ $pagename = "आवेदक";
     <div class="row">
         <div class="col-sm-12 col-lg-12">
             <div class="bg-light rounded" style="overflow-y: scroll;">
-                <h6 class="mb-4 text-center mt-2">आवेदक सूची</h6>
+                <h6 class="mb-4 text-center mt-2"><?= $pagename; ?> सूची</h6>
                 <table class="table table-striped">
                     <thead class=" head">
                         <tr>
