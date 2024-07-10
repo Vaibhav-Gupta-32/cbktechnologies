@@ -7,8 +7,43 @@ $tblname = "Aavedak";
 $tblkey = "id";
 $pagename = "आवेदक";
 
+// recive data 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['submit_sector'])) {
+        // Receive Data From Form
+        $sector_name = ucfirst($_POST['sector_name']);
+        $district_id = $_POST['district_id'];
+        $vidhansabha_id = $_POST['vidhansabha_id'];
+        $vikaskhand_id = $_POST['vikaskhand_id'];
 
-?><!-- End Main Php For This Page  -->
+        // Escape strings to prevent SQL injection
+        $sector_name = mysqli_real_escape_string($conn, $sector_name);
+        $district_id = mysqli_real_escape_string($conn, $district_id);
+        $vidhansabha_id = mysqli_real_escape_string($conn, $vidhansabha_id);
+        $vikaskhand_id = mysqli_real_escape_string($conn, $vikaskhand_id);
+
+        // Check if sector_name already exists for the selected district, vidhansabha, and vikaskhand
+        $check_query = "SELECT * FROM sector_master WHERE sector_name = '$sector_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id' AND vikaskhand_id = '$vikaskhand_id'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            // Sector name already exists
+            echo "<script>alert('Error: Ector already exists!');</script>";
+           
+        } else {
+            // Sector name does not exist, proceed with insertion
+            $sql = "INSERT INTO sector_master (sector_name, district_id, vidhansabha_id, vikaskhand_id) VALUES ('$sector_name', '$district_id', '$vidhansabha_id', '$vikaskhand_id')";
+            if (mysqli_query($conn, $sql)) {
+                echo "<script>alert(' Sector Added Successfully');</script>";
+
+            } else {
+                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+            }
+        }
+    }
+}
+?>
+<!-- End Main Php For This Page  -->
 <!-- Includes -->
 <?php include('includes/header.php'); ?>
 <?php include('includes/sidebar.php'); ?>
@@ -23,10 +58,10 @@ $pagename = "आवेदक";
 
             <div class="col-lg-4 text-center mb-3">
             <select name="district_id" id="districtSelect" class="form-select form-control border-success" required>
-                    <?php 
+                    <?php
                     // Fetch districts for dropdown
-$district_query = "SELECT * FROM district_master";
-$district_result = mysqli_query($conn, $district_query);
+                    $district_query = "SELECT * FROM district_master";
+                    $district_result = mysqli_query($conn, $district_query);
                     ?>
 
                     <option selected>जिले का नाम चुनें</option>
@@ -39,17 +74,17 @@ $district_result = mysqli_query($conn, $district_query);
             </div>
 
             <div class="col-lg-4 text-center mb-3">
-            <select name="vidhansabha_id" id="vidhansabhaSelect"class="form-select form-control border-success" required>
-            <option selected>विधानसभा का नाम चुनें</option>
-<!-- Option Load By AJAX -->
-    </select>
+            <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control border-success" required>
+                    <option selected>विधानसभा का नाम चुनें</option>
+                    <!-- Options for vidhansabha will go here -->
+                </select>
             </div>
 
             <div class="col-lg-4 text-center mb-3">
-                <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control border-success" required>
+            <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control border-success" required>
                     <option selected>विकासखंड का नाम चुनें</option>
                     <!-- Option Load By AJAX -->
-              
+
                 </select>
             </div>
 
@@ -84,18 +119,31 @@ $district_result = mysqli_query($conn, $district_query);
                     </tr>
                 </thead>
                 <tbody>
-                        <tr>
-                            <th scope="row">99</th>
-                            <td>--</td>
-                            <td>00</td>
-                            <td>oo</td>
-                            <td>ll</td>
-                            <td class="d-flex justify-content-center flex-row action">
-                                <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
-                            </td>
-                        </tr>
-                </tbody>
+    <?php
+    $i = 1;
+    $sql = "SELECT s.sector_id, s.sector_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name
+            FROM sector_master s
+            JOIN vikaskhand_master v ON s.vikaskhand_id = v.vikaskhand_id
+            JOIN vidhansabha_master vs ON s.vidhansabha_id = vs.vidhansabha_id
+            JOIN district_master d ON s.district_id = d.district_id
+            ORDER BY s.sector_id DESC";
+    $fetch = mysqli_query($conn, $sql);
+    while ($row = mysqli_fetch_array($fetch)) {
+    ?>
+        <tr>
+            <th scope="row"><?= $i++ ?></th>
+            <td><?= $row['sector_name'] ?></td>
+            <td><?= $row['vikaskhand_name'] ?></td>
+            <td><?= $row['vidhansabha_name'] ?></td>
+            <td><?= $row['district_name'] ?></td>
+            <td class="d-flex justify-content-center flex-row action">
+                <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
+                <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+            </td>
+        </tr>
+    <?php } ?>
+</tbody>
+
             </table>
         </div>
     </div>
@@ -147,9 +195,6 @@ $('#vidhansabhaSelect').change(function() {
                 }
             });
         });
-
-
-
 
 </script>
 
