@@ -8,6 +8,25 @@ $pagename = "आवेदक";
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
 
+if(isset($_POST['submit'])){
+    $name = $_POST['name'];
+    $phone_number = $_POST['phone_number'];
+    $designation = $_POST['designation'];
+    $vidhansabha = $_POST['vidhansabha'];
+    $vikaskhand = $_POST['vikaskhand'];
+    $sector = $_POST['sector'];
+    $gram_panchayt = $_POST['gram_panchayt'];
+    $gram = $_POST['gram'];
+    $subject = $_POST['subject'];
+    $reference = $_POST['reference'];
+    $expectations_amount = $_POST['expectations_amount'];
+    $application_date = $_POST['application_date'];
+    $file_upload = $_POST['file_upload'];
+    $comment = $_POST['comment'];
+    $sql = "select * from swekshanudan where id='$id'";
+    $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
+}
+
 if ($id) {
     // echo 'sdaas'.$id;
     $sql = "select * from swekshanudan where id='$id'";
@@ -26,12 +45,10 @@ if ($id) {
     $application_date = $fetch['application_date'];
     $file_upload = $fetch['file_upload'];
     $comment = $fetch['comment'];
-
-    // echo $id." || ".$name." || ".$phone_number." || ".$designation." || ".$vidhansabha." || ".$vikaskhand." || ".$sector." || ".$gram_panchayt." || ".$gram." || ".$subject;
 }
 ?>
 
-<form>
+<form action="" method="post">
     <div class="row">
         <div class="col-lg-6">
             <div class="form-group shadow">

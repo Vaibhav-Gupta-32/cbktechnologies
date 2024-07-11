@@ -4,46 +4,6 @@
 $tblname = "Aavedak";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Search Option Button 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $vidhansabha = $_POST['vidhansabha'];
-    $sector = $_POST['sector'];
-    $gram = $_POST['gram'];
-    $mobile = $_POST['mobile'];
-    $to_date = $_POST['to_date'];
-    $from_date = $_POST['from_date'];
-
-    $sql = "SELECT * FROM swekshanudan WHERE 
-            vidhansabha = '$vidhansabha' AND 
-            sector = '$sector' AND 
-            gram = '$gram' AND 
-            mobile = '$mobile' AND 
-            application_date BETWEEN '$to_date' AND '$from_date'
-            ORDER BY id DESC";
-} else {
-    $sql = "SELECT * FROM swekshanudan WHERE 1 ORDER BY id DESC";
-}
-
-$fetch = mysqli_query($conn, $sql);
-?>
-
-
-
-
-
 ?>
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
@@ -64,92 +24,48 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-        <div class="col-lg-4 text-center mb-3">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
- 
-            <select name="district_id" id="districtSelect" class="form-select form-control bg-white">
-                    <?php
-                    // Fetch districts for dropdown
-                    $district_query = "SELECT * FROM district_master";
-                    $district_result = mysqli_query($conn, $district_query);
-                    ?>
-
-                    <option selected>जिले का नाम चुनें</option>
-                    <?php
-                    while ($district_row = mysqli_fetch_assoc($district_result)) {
-                        echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
-                    }
-                    ?>
-                </select>
-                <label for="districtSelect">जिले का नाम चुनें </label>
-
-                </div>
-                </div>
-            </div>
-
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                    <option selected>विधानसभा का नाम चुनें</option>
-                    <!-- Options for vidhansabha will go here -->
-                </select>
-                        <label for="vidhansabha">विधानसभा का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                    <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" >
-                    <option selected>विकासखंड का नाम चुनें</option>
-                    <!-- Option Load By AJAX -->
-
-                </select>
-                        <label for="vikaskhand">विकासखंड का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                    <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                    <option selected>सेक्टर का नाम चुनें</option>
-                    <!-- Options for sectors will go here -->
-                </select>
-                        <label for="sector">सेक्टर का नाम चुनें  </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                    <select name="sector_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                    <option selected>ग्राम पंचायत का नाम चुनें</option>
-                    <!-- Options for panchayat will go here -->
-                </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें  </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram">
-                        <option selected>ग्राम का नाम चुनें</option>
-                   <!-- by load ajax -->
+                        <select class="form-select" id="vidhansabha" required>
+                            <!-- <option selected>विधानसभा चुनें </option> -->
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
                         </select>
-                        <label for="gram">ग्राम का नाम चुनें </label>
+                        <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="mobile" placeholder="आवेदक का फ़ोन नंबर"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="mobile">आवेदक का फ़ोन नंबर </label>
+                        <select class="form-select" id="sector" required>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="gram" required>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="mobile" placeholder="आवेदक का फ़ोन नंबर" required onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="mobile">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
                     </div>
 
                 </div>
@@ -157,29 +73,29 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="to-date" placeholder="कब से ">
-                        <label for="to-date">कब से </label>
+                        <input type="date" class="form-control" id="to-date" placeholder="कब से " required>
+                        <label for="to-date">कब से <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="from-date" placeholder="कब तक" >
-                        <label for="from-date">कब तक </label>
+                        <input type="date" class="form-control" id="from-date" placeholder="कब तक" required>
+                        <label for="from-date">कब तक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
-            <!-- btn -->
-            <!-- 1 -->
-            <div class="col-lg-4 text-center mb-3">
-                <button name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></button>
+        <!-- btn -->
+   <!-- 1 -->
+        <div class="col-lg-4 text-center mb-3">
+                <button name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary"  style="background-color:#4ac387;"><b>Add New</b></button>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
                 <button name="Approve" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Approve</b></button>
             </div>
-            <!-- 3 -->
+<!-- 3 -->
             <div class="col-lg-4 text-center mb-3">
                 <button name="Search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
             </div>
@@ -189,7 +105,6 @@ $fetch = mysqli_query($conn, $sql);
 </div>
 <!-- aavedak search End -->
 
-<!-- Table Start -->
 <!-- Table Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="row">
@@ -233,7 +148,7 @@ $fetch = mysqli_query($conn, $sql);
                                 <td class="d-flex justify-content-center flex-row action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2" title="View"></i></a>
                                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                    <a href="" onclick="confirmDelete(<?php echo $id; ?>, '<?php echo $tblname; ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -278,7 +193,7 @@ $fetch = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-<!-- modal Scripts  -->
+
 <script>
     // function view(v_id){
     function view(v_id) {
@@ -316,142 +231,25 @@ $fetch = mysqli_query($conn, $sql);
     // }
 </script>
 
-
-    <!-- Close Modal And Table View Scripts -->
-
-
-<!-- Script For DropDown List -->
-
 <script>
-    // For Vidhansabha
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
-            $.ajax({
-                url: 'get_vidhansabha.php',
-                type: 'POST',
-                data: {
-                    district_id: district_id
-                },
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-    // For Vikaskhand
-    $(document).ready(function() {
-    $('#vidhansabhaSelect').change(function() {
-        var vidhansabha_id = $(this).val();
-        alert("Selected Vidhansabha ID: " + vidhansabha_id);
-        $.ajax({
-            url: 'get_vikaskhand.php',
-            type: 'POST',
-            data: {
-                vidhansabha_id: vidhansabha_id
-            },
-            success: function(data) {
-                var vikaskhand = JSON.parse(data);
-                $('#vikaskhandSelect').empty();
-                $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                $.each(vikaskhand, function(index, vikaskhand) {
-                    $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
+       function confirmDelete(id, tableName) {
+        alert(id + tableName);
+            if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete.php',
+                    data: JSON.stringify({ id: id, table: tableName }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert(response);
+                        location.reload(); // Optionally, reload the page to reflect changes
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error: " + xhr.responseText);
+                    }
                 });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
             }
-        });
-    });
-    });
-    // For Sector Load 
-    $(document).ready(function() {
-    $('#vikaskhandSelect').change(function() {
-        var vikaskhand_id = $(this).val();
-        alert("Selected Vikaskhand ID: " + vikaskhand_id);
-        $.ajax({
-            url: 'get_sector.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                vikaskhand_id: vikaskhand_id
-            },
-            success: function(data) {
-                var sectors = JSON.parse(data);
-                $('#sectorSelect').empty();
-                $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                    $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-// For Gram Panchayat From Sector id 
- $(document).ready(function() {
-    $('#sectorSelect').change(function() {
-        var sector_id = $(this).val();
-        alert("Selected Sector ID: " + sector_id);
-        $.ajax({
-            url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                sector_id: sector_id
-            },
-            success: function(data) {
-                var gram_panchayats = JSON.parse(data);
-                $('#gramPanchayatSelect').empty();
-                $('#gramPanchayatSelect').append('<option selected>ग्राम पंचायत का नाम चुनें</option>');
-                $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-
-//   For Grams  By Panchayat
-$(document).ready(function() {
-    $('#gramPanchayatSelect').change(function() {
-        var gram_panchayat_id = $(this).val();
-        alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
-        $.ajax({
-            url: 'get_gram.php', // Replace with your PHP file to fetch gram
-            type: 'POST',
-            data: {
-                gram_panchayat_id: gram_panchayat_id
-            },
-            success: function(data) {
-                var grams = JSON.parse(data);
-                $('#gramSelect').empty();
-                $('#gramSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-
-
-
-</script>
-
-<!--  -->
+        }
+    </script>
 
 <?php include('includes/footer.php'); ?>

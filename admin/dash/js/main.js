@@ -201,28 +201,31 @@
             responsive: true
         }
     });
-
+ 
     
 })(jQuery);
 
-    function confirmDelete(id, tableName) {
-        // alert(id + tableName);
-        if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
-            $.ajax({
-                type: 'POST',
-                url: 'delete.php',
-                data: JSON.stringify({
-                    id: id,
-                    table: tableName
-                }),
-                contentType: 'application/json',
-                success: function(response) {
-                    // alert(response);
-                    location.reload(); // Optionally, reload the page to reflect changes
-                },
-                error: function(xhr, status, error) {
-                    alert("Error: " + xhr.responseText);
-                }
-            });
-        }
+function confirmDelete(id, tableName) {
+    // alert(id + tableName);
+    if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
+        $.ajax({
+            type: 'POST',
+            url: 'delete.php',
+            data: JSON.stringify({
+                id: id,
+                table: tableName
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                // console.log(response);
+                // alert("Record deleted successfully.");
+                location.reload(); // Optionally, reload the page to reflect changes
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: ", error);
+                console.log("Response Text: ", xhr.responseText);
+                alert("Error: " + xhr.responseText);
+            }
+        });
     }
+}
