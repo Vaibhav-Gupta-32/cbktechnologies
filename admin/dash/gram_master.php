@@ -1,8 +1,8 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "ग्राम";
-$tblkey = "ग्राम_id";
+$tblname = "gram_master";
+$tblkey = "gram_id";
 $pagename = "ग्राम";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h5 class="text-center fw-bolder text-primary mb-3">नया ग्राम जोड़ें</h5>
 
             <div class="col-lg-4 text-center mb-3">
-                <select name="district_id" id="districtSelect" class="form-select form-control border-success" required>
+            <select name="district_id" id="districtSelect" class="form-select form-control border-success" required>
                     <?php
                     // Fetch districts for dropdown
                     $district_query = "SELECT * FROM district_master";
@@ -69,14 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="col-lg-4 text-center mb-3">
-                <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control border-success" required>
+            <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control border-success" required>
                     <option selected>विधानसभा का नाम चुनें</option>
                     <!-- Options for vidhansabha will go here -->
                 </select>
             </div>
 
             <div class="col-lg-4 text-center mb-3">
-                <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control border-success" required>
+            <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control border-success" required>
                     <option selected>विकासखंड का नाम चुनें</option>
                     <!-- Option Load By AJAX -->
 
@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="col-lg-4 text-center mb-3">
-                <select name="sector_id" id="sectorSelect" class="form-select form-control border-success" required>
+            <select name="sector_id" id="sectorSelect" class="form-select form-control border-success" required>
                     <option selected>सेक्टर का नाम चुनें</option>
                     <!-- Options for sectors will go here -->
                 </select>
@@ -129,8 +129,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $sql = "SELECT g.gram_id, g.gram_name, gp.gram_panchayat_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name, s.sector_name
+    <?php
+    $sql = "SELECT g.gram_id, g.gram_name, gp.gram_panchayat_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name, s.sector_name
         FROM gram_master g
         JOIN vikaskhand_master v ON g.vikaskhand_id = v.vikaskhand_id
         JOIN vidhansabha_master vs ON g.vidhansabha_id = vs.vidhansabha_id
@@ -138,27 +138,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         JOIN sector_master s ON g.sector_id = s.sector_id
         JOIN gram_panchayat_master gp ON g.gram_panchayat_id = gp.gram_panchayat_id
         ORDER BY g.gram_id DESC";
-                        $fetch = mysqli_query($conn, $sql);
-                        $i = 1;
-                        while ($row = mysqli_fetch_array($fetch)) {
-                        ?>
-                            <tr>
-                                <td><?= $i++ ?></td>
-                                <td><?= $row['gram_name'] ?></td>
-                                <td><?= $row['gram_panchayat_name'] ?></td>
-                                <td><?= $row['sector_name'] ?></td>
-                                <td><?= $row['vikaskhand_name'] ?></td>
-                                <td><?= $row['vidhansabha_name'] ?></td>
-                                <td><?= $row['district_name'] ?></td>
-                                <td class="d-flex justify-content-center flex-row action">
-                                    <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
+    $fetch = mysqli_query($conn, $sql);
+    $i = 1;
+    while ($row = mysqli_fetch_array($fetch)) {
+    ?>
+        <tr>
+            <td><?= $i++ ?></td>
+            <td><?= $row['gram_name'] ?></td>
+            <td><?= $row['gram_panchayat_name'] ?></td>
+            <td><?= $row['sector_name'] ?></td>
+            <td><?= $row['vikaskhand_name'] ?></td>
+            <td><?= $row['vidhansabha_name'] ?></td>
+            <td><?= $row['district_name'] ?></td>
+            <td class="d-flex justify-content-center flex-row action">
+                <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
+                <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+            </td>
+        </tr>
+    <?php } ?>
+</tbody>
 
-
+                    
                 </table>
             </div>
         </div>
@@ -166,6 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <!-- Script -->
+
 <script>
     // For Vidhansabha
     $(document).ready(function() {
@@ -192,83 +193,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // For Vikaskhand
     $(document).ready(function() {
-        $('#vidhansabhaSelect').change(function() {
-            var vidhansabha_id = $(this).val();
-            alert("Selected Vidhansabha ID: " + vidhansabha_id);
-            $.ajax({
-                url: 'get_vikaskhand.php',
-                type: 'POST',
-                data: {
-                    vidhansabha_id: vidhansabha_id
-                },
-                success: function(data) {
-                    var vikaskhand = JSON.parse(data);
-                    $('#vikaskhandSelect').empty();
-                    $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                    $.each(vikaskhand, function(index, vikaskhand) {
-                        $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
+    $('#vidhansabhaSelect').change(function() {
+        var vidhansabha_id = $(this).val();
+        alert("Selected Vidhansabha ID: " + vidhansabha_id);
+        $.ajax({
+            url: 'get_vikaskhand.php',
+            type: 'POST',
+            data: {
+                vidhansabha_id: vidhansabha_id
+            },
+            success: function(data) {
+                var vikaskhand = JSON.parse(data);
+                $('#vikaskhandSelect').empty();
+                $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
+                $.each(vikaskhand, function(index, vikaskhand) {
+                    $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + status + ' - ' + error);
+            }
         });
+    });
     });
     // For Sector Load 
     $(document).ready(function() {
-        $('#vikaskhandSelect').change(function() {
-            var vikaskhand_id = $(this).val();
-            alert("Selected Vikaskhand ID: " + vikaskhand_id);
-            $.ajax({
-                url: 'get_sector.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    vikaskhand_id: vikaskhand_id
-                },
-                success: function(data) {
-                    var sectors = JSON.parse(data);
-                    $('#sectorSelect').empty();
-                    $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                    $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                        $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
+    $('#vikaskhandSelect').change(function() {
+        var vikaskhand_id = $(this).val();
+        alert("Selected Vikaskhand ID: " + vikaskhand_id);
+        $.ajax({
+            url: 'get_sector.php', // Replace with your PHP file to fetch sectors
+            type: 'POST',
+            data: {
+                vikaskhand_id: vikaskhand_id
+            },
+            success: function(data) {
+                var sectors = JSON.parse(data);
+                $('#sectorSelect').empty();
+                $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
+                $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
+                    $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + status + ' - ' + error);
+            }
         });
     });
-    // For Gram Panchayat
-    // For Sector Load 
-    $(document).ready(function() {
-        $('#sectorSelect').change(function() {
-            var sector_id = $(this).val();
-            alert("Selected Vikaskhand ID: " + sector_id);
-            $.ajax({
-                url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    sector_id: sector_id
-                },
-                success: function(data) {
-                    var gram_panchayats = JSON.parse(data);
-                    $('#gramPanchayatSelect').empty();
-                    $('#gramPanchayatSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                    $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                        $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
+});
+// For Gram Panchayat
+ // For Sector Load 
+ $(document).ready(function() {
+    $('#sectorSelect').change(function() {
+        var sector_id = $(this).val();
+        alert("Selected Vikaskhand ID: " + sector_id);
+        $.ajax({
+            url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
+            type: 'POST',
+            data: {
+                sector_id: sector_id
+            },
+            success: function(data) {
+                var gram_panchayats = JSON.parse(data);
+                $('#gramPanchayatSelect').empty();
+                $('#gramPanchayatSelect').append('<option selected>ग्राम का नाम चुनें</option>');
+                $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
+                    $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + status + ' - ' + error);
+            }
         });
     });
+});
+
+
+
 </script>
+
 <!--  -->
 
 
 
-<?php include('includes/footer.php'); ?>
+<?php include('includes/footer.php');?>
