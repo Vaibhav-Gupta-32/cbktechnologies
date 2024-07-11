@@ -209,6 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select class="form-select" id="gramSelect" name="gram" required>
+                        <option selected>ग्राम का नाम चुनें</option>
                    <!-- by load ajax -->
                         </select>
                         <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
@@ -353,8 +354,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         });
     });
 });
-// For Gram Panchayat
- // For Sector Load 
+// For Gram Panchayat From Sector id 
  $(document).ready(function() {
     $('#sectorSelect').change(function() {
         var sector_id = $(this).val();
@@ -386,7 +386,7 @@ $(document).ready(function() {
         var gram_panchayat_id = $(this).val();
         alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
         $.ajax({
-            url: 'get_gram.php', // Replace with your PHP file to fetch sectors
+            url: 'get_gram.php', // Replace with your PHP file to fetch gram
             type: 'POST',
             data: {
                 gram_panchayat_id: gram_panchayat_id
