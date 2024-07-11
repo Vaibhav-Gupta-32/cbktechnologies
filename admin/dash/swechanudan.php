@@ -1,95 +1,84 @@
-<?php include('../dbconnection.php') ?>
-<?php include('../session_check.php') ?>
 <?php
+include('../dbconnection.php'); // Adjust path as needed
+include('../session_check.php'); // Adjust path as needed
+
 $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "Register New Swekshanudan";
 
-
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-    // Database connection
-    //include('dbconnection.php'); // Include your database connection script
-
     // Collect form data
-    $name = trim($_POST['name']);
-    $phone_number = trim($_POST['phone_number']);
-    $designation = trim($_POST['designation']);
-    $vidhansabha = trim($_POST['vidhansabha']);
-    $vikaskhand = trim($_POST['vikaskhand']);
-    $sector = trim($_POST['sector']);
-    $gram_panchayt = trim($_POST['gram_panchayt']);
-    $gram = trim($_POST['gram']);
-    $subject = trim($_POST['subject']);
-    $reference = trim($_POST['reference']);
-    $expectations_amount = trim($_POST['expectations_amount']);
-    $application_date = trim($_POST['application_date']);
+    $name = mysqli_real_escape_string($conn, trim($_POST['name']));
+    $phone_number = mysqli_real_escape_string($conn, trim($_POST['phone_number']));
+    $designation = mysqli_real_escape_string($conn, trim($_POST['designation']));
+    $district_id = intval($_POST['district_id']); // Ensure district_id is an integer
+    $vidhansabha_id = intval($_POST['vidhansabha_id']); // Ensure vidhansabha_id is an integer
+    $vikaskhand_id = intval($_POST['vikaskhand_id']); // Ensure vikaskhand_id is an integer
+    $sector_id = intval($_POST['sector_id']); // Ensure sector_id is an integer
+    $gram_panchayat_id = mysqli_real_escape_string($conn, trim($_POST['gram_panchayat_id']));
+    $gram_id = mysqli_real_escape_string($conn, trim($_POST['gram_id']));
+    $subject = mysqli_real_escape_string($conn, trim($_POST['subject']));
+    $reference = mysqli_real_escape_string($conn, trim($_POST['reference']));
+    $expectations_amount = intval($_POST['expectations_amount']); // Ensure expectations_amount is an integer
+    $application_date = mysqli_real_escape_string($conn, trim($_POST['application_date']));
+    $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
+
+    // File upload handling
+    $target_dir = "uploads/swekshanudan/";
     $file_upload = $_FILES['file_upload']['name'];
-    $comment = trim($_POST['comment']);
+    $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
+    $uploadOk = 1;
+    $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    $cnt = mysqli_query($conn, "select * from $tblname where phone_number='$phone_number' and name='$name'");
+    // Check if file already exists
+    if (file_exists($target_file)) {
+        echo "<script>alert('Sorry, file already exists.');</script>";
+        $uploadOk = 0;
+    }
 
-    if (mysqli_num_rows($cnt) > 0) {
-        echo '<script>alert("Record Already Registered!")</script>';
+    // Check file size (500 KB limit)
+    if ($_FILES["file_upload"]["size"] > 500000) {
+        echo "<script>alert('Sorry, your file is too large (limit is 500 KB).');</script>";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats (JPG, PNG, PDF)
+    if ($fileType != "jpg" && $fileType != "png" && $fileType != "pdf") {
+        echo "<script>alert('Sorry, only JPG, PNG, and PDF files are allowed.');</script>";
+        $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "<script>alert('Sorry, your file was not uploaded.');</script>";
     } else {
+        // Attempt to upload file
+        if (move_uploaded_file($_FILES["file_upload"]["tmp_name"], $target_file)) {
+            // File uploaded successfully, proceed with database insertion
+            // Prepare SQL statement
+            $sql = "INSERT INTO $tblname 
+                    (name, phone_number, designation, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, subject, reference, expectations_amount, application_date, file_upload, comment) 
+                    VALUES 
+                    ('$name', '$phone_number', '$designation', $district_id, $vidhansabha_id, $vikaskhand_id, $sector_id, '$gram_panchayat_id', '$gram_id', '$subject', '$reference', $expectations_amount, '$application_date', '$file_upload', '$comment')";
 
-        if (isset($file_upload)) {
-            $target_dir = "uploads/swechanudan/"; // directory where file will be uploaded
-            $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
-            $uploadOk = 1;
-            $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-            // Check if file already exists
-            if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
-                $uploadOk = 0;
-            }
-
-            // Check file size
-            if ($_FILES["file_upload"]["size"] > 500000) {
-                echo "Sorry, your file is too large.";
-                $uploadOk = 0;
-            }
-
-            // Allow certain file formats
-            if ($fileType != "jpg" && $fileType != "png" && $fileType != "pdf" && $fileType != "docx") {
-                echo "Sorry, only JPG, PNG, PDF, and DOCX files are allowed.";
-                $uploadOk = 0;
-            }
-
-            // Check if $uploadOk is set to 0 by an error
-            if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
-                // if everything is ok, try to upload file
+            // Execute SQL statement
+            if ($conn->query($sql) === TRUE) {
+                echo "<script>alert('New Record Created Successfully.');</script>";
             } else {
-                if (move_uploaded_file($_FILES["file_upload"]["tmp_name"], $target_file)) {
-                    echo "The file " . htmlspecialchars(basename($_FILES["file_upload"]["name"])) . " has been uploaded.";
-                } else {
-                    echo "Sorry, there was an error uploading your file.";
-                }
+                echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
             }
         } else {
-        }
-        // Prepare SQL statement
-        $sql = "INSERT INTO $tblname 
-            (name, phone_number, designation, vidhansabha, vikaskhand, sector, gram_panchayt, gram, subject, reference, expectations_amount, application_date, file_upload, comment) 
-            VALUES 
-            ('$name', '$phone_number', '$designation', '$vidhansabha', '$vikaskhand', '$sector', '$gram_panchayt', '$gram', '$subject', '$reference', '$expectations_amount', '$application_date', '$file_upload', '$comment')";
-
-        echo $sql;
-        die;
-        // Execute SQL statement
-        if (mysqli_query($conn, $sql)) {
-            echo "Record inserted successfully!";
-        } else {
-            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
         }
     }
 
     // Close database connection
-    mysqli_close($conn);
+    $conn->close();
 }
 ?>
+
+<!-- Staring page -->
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
@@ -197,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="sector_id" id="gramPanchayatSelect" class="form-select form-control bg-white" required>
+                    <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white" required>
                     <option selected>ग्राम पंचायत का नाम चुनें</option>
                     <!-- Options for panchayat will go here -->
                 </select>
@@ -208,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram" required>
+                        <select class="form-select" id="gramSelect" name="gram_id" required>
                         <option selected>ग्राम का नाम चुनें</option>
                    <!-- by load ajax -->
                         </select>
@@ -251,7 +240,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="application_date" placeholder="आवेदन दिनांक" required name="application_date">
+                    <?php
+            // Set default current date
+            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+            ?>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date">
                         <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>

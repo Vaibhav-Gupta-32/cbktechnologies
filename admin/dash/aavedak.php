@@ -173,17 +173,16 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <button name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></button>
+                <a name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
-                <button name="Approve" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Approve</b></button>
+                <div name="Select" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Print List</b></div>
             </div>
             <!-- 3 -->
             <div class="col-lg-4 text-center mb-3">
                 <button name="Search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
             </div>
-
         </div>
     </form>
 </div>
