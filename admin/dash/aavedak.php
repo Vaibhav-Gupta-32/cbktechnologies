@@ -5,18 +5,6 @@ $tblname = "Aavedak";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Search Option Button 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $vidhansabha = $_POST['vidhansabha'];
@@ -39,20 +27,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $fetch = mysqli_query($conn, $sql);
 ?>
-
-
-
-
+<!--  -->
 
 ?>
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
 <style>
+    .action{  
+        display:flex;
+        /* justify-content: center;
+        align-items: center; */
+    }
     .action a {
         text-decoration: none;
         color: #666;
         transition: color 0.2s ease;
+  
     }
 
     .action a:hover {
@@ -190,53 +181,68 @@ $fetch = mysqli_query($conn, $sql);
 
 <!-- Table Start -->
 <!-- Table Start -->
-<div class="container-fluid pt-4 px-4">
+<div class="container-fluid px-4">
     <div class="row">
         <div class="col-sm-12 col-lg-12">
-            <div class="bg-light rounded" style="overflow-y: scroll;">
-                <h6 class="mb-4 text-center mt-2"><?= $pagename; ?> सूची</h6>
-                <table class="table table-striped">
+        <h6 class="mb-4 text-center mt-2 pt-3 "><?= $pagename; ?> सूची</h6>
+            <div class=" rounded" style="overflow-y: scroll;">
+                
+                <table class="table table-striped border shadow">
                     <thead class=" head">
                         <tr>
                             <th scope="col">क्रमांक</th>
                             <th scope="col">आवेदक का नाम</th>
-                            <th scope="col">द्वार</th>
+                            <th scope="col">मोबाइल नंबर</th>
+                            <!-- <th scope="col">आवेदक का ईमेल</th> -->
                             <th scope="col">विषय</th>
-                            <th scope="col">विधानसभा</th>
-                            <th scope="col">सेक्टर</th>
-                            <th scope="col">ग्राम</th>
+                            <!-- <th scope="col">द्वार</th>
+                            <th scope="col"> पद </th> -->
                             <th scope="col">आपेक्षित राशि</th>
-                            <th scope="col">आपेक्षित दिनांक</th>
+                            <th scope="col">आवेदन दिनांक</th>
+                            <th scope="col">टिप्पणी</th>
+                            <!-- <th scope="col">ग्राम</th>
+                            <th scope="col">पंचायत</th>
+                            <th scope="col">सेक्टर</th>
+                            <th scope="col">विकासखंड</th> -->
+                            <th scope="col">विधानसभा</th>
+                            <th scope="col">जिला</th>
                             <th scope="col">Action</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $i = 1;
-                        $sql = "SELECT * FROM swekshanudan WHERE 1 ORDER BY id DESC";
-                        $fetch = mysqli_query($conn, $sql);
-                        while ($row = mysqli_fetch_array($fetch)) {
-                        ?>
-                            <tr>
-                                <th scope="row"><?= $i++ ?></th>
-                                <!-- <td></td> -->
-                                <td><?= $row['name'] ?></td>
-                                <td><?= $row['reference'] ?></td>
-                                <td><?= $row['subject'] ?></td>
-                                <td><?= $row['vidhansabha'] ?></td>
-                                <td><?= $row['sector'] ?></td>
-                                <td><?= $row['gram'] ?></td>
-                                <td><?= $row['expectations_amount'] ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
-                                <td class="d-flex justify-content-center flex-row action">
-                                    <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2" title="View"></i></a>
-                                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
+        <?php
+        $i = 1;
+        $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+                FROM swekshanudan a 
+                LEFT JOIN district_master d ON a.district_id = d.district_id
+                LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
+                LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
+                LEFT JOIN sector_master s ON a.sector_id = s.sector_id
+                LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
+                LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+                ORDER BY a.id DESC";
+        $fetch = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_array($fetch)) {
+        ?>
+            <tr>
+                <th scope="row"><?= $i++ ?></th>
+                <td><?= $row['name'] ?></td>
+                <td><?= $row['phone_number'] ?></td>
+                <td><?= $row['subject'] ?></td>
+                <td><?= $row['expectations_amount'] ?></td>
+                <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
+                <td><?= $row['comment'] ?></td>
+                <td><?= $row['vidhansabha_name'] ?></td>
+                <td><?= $row['district_name'] ?></td>
+                <td class="action">
+                    <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
                 </table>
             </div>
         </div>
@@ -250,7 +256,7 @@ $fetch = mysqli_query($conn, $sql);
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">आवेदन विवरण</h5>
+                <h5 class="modal-title" id="myModalLabel">प्राप्त आवेदन विवरण</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -328,7 +334,7 @@ $fetch = mysqli_query($conn, $sql);
             var district_id = $(this).val();
             alert("Selected District ID: " + district_id);
             $.ajax({
-                url: 'get_vidhansabha.php',
+                url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
                 data: {
                     district_id: district_id
@@ -351,7 +357,7 @@ $fetch = mysqli_query($conn, $sql);
         var vidhansabha_id = $(this).val();
         alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
-            url: 'get_vikaskhand.php',
+            url: 'ajax/get_vikaskhand.php',
             type: 'POST',
             data: {
                 vidhansabha_id: vidhansabha_id
@@ -376,7 +382,7 @@ $fetch = mysqli_query($conn, $sql);
         var vikaskhand_id = $(this).val();
         alert("Selected Vikaskhand ID: " + vikaskhand_id);
         $.ajax({
-            url: 'get_sector.php', // Replace with your PHP file to fetch sectors
+            url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 vikaskhand_id: vikaskhand_id
@@ -401,7 +407,7 @@ $fetch = mysqli_query($conn, $sql);
         var sector_id = $(this).val();
         alert("Selected Sector ID: " + sector_id);
         $.ajax({
-            url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
+            url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 sector_id: sector_id
@@ -427,7 +433,7 @@ $(document).ready(function() {
         var gram_panchayat_id = $(this).val();
         alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
         $.ajax({
-            url: 'get_gram.php', // Replace with your PHP file to fetch gram
+            url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
             type: 'POST',
             data: {
                 gram_panchayat_id: gram_panchayat_id
