@@ -86,16 +86,16 @@ $pagename = "प्राप्त आवेदन";
                     </div>
                 </div>
             </div>
-        <!-- btn -->
-   <!-- 1 -->
-        <div class="col-lg-4 text-center mb-3">
-                <button name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary"  style="background-color:#4ac387;"><b>Add New</b></button>
+            <!-- btn -->
+            <!-- 1 -->
+            <div class="col-lg-4 text-center mb-3">
+                <button name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></button>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
                 <button name="Approve" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Approve</b></button>
             </div>
-<!-- 3 -->
+            <!-- 3 -->
             <div class="col-lg-4 text-center mb-3">
                 <button name="Search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
             </div>
@@ -148,7 +148,7 @@ $pagename = "प्राप्त आवेदन";
                                 <td class="d-flex justify-content-center flex-row action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2" title="View"></i></a>
                                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="" onclick="confirmDelete(<?php echo $id; ?>, '<?php echo $tblname; ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -231,25 +231,5 @@ $pagename = "प्राप्त आवेदन";
     // }
 </script>
 
-<script>
-       function confirmDelete(id, tableName) {
-        alert(id + tableName);
-            if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'delete.php',
-                    data: JSON.stringify({ id: id, table: tableName }),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        alert(response);
-                        location.reload(); // Optionally, reload the page to reflect changes
-                    },
-                    error: function(xhr, status, error) {
-                        alert("Error: " + xhr.responseText);
-                    }
-                });
-            }
-        }
-    </script>
 
 <?php include('includes/footer.php'); ?>

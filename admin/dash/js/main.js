@@ -205,3 +205,24 @@
     
 })(jQuery);
 
+    function confirmDelete(id, tableName) {
+        // alert(id + tableName);
+        if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
+            $.ajax({
+                type: 'POST',
+                url: 'delete.php',
+                data: JSON.stringify({
+                    id: id,
+                    table: tableName
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    // alert(response);
+                    location.reload(); // Optionally, reload the page to reflect changes
+                },
+                error: function(xhr, status, error) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+    }

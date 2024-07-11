@@ -1,5 +1,6 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
+<?php $pagename="डैशबोर्ड"; ?>
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>

@@ -36,7 +36,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="name" placeholder=" " value="<?php echo $name; ?>" required >
+                    <input type="text" class="form-control" id="name" placeholder=" " value="<?php echo $name; ?>" required>
                     <label for="name">आवेदक का नाम </label>
                 </div>
             </div>
@@ -54,7 +54,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="designation" id="designation" placeholder=" " value="<?php echo $designation; ?>" required >
+                    <input type="text" class="form-control" name="designation" id="designation" placeholder=" " value="<?php echo $designation; ?>" required>
                     <label for="designation">पद </label>
                 </div>
             </div>
@@ -63,7 +63,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="vidhansabha" id="vidhansabha" placeholder=" " value="<?php echo $vidhansabha; ?>" required >
+                    <input type="text" class="form-control" name="vidhansabha" id="vidhansabha" placeholder=" " value="<?php echo $vidhansabha; ?>" required>
                     <label for="vidhansabha">विधानसभा </label>
                 </div>
             </div>
@@ -72,7 +72,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="vikaskhand" id="vikaskhand" placeholder=" " value="<?php echo $vikaskhand; ?>" required >
+                    <input type="text" class="form-control" name="vikaskhand" id="vikaskhand" placeholder=" " value="<?php echo $vikaskhand; ?>" required>
                     <label for="vikaskhand">विकासखंड </label>
                 </div>
             </div>
@@ -81,7 +81,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="sector" id="sector" placeholder=" " value="<?php echo $sector; ?>" required >
+                    <input type="text" class="form-control" name="sector" id="sector" placeholder=" " value="<?php echo $sector; ?>" required>
                     <label for="sector">सेक्टर </label>
                 </div>
             </div>
@@ -90,7 +90,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="gram_panchayt" id="gram_panchayt" placeholder=" " value="<?php echo $gram_panchayt; ?>" required >
+                    <input type="text" class="form-control" name="gram_panchayt" id="gram_panchayt" placeholder=" " value="<?php echo $gram_panchayt; ?>" required>
                     <label for="gram_panchayt">ग्राम पंचायत </label>
                 </div>
             </div>
@@ -99,7 +99,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="gram" id="gram" placeholder=" " value="<?php echo $gram; ?>" required >
+                    <input type="text" class="form-control" name="gram" id="gram" placeholder=" " value="<?php echo $gram; ?>" required>
                     <label for="gram">ग्राम </label>
                 </div>
             </div>
@@ -108,7 +108,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="subject" id="subject" placeholder=" " value="<?php echo $subject; ?>" required >
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder=" " value="<?php echo $subject; ?>" required>
                     <label for="subject">विषय </label>
                 </div>
             </div>
@@ -117,7 +117,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="reference" id="reference" placeholder=" " value="<?php echo $reference; ?>" required >
+                    <input type="text" class="form-control" name="reference" id="reference" placeholder=" " value="<?php echo $reference; ?>" required>
                     <label for="reference">द्वारा </label>
                 </div>
             </div>
@@ -126,7 +126,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="expectations_amount" id="expectations_amount" placeholder=" " value="<?php echo $expectations_amount; ?>" required >
+                    <input type="text" class="form-control" name="expectations_amount" id="expectations_amount" placeholder=" " value="<?php echo $expectations_amount; ?>" required>
                     <label for="expectations_amount">आपेक्षित राशि </label>
                 </div>
             </div>
@@ -135,7 +135,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="application_date" id="application_date" placeholder=" " value="<?php echo $application_date; ?>" required >
+                    <input type="text" class="form-control" name="application_date" id="application_date" placeholder=" " value="<?php echo $application_date; ?>" required>
                     <label for="application_date">आवेदन दिनांक </label>
                 </div>
             </div>
@@ -144,7 +144,7 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="file_upload" id="file_upload" placeholder=" " value="<?php echo $file_upload; ?>" required >
+                    <input type="text" class="form-control" name="file_upload" id="file_upload" placeholder=" " value="<?php echo $file_upload; ?>" required>
                     <label for="file_upload">फाइल अपलोड </label>
                 </div>
             </div>
@@ -153,8 +153,24 @@ if ($id) {
         <div class="col-lg-6">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
-                    <textarea class="form-control" name="comment" id="comment" placeholder=" " ><?php echo $comment; ?></textarea>
+                    <textarea class="form-control" name="comment" id="comment" placeholder=" "><?php echo $comment; ?></textarea>
                     <label for="comment">टिप्पणी </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group shadow">
+                <div class="form-floating mb-3">
+                    <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group shadow">
+                <div class="form-floating mb-3">
+                    <a href=""> <button class="col-12 text-white btn  text-center shadow" type="submit_approve" style="background-color:#c34a64;" name="submit"><b>Approved</b></button>
+                    </a> 
+             
                 </div>
             </div>
         </div>
