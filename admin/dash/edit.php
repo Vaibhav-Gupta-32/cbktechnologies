@@ -175,21 +175,13 @@ if ($id) {
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
                     <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="form-group shadow">
-                <div class="form-floating mb-3">
-                    <a href=""> <button class="col-12 text-white btn  text-center shadow" type="submit_approve" style="background-color:#c34a64;" name="submit"><b>Approved</b></button>
-                    </a> 
-             
-                </div>
-            </div>
-        </div>
+
     </div>
 </form>
