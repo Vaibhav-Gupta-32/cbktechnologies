@@ -1,9 +1,9 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "Aavedak";
-$tblkey = "id";
-$pagename = "आवेदक";
+$tblname = "district_master";
+$tblkey = "district_id";
+$pagename = "District Master";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit'])) {
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tbody>
                             <?php
                             $i = 1;
-                            $sql = "SELECT * FROM district_master ORDER BY district_id DESC";
+                            $sql = "SELECT * FROM $tblname ORDER BY $tblkey DESC";
                             $fetch = mysqli_query($conn, $sql);
                             while ($row = mysqli_fetch_array($fetch)) {
                             ?>
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <td><?= $row['district_name'] ?></td>
                                     <td class="d-flex justify-content-center flex-row action">
                                         <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                        <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                        <a href="#" onclick="confirmDelete(<?=$row['district_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>

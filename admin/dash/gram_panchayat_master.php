@@ -1,7 +1,7 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "Gram Panchayat";
+$tblname = "gram_panchayat_master";
 $tblkey = "gram_panchayat_id";
 $pagename = "ग्राम पंचायत";
 
@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <td><?= $row['district_name'] ?></td>
             <td class="d-flex justify-content-center flex-row action">
                 <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                <a href="#" onclick="confirmDelete(<?=$row['gram_panchayat_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
             </td>
         </tr>
     <?php } ?>

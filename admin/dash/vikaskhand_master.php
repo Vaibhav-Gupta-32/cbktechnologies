@@ -2,9 +2,9 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "Aavedak";
-$tblkey = "id";
-$pagename = "आवेदक";
+$tblname = "vikaskhand_master";
+$tblkey = "vikaskhand_id";
+$pagename = "Vikaskhand Master";
 
 // Assuming $conn is your MySQL connection object
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -116,8 +116,8 @@ $district_result = mysqli_query($conn, $district_query);
                     <tbody>
                         <?php
                         $i = 1;
-                        $sql = "SELECT v.vikaskhand_name, vs.vidhansabha_name, d.district_name 
-                                FROM vikaskhand_master v 
+                        $sql = "SELECT v.*, v.vikaskhand_name, vs.vidhansabha_name, d.district_name 
+                               , v.vikaskhand_id FROM vikaskhand_master v 
                                 JOIN vidhansabha_master vs ON v.vidhansabha_id = vs.vidhansabha_id 
                                 JOIN district_master d ON v.district_id = d.district_id 
                                 ORDER BY v.vikaskhand_id DESC";
@@ -131,7 +131,7 @@ $district_result = mysqli_query($conn, $district_query);
                                 <td><?= $row['district_name'] ?></td>
                                 <td class="d-flex justify-content-center flex-row action">
                                     <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                    <a href="#" onclick="confirmDelete(<?=$row['vikaskhand_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>

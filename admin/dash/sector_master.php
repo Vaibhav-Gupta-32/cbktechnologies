@@ -3,9 +3,9 @@
 <?php include('../session_check.php') ?>
 <!-- Main Php For This Page  -->
 <?php
-$tblname = "Aavedak";
-$tblkey = "id";
-$pagename = "आवेदक";
+$tblname = "sector_master";
+$tblkey = "sector_id ";
+$pagename = "सेक्टर मास्टर";
 
 // recive data 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <tbody>
     <?php
     $i = 1;
-    $sql = "SELECT s.sector_id, s.sector_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name
+    $sql = "SELECT s.*, s.sector_id, s.sector_name, v.vikaskhand_name, vs.vidhansabha_name, d.district_name
             FROM sector_master s
             JOIN vikaskhand_master v ON s.vikaskhand_id = v.vikaskhand_id
             JOIN vidhansabha_master vs ON s.vidhansabha_id = vs.vidhansabha_id
@@ -138,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <td><?= $row['district_name'] ?></td>
             <td class="d-flex justify-content-center flex-row action">
                 <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                <a href="#" onclick="confirmDelete(<?=$row['sector_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
             </td>
         </tr>
     <?php } ?>

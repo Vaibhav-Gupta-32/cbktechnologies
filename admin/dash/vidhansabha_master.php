@@ -1,8 +1,8 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "vidhansabha master";
-$tblkey = "id";
+$tblname = "vidhansabha_master";
+$tblkey = "vidhansabha_id";
 $pagename = "Vidhansabha Master";
 
 // Assuming $conn is your MySQL connection object
@@ -85,7 +85,7 @@ $district_result = mysqli_query($conn, $district_query);
                         <tbody>
                             <?php
                             $i = 1;
-                            $sql = "SELECT v.vidhansabha_name, d.district_name 
+                            $sql = "SELECT v.*, v.vidhansabha_name, d.district_name 
                                 FROM vidhansabha_master v 
                                 JOIN district_master d ON v.district_id = d.district_id 
                                 ORDER BY v.vidhansabha_id DESC";
@@ -98,7 +98,7 @@ $district_result = mysqli_query($conn, $district_query);
                                     <td><?= $row['district_name'] ?></td>
                                     <td class="d-flex justify-content-center flex-row action">
                                         <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                        <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                        <a href="#" onclick="confirmDelete(<?=$row['vidhansabha_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>

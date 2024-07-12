@@ -1,22 +1,34 @@
 <?php
 include('../dbconnection.php');
+include('../session_check.php');
 
-header('Content-Type: application/json');
+// Get the raw POST data
+$postData = file_get_contents('php://input');
+$request = json_decode($postData, true);
 
-$data = json_decode(file_get_contents('php://input'), true);
+if (isset($request['id']) && isset($request['table']) && isset($request['key'])) {
+    $id = $request['id'];
+    $table = $request['table'];
+    $key = $request['key'];
 
-if (isset($data['id']) && isset($data['table'])) {
-    $id = mysqli_real_escape_string($conn, $data['id']);
-    $table = mysqli_real_escape_string($conn, $data['table']);
+    // Ensure both ID and table name are safe to use in a SQL query
+    $id = mysqli_real_escape_string($conn, $id);
+    $table = mysqli_real_escape_string($conn, $table);
 
-    $sql = "DELETE FROM $table WHERE id = $id";
-    // echo $sql;die;
+    // SQL to delete the record from the specified table
+    $sql = "DELETE FROM `$table` WHERE $key='$id'";
+
     if (mysqli_query($conn, $sql)) {
-        echo json_encode(['success' => true, 'message' => 'Record deleted successfully.']);
+        // Record deleted successfully
+        echo "Record deleted successfully.";
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error deleting record: ' . mysqli_error($conn)]);
+        // Error deleting record
+        echo "Error deleting record: " . mysqli_error($conn);
     }
+
+    // Close the database connection
+    mysqli_close($conn);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid input.']);
+    echo "Invalid request.";
 }
 ?>
