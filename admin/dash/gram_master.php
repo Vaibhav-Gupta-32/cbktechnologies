@@ -1,9 +1,9 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "ग्राम";
-$tblkey = "ग्राम_id";
-$pagename = "ग्राम";
+$tblname = "gram_master";
+$tblkey = "gram_id";
+$pagename = "ग्राम मास्टर";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit_gram'])) {
@@ -13,13 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $vidhansabha_id = $_POST['vidhansabha_id'];
         $vikaskhand_id = $_POST['vikaskhand_id'];
         $sector_id = $_POST['sector_id'];
+        $gram_panchayat_id = $_POST['gram_panchayat_id'];
 
         // Escape strings to prevent SQL injection
         $gram_name = mysqli_real_escape_string($conn, $gram_name);
         $district_id = mysqli_real_escape_string($conn, $district_id);
         $vidhansabha_id = mysqli_real_escape_string($conn, $vidhansabha_id);
         $vikaskhand_id = mysqli_real_escape_string($conn, $vikaskhand_id);
-        $sector_id = mysqli_real_escape_string($conn, $sector_id);
+        $sector_id = mysqli_real_escape_string($conn, $sector_id);  
 
         // Check if gram_name already exists for the selected district, vidhansabha, vikaskhand, and sector
         $check_query = "SELECT * FROM gram_master WHERE gram_name = '$gram_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id' AND vikaskhand_id = '$vikaskhand_id' AND sector_id = '$sector_id'";
@@ -30,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<b class='text-danger'>Error: Gram Name already exists!</b>";
         } else {
             // Gram name does not exist, proceed with insertion
-            $sql = "INSERT INTO gram_master (gram_name, district_id, vidhansabha_id, vikaskhand_id, sector_id) VALUES ('$gram_name', '$district_id', '$vidhansabha_id', '$vikaskhand_id', '$sector_id')";
+            $sql = "INSERT INTO gram_master (gram_name, district_id, gram_panchayat_id, vidhansabha_id, vikaskhand_id, sector_id) VALUES ('$gram_name', '$district_id', '$gram_panchayat_id','$vidhansabha_id', '$vikaskhand_id', '$sector_id')";
             if (mysqli_query($conn, $sql)) {
                 echo "<b class='text-success'>Gram Name Added Successfully</b>";
             } else {
@@ -90,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             <div class="col-lg-4 text-center mb-3">
-                <select name="sector_id" id="gramPanchayatSelect" class="form-select form-control border-success" required>
+                <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control border-success" required>
                     <option selected>ग्राम पंचायत का नाम चुनें</option>
                     <!-- Options for panchayat will go here -->
                 </select>
@@ -152,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <td><?= $row['district_name'] ?></td>
                                 <td class="d-flex justify-content-center flex-row action">
                                     <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="#"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                    <a href="#" onclick="confirmDelete(<?=$row['gram_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -194,15 +195,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#vidhansabhaSelect').change(function() {
             var vidhansabha_id = $(this).val();
-<<<<<<< Updated upstream
           //  alert("Selected Vidhansabha ID: " + vidhansabha_id);
             $.ajax({
                 url: 'ajax/get_vikaskhand.php',
-=======
-            alert("Selected Vidhansabha ID: " + vidhansabha_id);
-            $.ajax({
-                url: 'get_vikaskhand.php',
->>>>>>> Stashed changes
                 type: 'POST',
                 data: {
                     vidhansabha_id: vidhansabha_id
@@ -225,15 +220,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#vikaskhandSelect').change(function() {
             var vikaskhand_id = $(this).val();
-<<<<<<< Updated upstream
           //  alert("Selected Vikaskhand ID: " + vikaskhand_id);
             $.ajax({
                 url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-=======
-            alert("Selected Vikaskhand ID: " + vikaskhand_id);
-            $.ajax({
-                url: 'get_sector.php', // Replace with your PHP file to fetch sectors
->>>>>>> Stashed changes
                 type: 'POST',
                 data: {
                     vikaskhand_id: vikaskhand_id
@@ -257,15 +246,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#sectorSelect').change(function() {
             var sector_id = $(this).val();
-<<<<<<< Updated upstream
            // alert("Selected Vikaskhand ID: " + sector_id);
             $.ajax({
                 url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-=======
-            alert("Selected Vikaskhand ID: " + sector_id);
-            $.ajax({
-                url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
->>>>>>> Stashed changes
                 type: 'POST',
                 data: {
                     sector_id: sector_id
