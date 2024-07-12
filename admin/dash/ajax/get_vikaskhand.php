@@ -1,6 +1,6 @@
 <?php
-require '../dbconnection.php';
-require '../session_check.php';
+require('../../dbconnection.php'); // Adjust path as needed
+require('../../session_check.php'); // Adjust path as needed
 
 if (isset($_POST['vidhansabha_id'])) {
     $vidhansabha_id = $_POST['vidhansabha_id'];
