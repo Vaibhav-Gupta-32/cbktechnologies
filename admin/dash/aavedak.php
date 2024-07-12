@@ -1,6 +1,7 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
+$tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
 
@@ -237,7 +238,7 @@ $fetch = mysqli_query($conn, $sql);
                 <td class="action">
                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                    
+                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
             </tr>
         <?php } ?>
