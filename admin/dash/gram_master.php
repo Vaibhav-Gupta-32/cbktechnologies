@@ -172,9 +172,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
+           // alert("Selected District ID: " + district_id);
             $.ajax({
-                url: 'get_vidhansabha.php',
+                url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
                 data: {
                     district_id: district_id
@@ -193,83 +193,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // For Vikaskhand
     $(document).ready(function() {
-    $('#vidhansabhaSelect').change(function() {
-        var vidhansabha_id = $(this).val();
-        alert("Selected Vidhansabha ID: " + vidhansabha_id);
-        $.ajax({
-            url: 'get_vikaskhand.php',
-            type: 'POST',
-            data: {
-                vidhansabha_id: vidhansabha_id
-            },
-            success: function(data) {
-                var vikaskhand = JSON.parse(data);
-                $('#vikaskhandSelect').empty();
-                $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                $.each(vikaskhand, function(index, vikaskhand) {
-                    $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
+        $('#vidhansabhaSelect').change(function() {
+            var vidhansabha_id = $(this).val();
+          //  alert("Selected Vidhansabha ID: " + vidhansabha_id);
+            $.ajax({
+                url: 'ajax/get_vikaskhand.php',
+                type: 'POST',
+                data: {
+                    vidhansabha_id: vidhansabha_id
+                },
+                success: function(data) {
+                    var vikaskhand = JSON.parse(data);
+                    $('#vikaskhandSelect').empty();
+                    $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
+                    $.each(vikaskhand, function(index, vikaskhand) {
+                        $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error: ' + status + ' - ' + error);
+                }
+            });
         });
-    });
     });
     // For Sector Load 
     $(document).ready(function() {
-    $('#vikaskhandSelect').change(function() {
-        var vikaskhand_id = $(this).val();
-        alert("Selected Vikaskhand ID: " + vikaskhand_id);
-        $.ajax({
-            url: 'get_sector.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                vikaskhand_id: vikaskhand_id
-            },
-            success: function(data) {
-                var sectors = JSON.parse(data);
-                $('#sectorSelect').empty();
-                $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                    $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
+        $('#vikaskhandSelect').change(function() {
+            var vikaskhand_id = $(this).val();
+          //  alert("Selected Vikaskhand ID: " + vikaskhand_id);
+            $.ajax({
+                url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
+                type: 'POST',
+                data: {
+                    vikaskhand_id: vikaskhand_id
+                },
+                success: function(data) {
+                    var sectors = JSON.parse(data);
+                    $('#sectorSelect').empty();
+                    $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
+                    $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
+                        $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error: ' + status + ' - ' + error);
+                }
+            });
         });
     });
-});
-// For Gram Panchayat
- // For Sector Load 
- $(document).ready(function() {
-    $('#sectorSelect').change(function() {
-        var sector_id = $(this).val();
-        alert("Selected Vikaskhand ID: " + sector_id);
-        $.ajax({
-            url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                sector_id: sector_id
-            },
-            success: function(data) {
-                var gram_panchayats = JSON.parse(data);
-                $('#gramPanchayatSelect').empty();
-                $('#gramPanchayatSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
+    // For Gram Panchayat
+    // For Sector Load 
+    $(document).ready(function() {
+        $('#sectorSelect').change(function() {
+            var sector_id = $(this).val();
+           // alert("Selected Vikaskhand ID: " + sector_id);
+            $.ajax({
+                url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
+                type: 'POST',
+                data: {
+                    sector_id: sector_id
+                },
+                success: function(data) {
+                    var gram_panchayats = JSON.parse(data);
+                    $('#gramPanchayatSelect').empty();
+                    $('#gramPanchayatSelect').append('<option selected>ग्राम का नाम चुनें</option>');
+                    $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
+                        $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error: ' + status + ' - ' + error);
+                }
+            });
         });
     });
-});
-
-
-
 </script>
 
 <!--  -->

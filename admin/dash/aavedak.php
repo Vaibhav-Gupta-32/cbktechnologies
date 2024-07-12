@@ -287,6 +287,7 @@ $fetch = mysqli_query($conn, $sql);
 <script>
     // function view(v_id){
     function view(v_id) {
+         alert(v_id);
         $.ajax({
             type: 'POST',
             url: 'view.php',
@@ -332,7 +333,7 @@ $fetch = mysqli_query($conn, $sql);
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
+          //  alert("Selected District ID: " + district_id);
             $.ajax({
                 url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
@@ -355,7 +356,7 @@ $fetch = mysqli_query($conn, $sql);
     $(document).ready(function() {
     $('#vidhansabhaSelect').change(function() {
         var vidhansabha_id = $(this).val();
-        alert("Selected Vidhansabha ID: " + vidhansabha_id);
+        //alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
             url: 'ajax/get_vikaskhand.php',
             type: 'POST',
@@ -380,7 +381,7 @@ $fetch = mysqli_query($conn, $sql);
     $(document).ready(function() {
     $('#vikaskhandSelect').change(function() {
         var vikaskhand_id = $(this).val();
-        alert("Selected Vikaskhand ID: " + vikaskhand_id);
+        //alert("Selected Vikaskhand ID: " + vikaskhand_id);
         $.ajax({
             url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
@@ -405,7 +406,7 @@ $fetch = mysqli_query($conn, $sql);
  $(document).ready(function() {
     $('#sectorSelect').change(function() {
         var sector_id = $(this).val();
-        alert("Selected Sector ID: " + sector_id);
+        //alert("Selected Sector ID: " + sector_id);
         $.ajax({
             url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
@@ -431,7 +432,7 @@ $fetch = mysqli_query($conn, $sql);
 $(document).ready(function() {
     $('#gramPanchayatSelect').change(function() {
         var gram_panchayat_id = $(this).val();
-        alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
+     //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
         $.ajax({
             url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
             type: 'POST',

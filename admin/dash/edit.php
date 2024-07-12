@@ -30,6 +30,41 @@ if ($id) {
     // echo $id." || ".$name." || ".$phone_number." || ".$designation." || ".$vidhansabha." || ".$vikaskhand." || ".$sector." || ".$gram_panchayt." || ".$gram." || ".$subject;
 }
 ?>
+
+
+// Update the record in the database
+        $update_query = "UPDATE swekshanudan SET 
+            name = '$name', 
+            phone_number = '$phone_number', 
+            designation = '$designation', 
+            district_id = $district_id, 
+            vidhansabha_id = $vidhansabha_id, 
+            vikaskhand_id = $vikaskhand_id, 
+            sector_id = $sector_id, 
+            gram_panchayat_id = '$gram_panchayat_id', 
+            gram_id = '$gram_id', 
+            subject = '$subject', 
+            reference = '$reference', 
+            expectations_amount = $expectations_amount, 
+            application_date = '$application_date', 
+            comment = '$comment',
+            file_upload = '$file_upload' 
+            WHERE id = $id";
+    
+        if (mysqli_query($conn, $update_query)) {
+            echo "Record updated successfully";
+        } else {
+            echo "Error updating record: " . mysqli_error($conn);
+        }
+    }
+    
+    // Fetch the existing record
+    $id = intval($_GET['id']);
+    $query = "SELECT * FROM swekshanudan WHERE id = $id";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    ?>
+
 <!-- Start New Swekshanudan Form -->
 <style>
     input[type="file"]::file-selector-button {

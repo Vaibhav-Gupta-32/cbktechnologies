@@ -157,9 +157,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
+           // alert("Selected District ID: " + district_id);
             $.ajax({
-                url: 'get_vidhansabha.php',
+                url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
                 data: {district_id: district_id},
                 success: function(data) {
@@ -177,9 +177,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // For Vikaskhand
 $('#vidhansabhaSelect').change(function() {
             var vidhansabha_id = $(this).val();
-            alert("Selected Vidhansabha ID: " + vidhansabha_id);
+           // alert("Selected Vidhansabha ID: " + vidhansabha_id);
             $.ajax({
-                url: 'get_vikaskhand.php',
+                url: 'ajax/get_vikaskhand.php',
                 type: 'POST',
                 data: { vidhansabha_id: vidhansabha_id },
                 success: function(data) {

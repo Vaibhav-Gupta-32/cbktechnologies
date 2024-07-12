@@ -4,72 +4,47 @@
 $tblname = "Aavedak";
 $tblkey = "id";
 $pagename = " प्राप्त आवेदन ";
-
+// For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
-    
-    // Check if the form is submitted
-    if (isset($_POST['submit'])) {
-        $id = intval($_POST['id']);
-        $name = trim($_POST['name']);
-        $phone_number = trim($_POST['phone_number']);
-        $designation = trim($_POST['designation']);
-        $district_id = intval($_POST['district_id']);
-        $vidhansabha_id = intval($_POST['vidhansabha_id']);
-        $vikaskhand_id = intval($_POST['vikaskhand_id']);
-        $sector_id = intval($_POST['sector_id']);
-        $gram_panchayat_id = trim($_POST['gram_panchayat_id']);
-        $gram_id = trim($_POST['gram_id']);
-        $subject = trim($_POST['subject']);
-        $reference = trim($_POST['reference']);
-        $expectations_amount = intval($_POST['expectations_amount']);
-        $application_date = trim($_POST['application_date']);
-        $comment = trim($_POST['comment']);
-        $file_upload = '';
-    
-        // File upload handling
-        if ($_FILES['file_upload']['name']) {
-            $target_dir = "uploads/";
-            $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
-            if (move_uploaded_file($_FILES["file_upload"]["tmp_name"], $target_file)) {
-                $file_upload = $target_file;
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-            }
-        }
-    
-        // Update the record in the database
-        $update_query = "UPDATE swekshanudan SET 
-            name = '$name', 
-            phone_number = '$phone_number', 
-            designation = '$designation', 
-            district_id = $district_id, 
-            vidhansabha_id = $vidhansabha_id, 
-            vikaskhand_id = $vikaskhand_id, 
-            sector_id = $sector_id, 
-            gram_panchayat_id = '$gram_panchayat_id', 
-            gram_id = '$gram_id', 
-            subject = '$subject', 
-            reference = '$reference', 
-            expectations_amount = $expectations_amount, 
-            application_date = '$application_date', 
-            comment = '$comment',
-            file_upload = '$file_upload' 
-            WHERE id = $id";
-    
-        if (mysqli_query($conn, $update_query)) {
-            echo "Record updated successfully";
-        } else {
-            echo "Error updating record: " . mysqli_error($conn);
-        }
+// View Id Recived
+ if ($id) {
+    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    FROM swekshanudan a 
+    LEFT JOIN district_master d ON a.district_id = d.district_id
+    LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
+    LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
+    LEFT JOIN sector_master s ON a.sector_id = s.sector_id
+    LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
+    LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+    ORDER BY a.id DESC";
+        $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
+        $id = $fetch['id'];
+        $name = $fetch['name'];
+        $phone_number = $fetch['phone_number'];
+        $designation = $fetch['designation'];
+        $district_name = $fetch['district_name']; 
+        $vidhansabha_name = $fetch['vidhansabha_name'];  
+        $vikaskhand_name = $fetch['vikaskhand_name']; 
+        $sector_name = $fetch['sector_name'];  
+        $gram_panchayat_name = $fetch['gram_panchayat_name'];  
+        $gram_name = $fetch['gram_name']; 
+        $subject = $fetch['subject']; 
+        $reference = $fetch['reference']; 
+        $expectations_amount = $fetch['expectations_amount']; 
+        $application_date = $fetch['application_date']; 
+        $comment = $fetch['comment']; 
+        $file_upload = $fetch['file_upload']; 
+
+
     }
+// Close For Buinding Db To form Data 
+
+// If Approve By Admin 
+
+
+?>
     
-    // Fetch the existing record
-    $id = intval($_GET['id']);
-    $query = "SELECT * FROM swekshanudan WHERE id = $id";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
-    ?>
 <!-- Start New Swekshanudan Form -->
 
 <style>
@@ -90,8 +65,8 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="aavedak" placeholder="आवेदक का नाम" required>
-                        <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" name="name" id="aavedak"readonly>
+                        <label for="aavedak">आवेदक का नाम </label>
                     </div>
 
                 </div>
@@ -99,8 +74,8 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-                        <label for="phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number">
+                        <label for="phone_number">आवेदक का फ़ोन नंबर </label>
                     </div>
                 </div>
             </div>
@@ -109,31 +84,16 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="designation" id="designation" placeholder="पद का नाम" required>
-                        <label for="designation">पद का नाम <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" name="designation" id="designation">
+                        <label for="designation">पद का नाम </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 text-center mb-3">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
- 
-            <select name="district_id" id="districtSelect" class="form-select form-control bg-white" required>
-                    <?php
-                    // Fetch districts for dropdown
-                    $district_query = "SELECT * FROM district_master";
-                    $district_result = mysqli_query($conn, $district_query);
-                    ?>
-
-                    <option selected>जिले का नाम चुनें</option>
-                    <?php
-                    while ($district_row = mysqli_fetch_assoc($district_result)) {
-                        echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
-                    }
-                    ?>
-                </select>
-                <label for="districtSelect">जिले का नाम चुनें <span class="text-danger">*</span></label>
-
+            <input type="text" name="district_id" id="districtSelect" class=" form-control bg-white">
+                <label for="districtSelect">जिले का नाम</label>
                 </div>
                 </div>
             </div>
@@ -141,23 +101,16 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white " required>
-                    <option selected>विधानसभा का नाम चुनें</option>
-                    <!-- Options for vidhansabha will go here -->
-                </select>
-                        <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
+                    <input type="text" name="vidhansabha_id" id="vidhansabhaSelect" class="form-control bg-white ">
+                        <label for="vidhansabha">विधानसभा का नाम </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" required>
-                    <option selected>विकासखंड का नाम चुनें</option>
-                    <!-- Option Load By AJAX -->
-
-                </select>
-                        <label for="vikaskhand">विकासखंड का नाम चुनें <span class="text-danger">*</span> </label>
+                    <input type="text" name="vikaskhand_id" id="vikaskhandSelect" class=" form-control bg-white" >
+                        <label for="vikaskhand">विकासखंड का नाम </label>
                     </div>
                 </div>
             </div>
@@ -165,65 +118,56 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white" required>
-                    <option selected>सेक्टर का नाम चुनें</option>
-                    <!-- Options for sectors will go here -->
-                </select>
-                        <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span> </label>
+                    <input type="text" name="sector_id" id="sectorSelect" class=" form-control bg-white">
+                        <label for="sector">सेक्टर का नाम </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white" required>
-                    <option selected>ग्राम पंचायत का नाम चुनें</option>
-                    <!-- Options for panchayat will go here -->
-                </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें <span class="text-danger">*</span> </label>
+                    <input type="text" name="gram_panchayat_id" id="gramPanchayatSelect" class=" form-control bg-white">
+                        <label for="gram_panchayt">ग्राम पंचायत का नाम </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram_id" required>
-                        <option selected>ग्राम का नाम चुनें</option>
-                   <!-- by load ajax -->
-                        </select>
-                        <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control bg-white" id="gramSelect" name="gram_id" >
+                        <label for="gram">ग्राम का नाम </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 " >
-                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                        <label for="file_upload" >फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                        <input type="file" class="form-control bg-white" id="file_upload" name="file_upload">
+                        <label for="file_upload" > अपलोडेड फाइल </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
-                        <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                        <label for="subject">विषय का नाम </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference">
-                        <label for="reference">द्वारा <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" name="reference">
+                        <label for="reference">द्वारा </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="expectations_amount">आपेक्षित राशि </label>
                     </div>
                 </div>
             </div>
@@ -238,8 +182,8 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="expectations_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -252,8 +196,8 @@ if (isset($_REQUEST['id']))
             // Set default current date
             $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
             ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="application_date">
-                        <label for="application_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date">
+                        <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -261,8 +205,8 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"></textarea>
-                        <label for="comment">टिप्पणी <span class="text-danger">*</span> </label>
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 110px;" name="comment"></textarea>
+                        <label for="comment">टिप्पणी </label>
                     </div>
                 </div>
             </div>
