@@ -165,9 +165,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
+           // alert("Selected District ID: " + district_id);
             $.ajax({
-                url: 'get_vidhansabha.php',
+                url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
                 data: {
                     district_id: district_id
@@ -188,9 +188,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
     $('#vidhansabhaSelect').change(function() {
         var vidhansabha_id = $(this).val();
-        alert("Selected Vidhansabha ID: " + vidhansabha_id);
+       // alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
-            url: 'get_vikaskhand.php',
+            url: 'ajax/get_vikaskhand.php',
             type: 'POST',
             data: {
                 vidhansabha_id: vidhansabha_id
@@ -213,9 +213,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
     $('#vikaskhandSelect').change(function() {
         var vikaskhand_id = $(this).val();
-        alert("Selected Vikaskhand ID: " + vikaskhand_id);
+       // alert("Selected Vikaskhand ID: " + vikaskhand_id);
         $.ajax({
-            url: 'get_sector.php', // Replace with your PHP file to fetch sectors
+            url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 vikaskhand_id: vikaskhand_id

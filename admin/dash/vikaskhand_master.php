@@ -147,9 +147,9 @@ $district_result = mysqli_query($conn, $district_query);
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
+           // alert("Selected District ID: " + district_id);
             $.ajax({
-                url: 'get_vidhansabha.php',
+                url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
                 data: {district_id: district_id},
                 success: function(data) {
