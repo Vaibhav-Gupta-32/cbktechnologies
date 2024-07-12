@@ -29,7 +29,6 @@ $fetch = mysqli_query($conn, $sql);
 ?>
 <!--  -->
 
-?>
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
@@ -287,7 +286,7 @@ $fetch = mysqli_query($conn, $sql);
 <script>
     // function view(v_id){
     function view(v_id) {
-         alert(v_id);
+        //  alert(v_id);
         $.ajax({
             type: 'POST',
             url: 'view.php',

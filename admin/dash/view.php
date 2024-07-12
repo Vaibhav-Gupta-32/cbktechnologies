@@ -32,11 +32,10 @@ if (isset($_REQUEST['id']))
         $subject = $fetch['subject']; 
         $reference = $fetch['reference']; 
         $expectations_amount = $fetch['expectations_amount']; 
-        $application_date = $fetch['application_date']; 
+        $application_date =$fetch['application_date']; 
+       // $application_date =date("d-m-Y",strtotime($fetch['application_date'])); 
         $comment = $fetch['comment']; 
         $file_upload = $fetch['file_upload']; 
-
-
     }
 // Close For Buinding Db To form Data 
 
@@ -51,22 +50,22 @@ if (isset($_REQUEST['id']))
     input[type="file"]::file-selector-button {
         color: #00698f;
         /* change the text color to blue */
-        background-color: white;
+        background-color:transparent;
         /* change the background color to light gray */
         border: none;
     }
 </style>
 
 <form action="" method="POST" enctype="multipart/form-data">
-    <div class="container-fluid pt-4 px-4 ">
+    <div class="container-fluid px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
         <hr class="text-danger p-2 rounded">
         <div class="row">
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="aavedak"readonly>
-                        <label for="aavedak">आवेदक का नाम </label>
+                        <input type="text" class="form-control" name="name" id="name" value="<?=$name?>" readonly>
+                        <label for="name">आवेदक का नाम </label>
                     </div>
 
                 </div>
@@ -74,7 +73,7 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number">
+                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" value="<?=$phone_number?>" readonly>
                         <label for="phone_number">आवेदक का फ़ोन नंबर </label>
                     </div>
                 </div>
@@ -84,15 +83,15 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="designation" id="designation">
+                        <input type="text" class="form-control" name="designation" id="designation" value="<?=$designation?>" readonly>
                         <label for="designation">पद का नाम </label>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-4 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-            <input type="text" name="district_id" id="districtSelect" class=" form-control bg-white">
+            <input type="text" name="district_id" id="districtSelect" class=" form-control " value="<?=$district_name?>" readonly>
                 <label for="districtSelect">जिले का नाम</label>
                 </div>
                 </div>
@@ -101,7 +100,7 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <input type="text" name="vidhansabha_id" id="vidhansabhaSelect" class="form-control bg-white ">
+                    <input type="text" name="vidhansabha_id" id="vidhansabhaSelect" class="form-control" value="<?=$vidhansabha_name?>" readonly>
                         <label for="vidhansabha">विधानसभा का नाम </label>
                     </div>
                 </div>
@@ -109,16 +108,15 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <input type="text" name="vikaskhand_id" id="vikaskhandSelect" class=" form-control bg-white" >
+                    <input type="text" name="vikaskhand_id" id="vikaskhandSelect" class=" form-control " value="<?=$vikaskhand_name?>" readonly>
                         <label for="vikaskhand">विकासखंड का नाम </label>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <input type="text" name="sector_id" id="sectorSelect" class=" form-control bg-white">
+                    <input type="text" name="sector_id" id="sectorSelect" class=" form-control " value="<?=$sector_name?>" readonly>
                         <label for="sector">सेक्टर का नाम </label>
                     </div>
                 </div>
@@ -126,7 +124,7 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <input type="text" name="gram_panchayat_id" id="gramPanchayatSelect" class=" form-control bg-white">
+                    <input type="text" name="gram_panchayat_id" id="gramPanchayatSelect" class=" form-control" value="<?=$gram_panchayat_name?>" readonly>
                         <label for="gram_panchayt">ग्राम पंचायत का नाम </label>
                     </div>
                 </div>
@@ -134,23 +132,16 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control bg-white" id="gramSelect" name="gram_id" >
+                        <input type="text" class="form-control" id="gramSelect" name="gram_id" value="<?=$gram_name?>" readonly >
                         <label for="gram">ग्राम का नाम </label>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3 " >
-                        <input type="file" class="form-control bg-white" id="file_upload" name="file_upload">
-                        <label for="file_upload" > अपलोडेड फाइल </label>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="subject" name="subject">
+                        <input type="text" class="form-control" id="subject" name="subject" value="<?=$subject?>" readonly>
                         <label for="subject">विषय का नाम </label>
                     </div>
                 </div>
@@ -158,15 +149,29 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" name="reference">
+                        <input type="text" class="form-control" id="reference" name="reference" value="<?=$reference?>" readonly>
                         <label for="reference">द्वारा </label>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4">
+    <div class="form-group shadow">
+        <div class="form-floating mb-3 input-group">
+            <input type="text" class="form-control" id="file_upload" name="file_upload" value="<?=$file_upload?>" readonly>
+            <label for="file_upload" > अपलोडेड फाइल </label>
+            <span class="input-group-text bg-">
+                <a href="uploads/swechanudan/<?=$file_upload?>" target="_blank"  class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
+            </span>
+        </div>
+    </div>
+</div>
+            <!--  -->
+
+            <!--  -->
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?=$expectations_amount?>" readonly>
                         <label for="expectations_amount">आपेक्षित राशि </label>
                     </div>
                 </div>
@@ -174,12 +179,20 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="application_date" value="" placeholder="आवेदन दिनांक" required name="application_date">
-                        <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="application_date" name="application_date" value="<?=$application_date?>" readonly>
+                        <label for="application_date">आवेदन दिनांक</label>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea type="text" class="form-control" id="comment" style="height: 60px;" name="comment" value="" readonly ><?=$comment?></textarea >
+                        <label for="comment">टिप्पणी </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
@@ -187,9 +200,15 @@ if (isset($_REQUEST['id']))
                     </div>
                 </div>
             </div>
-
-
-            <div class="col-lg-6">
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="aadesh_no">आदेश क्रमांक <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                     <?php
@@ -205,7 +224,7 @@ if (isset($_REQUEST['id']))
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 110px;" name="comment"></textarea>
+                        <textarea class="form-control" id="comment" style="height: 110px;" name="comment" required></textarea>
                         <label for="comment">टिप्पणी </label>
                     </div>
                 </div>
