@@ -194,15 +194,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#vidhansabhaSelect').change(function() {
             var vidhansabha_id = $(this).val();
-<<<<<<< Updated upstream
           //  alert("Selected Vidhansabha ID: " + vidhansabha_id);
             $.ajax({
                 url: 'ajax/get_vikaskhand.php',
-=======
-            alert("Selected Vidhansabha ID: " + vidhansabha_id);
-            $.ajax({
-                url: 'get_vikaskhand.php',
->>>>>>> Stashed changes
                 type: 'POST',
                 data: {
                     vidhansabha_id: vidhansabha_id
@@ -225,15 +219,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#vikaskhandSelect').change(function() {
             var vikaskhand_id = $(this).val();
-<<<<<<< Updated upstream
           //  alert("Selected Vikaskhand ID: " + vikaskhand_id);
             $.ajax({
                 url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-=======
-            alert("Selected Vikaskhand ID: " + vikaskhand_id);
-            $.ajax({
-                url: 'get_sector.php', // Replace with your PHP file to fetch sectors
->>>>>>> Stashed changes
                 type: 'POST',
                 data: {
                     vikaskhand_id: vikaskhand_id
@@ -257,15 +245,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
         $('#sectorSelect').change(function() {
             var sector_id = $(this).val();
-<<<<<<< Updated upstream
            // alert("Selected Vikaskhand ID: " + sector_id);
             $.ajax({
                 url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-=======
-            alert("Selected Vikaskhand ID: " + sector_id);
-            $.ajax({
-                url: 'get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
->>>>>>> Stashed changes
                 type: 'POST',
                 data: {
                     sector_id: sector_id

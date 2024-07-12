@@ -237,6 +237,7 @@ $fetch = mysqli_query($conn, $sql);
                 <td class="action">
                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                    
                 </td>
             </tr>
         <?php } ?>
