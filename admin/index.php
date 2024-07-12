@@ -2,6 +2,8 @@
 session_start();
 include('dbconnection.php');
 $msg="";
+$suc="";
+$err="";
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = base64_encode($_POST['password']);
@@ -37,202 +39,65 @@ if (isset($_POST['login'])) {
                 // $_SESSION['alogin'] = $_POST['username'];
                 $_SESSION['username'] = $username;
                 $_SESSION['password'] = $password;
-                // echo "<script>alert('Successfully');</script>";
-                $style='style="background-color:#70e55fa3"';
-                $msg= "User Verified";
+           
+                $msg= "Admin Login Successfully !..";
+                $suc =true;
                 echo "<script>
-        // Redirect to dashboard after 3 seconds (3000 milliseconds)
-        setTimeout(function() {
-            window.location.href = 'dash/dashboard.php';
-        }, 2000); // 3000 milliseconds = 3 seconds
-    </script>";
+                // Redirect to dashboard after 3 seconds (3000 milliseconds)
+                setTimeout(function() {
+                    window.location.href = 'dash/dashboard.php';
+                }, 2000); // 3000 milliseconds = 3 seconds
+            </script>";
+        
+
+               
     } else {
         // echo "<script>alert('Invalid Details');</script>";
-        $msg= "Invalid username or password ! Please Check";
-        $style='style="background-color:#df6161a3"';
+        $msg= "Invalid Username or Password !..";
+        $err =true;
     }
     }
     mysqli_close($conn);
 }
 ?>
+<!-- Html Starting -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
-        body,
-        input {
-            font-family: 'Poppins', sans-serif;
-        }
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
 
-        #form-main-wrapper {
-            width: 100%;
-            height: 100vh;
-            background: #8A39E1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-        .form-container {
-            width: 450px;
-            padding: 20px 15px;
-        }
+    <!-- Libraries Stylesheet -->
+    <link href="dash/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="dash/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
-        .admin-avtar {
-            text-align: center;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="dash/css/bootstrap.min.css" rel="stylesheet">
 
-        .admin-avtar h1 {
-            font-size: 28px;
-            font-weight: 400;
-            margin-left: 15px;
-            color: #fff;
-        }
-
-        .signin-status {
-            width: 100%;
-            background-color: orange;
-            padding: 15px 10px;
-            border-radius: 3px;
-            margin-bottom: 25px;
-        }
-
-        .form-con label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .form-con input {
-            width: 100%;
-            font-size: 16px;
-            padding: 5px 10px;
-            font-weight: 400;
-            outline: none;
-        }
-
-        label[for="rem-me"] {
-            margin-bottom: 0px;
-        }
-
-        .field-con {
-            margin-bottom: 20px;
-        }
-
-        .field-con:last-child {
-            margin-bottom: 0px;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .form-btn-con input {
-            display: inline-block;
-            width: unset;
-        }
-
-        .remember-me {
-            display: block;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .form-btn-con input[type=checkbox] {
-            margin-right: 10px;
-        }
-
-   
-
-        .add-links {
-            margin-top: 50px;
-        }
-
-        .add-links a {
-            display: block;
-            margin: 10px 0;
-            font-size: 14px;
-            color: #fff;
-        }
-
-        .form {
-            background: #fff;
-            padding: 40px 30px;
-            box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.25);
-        }
-
-        .d-none {
-            display: none;
-        }
-
-        .form-submit {
-            background-color: #8A39E1;
-            border: none;
-            color: #fff;
-            padding: 8px 30px !important;
-            border: 2px solid transparent;
-            font-weight: 500 !important;
-            transition: 300ms ease-in-out;
-            cursor: pointer;
-        }
-
-        .form-submit:hover {
-            background-color: #fff;
-            border: 2px solid #8A39E1;
-            color: #8A39E1;
-        }
-
-        @media screen and (max-width: 576px) {
-            .flex.form-btn-con {
-                flex-direction: column;
-            }
-
-            .sub-btn-wrap {
-                text-align: center;
-                margin-top: 25px;
-            }
-
-            .form {
-                padding: 40px 20px;
-            }
-
-            .admin-avtar h1 {
-                font-size: 25px;
-            }
-        }
-    </style>
+    <!-- Template Stylesheet -->
+    <link href="dash/css/style.css" rel="stylesheet">
 </head>
 
 <body>
     <div id="form-main-wrapper">
         <div class="form-container">
-            <div class="admin-avtar">
-                <h1>Admin Sign In</h1>
-            </div>
-
-                <?php 
-                // echo 'vaibhav'.$msg;
-                if(!empty($msg)){?>
-            <div id="message" class="signin-status" <?=$style;?>>
-                <p id="status-desc"> <?=$msg;?></p>
-            </div>
-            <?php }?>
-
+    
             <script>
         // Hide message after 2 seconds (2000 milliseconds)
         setTimeout(function() {
@@ -243,7 +108,7 @@ if (isset($_POST['login'])) {
         }, 3000); // 2000 milliseconds = 2 seconds
     </script>
 
-            <div class="form-wrapper">
+            <!-- <div class="form-wrapper">
                 <div class="form-con form">
                     <form action="" method="POST" id="usernamePasswordForm">
                         <div class="field-con">
@@ -285,7 +150,102 @@ if (isset($_POST['login'])) {
                 <a href="#" title="Back to trendy mania" id="switchToOTP">Login with OTP</a>
             </div>
         </div>
-    </div>
+    </div> -->
+
+
+
+
+        <!-- Sign In Start -->
+        <div class="container-fluid">
+            <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                    <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+                        
+                <?php 
+                // echo 'vaibhav'.$msg;
+                if(!empty($msg)){?>
+            <div id="message" class="signin-status">
+               <?php 
+                
+                if($suc){?>
+                    <div class="alert alert-success text-center" role="alert">
+                    <h6 class="text-success"><b><?=$msg;?></b></h6>
+                </div>
+                <?php  }?>
+                <?php 
+                
+                if($err){?>
+                    <div class="alert alert-danger text-center " role="alert">
+                    <h6 class="text-danger"><b><?=$msg;?></b></h6>
+                </div>
+                <?php  }?>
+
+              
+            </div>
+            <?php }?>
+                        <!-- Login With ID Pass -->
+                    <form action="" method="POST" id="usernamePasswordForm">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <a href="" class="">
+                                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Admin Sign In !..</h3>
+                            </a>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="@Admin">
+                            <label for="floatingInput">User Name <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="passkey" name="password" placeholder="Password">
+                            <label for="floatingPassword">Password <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            </div>
+                            <a href="">Forgot Password</a>
+                        </div>
+                        <button type="submit" name="login" value="Sign In"  class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                        <p class="text-center fw-bold mb-0">Login With <a href="" id="switchToOTP">OTP</a></p>
+                    
+                    </form>
+                    <!-- Login With Password Close -->
+
+                         <!-- Login With OTP -->
+                    <form action="" method="POST" id="otpForm" class="d-none">
+                        <div class="d-flex align-items-center justify-content-center mb-3">
+                            <a href="" class="">
+                                <h3 class="text-success"><i class="fa fa-hashtag me-2"></i>Admin Sign In !..</h3>
+                            </a>
+                       
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="@Admin">
+                            <label for="floatingInput">User Name <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="passkey" name="password" placeholder="Password">
+                            <label for="floatingPassword">OTP <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            </div>
+                            <a href="">Forgot Password</a>
+                        </div>
+                        <button type="submit" name="login" value="Sign In"  class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                        <p class="text-center fw-bold mb-0">Login With <a href="" id="usernamePasswordForm">Username / Password</a></p>
+                    </form>
+                    <!-- Login With OTP Close -->
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sign In End -->
+
 
     <script>
         document.getElementById('switchToOTP').addEventListener('click', function(event) {
@@ -305,6 +265,26 @@ if (isset($_POST['login'])) {
             }
         });
     </script>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dash/lib/chart/chart.min.js"></script>
+    <script src="dash/lib/easing/easing.min.js"></script>
+    <script src="dash/lib/waypoints/waypoints.min.js"></script>
+    <script src="dash/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="dash/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="dash/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="dash/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+   
+
+    <!-- Template Javascript -->
+    <script src="dash/js/main.js"></script>
+
+<hr>
+
+
+
 </body>
 
 </html>
