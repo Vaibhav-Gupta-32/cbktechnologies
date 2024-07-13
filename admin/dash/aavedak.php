@@ -5,8 +5,38 @@ $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
 
+
+// If Approve By Admin 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
+    $vid = $_POST['id'];
+    $sql = "UPDATE $tblname SET status='1' WHERE id='$vid'";
+    if (mysqli_query($conn, $sql)) {
+        echo "<script>alert('Approved Successfully')</script>";
+        echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
+    } else {
+        echo "<script>alert('Error')</script>";
+        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+}}
+// Close Approve Admin
+
+
+// If Reject By Admin
+if (isset($_POST['UnApprove'])) {
+    $id = $_POST['id'];
+
+    $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
+    if (mysqli_query($conn, $sql)) {
+        echo "<script>alert('Rejected Successfully')</script>";
+        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+    } else {
+        echo "<script>alert('Error')</script>";
+        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+    }
+}
+// Close For Reject By Admin
+
 // Search Option Button 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Search'])) {
     $vidhansabha = $_POST['vidhansabha'];
     $sector = $_POST['sector'];
     $gram = $_POST['gram'];
@@ -167,7 +197,7 @@ $fetch = mysqli_query($conn, $sql);
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
-                <div name="Select" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Print List</b></div>
+                <div name="PrintList" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Print List</b></div>
             </div>
             <!-- 3 -->
             <div class="col-lg-4 text-center mb-3">
@@ -220,6 +250,7 @@ $fetch = mysqli_query($conn, $sql);
                 LEFT JOIN sector_master s ON a.sector_id = s.sector_id
                 LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
                 LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+                WHERE a.status=0
                 ORDER BY a.id DESC";
         $fetch = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_array($fetch)) {
@@ -235,7 +266,7 @@ $fetch = mysqli_query($conn, $sql);
                 <td><?= $row['vidhansabha_name'] ?></td>
                 <td><?= $row['district_name'] ?></td>
                 <td class="action">
-                    <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                    <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                     <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
@@ -304,7 +335,7 @@ $fetch = mysqli_query($conn, $sql);
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'edit.php',
+            url: 'aavedak_edit.php',
             data: {
                 id: e_id
             },

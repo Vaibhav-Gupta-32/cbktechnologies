@@ -1,10 +1,9 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "Aavedak";
 $tblkey = "id";
-$pagename = " प्राप्त आवेदन ";
-// For Showing data On View If Admin View  
+$pagename = "आवेदक";
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
 // View Id Recived
@@ -23,7 +22,7 @@ if ($id) {
     $name = $fetch['name'];
     $phone_number = $fetch['phone_number'];
     $designation = $fetch['designation'];
-    $district_name = $fetch['district_name'];
+    $district_id = $fetch['district_id'];
     $vidhansabha_name = $fetch['vidhansabha_name'];
     $vikaskhand_name = $fetch['vikaskhand_name'];
     $sector_name = $fetch['sector_name'];
@@ -40,36 +39,61 @@ if ($id) {
 // Close For Buinding Db To form Data 
 
 
-// Close For Approve By Admin
+// Update the record in the database
+//         $update_query = "UPDATE swekshanudan SET 
+//             name = '$name', 
+//             phone_number = '$phone_number', 
+//             designation = '$designation', 
+//             district_id = $district_id, 
+//             vidhansabha_id = $vidhansabha_id, 
+//             vikaskhand_id = $vikaskhand_id, 
+//             sector_id = $sector_id, 
+//             gram_panchayat_id = '$gram_panchayat_id', 
+//             gram_id = '$gram_id', 
+//             subject = '$subject', 
+//             reference = '$reference', 
+//             expectations_amount = $expectations_amount, 
+//             application_date = '$application_date', 
+//             comment = '$comment',
+//             file_upload = '$file_upload' 
+//             WHERE id = $id";
 
-// If Delete By Admin
+//         if (mysqli_query($conn, $update_query)) {
+//             echo "Record updated successfully";
+//         } else {
+//             echo "Error updating record: " . mysqli_error($conn);
+// }
+
+//     // Fetch the existing record
+//     $id = intval($_GET['id']);
+//     $query = "SELECT * FROM swekshanudan WHERE id = $id";
+//     $result = mysqli_query($conn, $query);
+//     $row = mysqli_fetch_assoc($result);
+//     
 ?>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Start New Swekshanudan Form -->
-
 <style>
     input[type="file"]::file-selector-button {
         color: #00698f;
         /* change the text color to blue */
-        background-color: transparent;
+        background-color: white;
         /* change the background color to light gray */
         border: none;
     }
 </style>
-
 <form action="" method="POST" enctype="multipart/form-data">
-    <div class="container-fluid px-4 ">
+    <div class="container-fluid pt-4 px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
-        <hr class="text-danger p-2 rounded">
+        <hr class="text-info p-2 rounded">
         <div class="row">
-            <!--For ID-->
-            <input type="hidden"  name="id" id="id" value="<?=$id ?>">
-            <!-- ID -->
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="name" value="<?= $name ?>" readonly>
-                        <label for="name">आवेदक का नाम </label>
+                        <input type="text" class="form-control" name="name" id="aavedak" value="<?= $name ?>" placeholder="आवेदक का नाम" required>
+                        <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
                     </div>
 
                 </div>
@@ -77,8 +101,8 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" value="<?= $phone_number ?>" readonly>
-                        <label for="phone_number">आवेदक का फ़ोन नंबर </label>
+                        <input type="text" class="form-control" maxlength="10" name="phone_number" value="<?= $phone_number ?>" id="phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                        <label for="phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -87,16 +111,30 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="designation" id="designation" value="<?= $designation ?>" readonly>
-                        <label for="designation">पद का नाम </label>
+                        <input type="text" class="form-control" name="designation" id="designation" value="<?= $designation ?>" placeholder="पद का नाम" required>
+                        <label for="designation">पद का नाम <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-center">
+            <div class="col-lg-4 text-center mb-3">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" name="district_id" id="districtSelect" class=" form-control " value="<?= $district_name ?>" readonly>
-                        <label for="districtSelect">जिले का नाम</label>
+<select name="district_id" id="districtSelect" class="form-select form-control bg-white" onchange="vidhansabhaChange(this.value)">
+    <?php
+    // Fetch districts for dropdown
+    $district_query = "SELECT * FROM district_master";
+    $district_result = mysqli_query($conn, $district_query);
+    ?>
+
+    <option value="">-- Select --</option>
+    <?php
+    while ($district_row = mysqli_fetch_assoc($district_result)) {
+        $selected = ($district_row['district_id'] == $fetch['district_id']) ? 'selected' : '';
+        echo "<option value='" . $district_row['district_id'] . "' " . $selected . ">" . $district_row['district_name'] . "</option>";
+    }
+    ?>
+</select>
+<label for="districtSelect">जिले का नाम चुनें </label>
                     </div>
                 </div>
             </div>
@@ -104,40 +142,26 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" name="vidhansabha_id" id="vidhansabhaSelect" class="form-control" value="<?= $vidhansabha_name ?>" readonly>
-                        <label for="vidhansabha">विधानसभा का नाम </label>
+                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
+                            <option selected>विधानसभा का नाम चुनें</option>
+                            <!-- Options for vidhansabha will go here -->
+                        </select>
+                        <script>  
+                        // document.getElementById('vidhansabhaSelect').value="1";
+                        </script>
+                        <label for="vidhansabha">विधानसभा का नाम चुनें </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" name="vikaskhand_id" id="vikaskhandSelect" class=" form-control " value="<?= $vikaskhand_name ?>" readonly>
-                        <label for="vikaskhand">विकासखंड का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="sector_id" id="sectorSelect" class=" form-control " value="<?= $sector_name ?>" readonly>
-                        <label for="sector">सेक्टर का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="gram_panchayat_id" id="gramPanchayatSelect" class=" form-control" value="<?= $gram_panchayat_name ?>" readonly>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="gramSelect" name="gram_id" value="<?= $gram_name ?>" readonly>
-                        <label for="gram">ग्राम का नाम </label>
+                        <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
+                            <option selected>विकासखंड का नाम चुनें</option>
+                            <!-- Option Load By AJAX -->
+
+                        </select>
+                        <label for="vikaskhand">विकासखंड का नाम चुनें </label>
                     </div>
                 </div>
             </div>
@@ -145,71 +169,78 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="subject" name="subject" value="<?= $subject ?>" readonly>
-                        <label for="subject">विषय का नाम </label>
+                        <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
+                            <option selected>सेक्टर का नाम चुनें</option>
+                            <!-- Options for sectors will go here -->
+                        </select>
+                        <label for="sector">सेक्टर का नाम चुनें </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="reference" name="reference" value="<?= $reference ?>" readonly>
-                        <label for="reference">द्वारा </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3 input-group">
-                        <input type="text" class="form-control" id="file_upload" name="file_upload" value="<?= $file_upload ?>" readonly>
-                        <label for="file_upload"> अपलोडेड फाइल </label>
-                        <span class="input-group-text bg-">
-                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?= $expectations_amount ?>" readonly>
-                        <label for="expectations_amount">आपेक्षित राशि </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="application_date" name="application_date" value="<?= $application_date ?>" readonly>
-                        <label for="application_date">आवेदन दिनांक</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <textarea type="text" class="form-control" id="comment" style="height: 60px;" name="comment" value="" readonly><?= $comment ?></textarea>
-                        <label for="comment">टिप्पणी </label>
+                        <select name="sector_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
+                            <option selected>ग्राम पंचायत का नाम चुनें</option>
+                            <!-- Options for panchayat will go here -->
+                        </select>
+                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
+                        <select class="form-select" id="gramSelect" name="gram">
+                            <option selected>ग्राम का नाम चुनें</option>
+                            <!-- by load ajax -->
+                        </select>
+                        <label for="gram">ग्राम का नाम चुनें </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3 ">
+                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
+                        <label for="file_upload">फाइल अपलोड करें <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="aadesh_no">आदेश क्रमांक <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
+                        <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference">
+                        <label for="reference">द्वारा <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="application_date" value="" placeholder="आवेदन दिनांक" required name="application_date">
+                        <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -217,8 +248,8 @@ if ($id) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date">
-                        <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="update_date" value="<?= $currentDate ?>" placeholder="अपडेट दिनांक" required name="update_date">
+                        <label for="update_date">अपडेट दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -226,19 +257,19 @@ if ($id) {
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="view_comment" style="height: 110px;" name="view_comment" required></textarea>
-                        <label for="view_comment">टिप्पणी <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"></textarea>
+                        <label for="comment">टिप्पणी <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
+                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
+                    <button class="col-12 text-white btn  text-center shadow btn-info" id="Print" type="submit" name="Print"><b>Print</b></button>
                 </div>
             </div>
 
@@ -248,14 +279,21 @@ if ($id) {
 </form>
 <!-- New Swekshanudan close -->
 
-<!-- Script -->
-
+<!-- Script For DropDown List -->
+<!-- <a href="../"></a> -->
 <script>
+
+
+
+
+
     // For Vidhansabha
+    // 
+    // function vidhansabhaChange(dis_id)
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            // alert("Selected District ID: " + district_id);
+            alert("Selected District ID: " + district_id);
             $.ajax({
                 url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
@@ -274,11 +312,14 @@ if ($id) {
         });
     });
 
+$(document).ready(function()) {
+        $('#districtSelect').change(function())
+}
     // For Vikaskhand
     $(document).ready(function() {
         $('#vidhansabhaSelect').change(function() {
             var vidhansabha_id = $(this).val();
-            // alert("Selected Vidhansabha ID: " + vidhansabha_id);
+            //alert("Selected Vidhansabha ID: " + vidhansabha_id);
             $.ajax({
                 url: 'ajax/get_vikaskhand.php',
                 type: 'POST',
@@ -303,7 +344,7 @@ if ($id) {
     $(document).ready(function() {
         $('#vikaskhandSelect').change(function() {
             var vikaskhand_id = $(this).val();
-            // alert("Selected Vikaskhand ID: " + vikaskhand_id);
+            //alert("Selected Vikaskhand ID: " + vikaskhand_id);
             $.ajax({
                 url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
                 type: 'POST',
@@ -328,7 +369,7 @@ if ($id) {
     $(document).ready(function() {
         $('#sectorSelect').change(function() {
             var sector_id = $(this).val();
-            //  alert("Selected Sector ID: " + sector_id);
+            //alert("Selected Sector ID: " + sector_id);
             $.ajax({
                 url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
                 type: 'POST',
@@ -354,7 +395,7 @@ if ($id) {
     $(document).ready(function() {
         $('#gramPanchayatSelect').change(function() {
             var gram_panchayat_id = $(this).val();
-            // alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
+            //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
             $.ajax({
                 url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
                 type: 'POST',
