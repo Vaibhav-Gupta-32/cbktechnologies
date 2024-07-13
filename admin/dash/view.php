@@ -17,6 +17,7 @@ if ($id) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+    WHERE a.status=0
     ORDER BY a.id DESC";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
     $id = $fetch['id'];

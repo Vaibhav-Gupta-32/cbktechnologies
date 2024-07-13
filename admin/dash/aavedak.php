@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
     $sql = "UPDATE $tblname SET status='1' WHERE id='$vid'";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Approved Successfully')</script>";
-        echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
+        echo "<script>alert($vid+'Approved Successfully')</script>";
+        // echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
     } else {
         echo "<script>alert('Error')</script>";
         echo "<script>window.open('view.php?view=$tblname','_self')</script>";
@@ -21,13 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
 
 
 // If Reject By Admin
-if (isset($_POST['UnApprove'])) {
-    $id = $_POST['id'];
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
+    $id = $_REQUEST['id'];
     $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
     if (mysqli_query($conn, $sql)) {
         echo "<script>alert('Rejected Successfully')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        // echo "<script>window.open('view.php?view=$tblname','_self')</script>";
     } else {
         echo "<script>alert('Error')</script>";
         echo "<script>window.open('view.php?view=$tblname','_self')</script>";
@@ -315,6 +314,7 @@ $fetch = mysqli_query($conn, $sql);
 </div>
 <!-- modal Scripts  -->
 <script>
+ 
     // function view(v_id){
     function view(v_id) {
         //  alert(v_id);
@@ -345,6 +345,7 @@ $fetch = mysqli_query($conn, $sql);
             }
         });
     }
+
     //   setTimeout(()=>{
     //   document.getElementById('subs_msg1').innerHTML = "";
     // },2000);
