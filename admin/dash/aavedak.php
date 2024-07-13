@@ -61,23 +61,7 @@ $fetch = mysqli_query($conn, $sql);
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
-<style>
-    .action{  
-        display:flex;
-        /* justify-content: center;
-        align-items: center; */
-    }
-    .action a {
-        text-decoration: none;
-        color: #666;
-        transition: color 0.2s ease;
-  
-    }
 
-    .action a:hover {
-        color: #337ab7;
-    }
-</style>
 <!-- aavedak search start -->
 <div class="container-fluid pt-4 px-4">
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>

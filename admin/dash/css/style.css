@@ -281,3 +281,21 @@
     max-height:500px; 
     height:350px
 }
+
+
+/* Action Button Table  */
+.action{  
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.action a {
+    text-decoration: none;
+    color: #666;
+    transition: color 0.2s ease;
+
+}
+
+.action a:hover {
+    color: #337ab7;
+}
