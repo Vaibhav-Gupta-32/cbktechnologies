@@ -106,17 +106,6 @@ $fetch = mysqli_query($conn, $sql);
 
 ?>
 
-
-
-
-
-
-
-
-
-
-
-
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
@@ -264,17 +253,10 @@ $fetch = mysqli_query($conn, $sql);
                             <th scope="col">क्रमांक</th>
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>
-                            <!-- <th scope="col">आवेदक का ईमेल</th> -->
                             <th scope="col">विषय</th>
-                            <!-- <th scope="col">द्वार</th>
-                            <th scope="col"> पद </th> -->
                             <th scope="col">आपेक्षित राशि</th>
                             <th scope="col">आवेदन दिनांक</th>
                             <th scope="col">टिप्पणी</th>
-                            <!-- <th scope="col">ग्राम</th>
-                            <th scope="col">पंचायत</th>
-                            <th scope="col">सेक्टर</th>
-                            <th scope="col">विकासखंड</th> -->
                             <th scope="col">विधानसभा</th>
                             <th scope="col">जिला</th>
                             <th scope="col">Action</th>
@@ -284,17 +266,6 @@ $fetch = mysqli_query($conn, $sql);
                     <tbody>
         <?php
         $i = 1;
-        // $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-        //         FROM swekshanudan a 
-        //         LEFT JOIN district_master d ON a.district_id = d.district_id
-        //         LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
-        //         LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
-        //         LEFT JOIN sector_master s ON a.sector_id = s.sector_id
-        //         LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
-        //         LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-        //         WHERE a.status=0
-        //         ORDER BY a.id DESC";
-        // $fetch = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_array($fetch)) {
         ?>
             <tr class=" text-center">
@@ -309,7 +280,11 @@ $fetch = mysqli_query($conn, $sql);
                 <td><?= $row['district_name'] ?></td>
                 <td class="action">
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                    &nbsp;
+                    &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                    &nbsp;
+                    &nbsp;
                     <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
             </tr>

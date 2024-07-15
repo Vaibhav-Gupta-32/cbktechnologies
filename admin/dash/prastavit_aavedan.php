@@ -288,7 +288,11 @@ $fetch = mysqli_query($conn, $sql);
                 <td><?= $row['district_name'] ?></td>
                 <td class="action">
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                    &nbsp;
+                    &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                    &nbsp;
+                    &nbsp;
                     <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
             </tr>
