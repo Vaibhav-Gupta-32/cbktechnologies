@@ -218,7 +218,7 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" name="from_date" class="form-control" id="from_date" placeholder="कब से " >
+                        <input type="date" name="from_date"  class="form-control" id="from_date" placeholder="कब से " >
                         <label for="from_date">कब से</label>
                     </div>
                 </div>
@@ -226,7 +226,11 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" name="to_date" class="form-control" id="to_date" placeholder="कब तक ">
+                    <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" name="to_date" value="<?= $currentDate ?>" class="form-control" id="to_date" placeholder="कब तक ">
                         <label for="to_date">कब तक</label>
                     </div>
                 </div>
