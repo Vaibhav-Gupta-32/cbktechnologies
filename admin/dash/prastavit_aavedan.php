@@ -187,7 +187,7 @@ $pagename = "प्रस्तावित आवेदन";
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">आवेदन विवरण</h5>
+                <h5 class="modal-title" id="myModalLabel">प्रस्तावित आवेदन विवरण</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -204,7 +204,7 @@ $pagename = "प्रस्तावित आवेदन";
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">आवेदन विवरण</h5>
+                <h5 class="modal-title" id="myModalLabel">प्रस्तावित आवेदन विवरण</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -220,7 +220,7 @@ $pagename = "प्रस्तावित आवेदन";
     function view(v_id) {
         $.ajax({
             type: 'POST',
-            url: 'view.php',
+            url: 'prastavit_view.php',
             data: {
                 id: v_id
             },

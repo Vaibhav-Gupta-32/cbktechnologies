@@ -34,7 +34,6 @@ if ($id) {
     $reference = $fetch['reference'];
     $expectations_amount = $fetch['expectations_amount'];
     $application_date = $fetch['application_date'];
-    // $application_date =date("d-m-Y",strtotime($fetch['application_date'])); 
     $comment = $fetch['comment'];
     $file_upload = $fetch['file_upload'];
 }
