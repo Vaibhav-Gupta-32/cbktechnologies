@@ -197,27 +197,24 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" readonly name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="anumodit_amount">अनुमोदित राशि </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="aadesh_no">आदेश क्रमांक <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" readonly name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="aadesh_no">आदेश क्रमांक  </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <?php
-                        // Set default current date
-                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                        ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date">
+
+                        <input type="date" class="form-control" id="application_date" value="" placeholder="अनुमोदित दिनांक" readonly name="anumodit_date">
                         <label for="anumodit_date">अनुमोदित दिनांक </label>
                     </div>
                 </div>
