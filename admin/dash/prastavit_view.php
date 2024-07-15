@@ -3,7 +3,7 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = " प्राप्त आवेदन ";
+$pagename = " प्रस्तावित आवेदन ";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
@@ -34,7 +34,6 @@ if ($id) {
     $reference = $fetch['reference'];
     $expectations_amount = $fetch['expectations_amount'];
     $application_date = $fetch['application_date'];
-    // $application_date =date("d-m-Y",strtotime($fetch['application_date'])); 
     $comment = $fetch['comment'];
     $file_upload = $fetch['file_upload'];
 }
@@ -198,16 +197,51 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" readonly name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="anumodit_amount">अनुमोदित राशि </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="aadesh_no">आदेश क्रमांक <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" readonly name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="aadesh_no">आदेश क्रमांक  </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+
+                        <input type="date" class="form-control" id="application_date" value="" placeholder="अनुमोदित दिनांक" readonly name="anumodit_date">
+                        <label for="anumodit_date">अनुमोदित दिनांक </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="view_comment" style="height: 60px;" name="view_comment" required></textarea>
+                        <label for="view_comment">टिप्पणी </label>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Update -->
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="स्वीकृत राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="swikrit_amount">स्वीकृत राशि <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="aadesh_no" placeholder="स्वीकृत क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="swikrit_no">स्वीकृत क्रमांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -218,8 +252,8 @@ if ($id) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date">
-                        <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="स्वीकृत दिनांक" required name="anumodit_date" readonly>
+                        <label for="swikrit_date">स्वीकृत दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -228,7 +262,7 @@ if ($id) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="view_comment" style="height: 110px;" name="view_comment" required></textarea>
-                        <label for="view_comment">टिप्पणी <span class="text-danger">*</span></label>
+                        <label for="swikrit_comment">टिप्पणी <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>

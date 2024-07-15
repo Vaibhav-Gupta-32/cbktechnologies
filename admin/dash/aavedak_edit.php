@@ -111,8 +111,12 @@ if (isset($_REQUEST['edit_id'])) {
     $file_upload = $fetch['file_upload'];
 }
 ?>
-<!-- Include jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+<!-- Include jQuery library
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 <!-- Start New Swekshanudan Form -->
 <style>
@@ -358,8 +362,26 @@ if (isset($_REQUEST['edit_id'])) {
 </form>
 <!-- New Swekshanudan close -->
 
+
+<!-- Script For Print button -->
+
+<script>
+    $(document).ready(function() {
+        $('#Print').on('click', function() {
+            // Serialize the form data and store it in the hidden field
+            var formData = $('form').serialize();
+            $('#form_data').val(formData);
+
+            // Submit the form
+            $('form').submit();
+        });
+    });
+</script>
+
+<!-- Print  -->
+
 <!-- Script For DropDown List -->
-<!-- <a href="../"></a> -->
+
 <script>
     // For Vidhansabha
     // 

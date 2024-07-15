@@ -9,7 +9,13 @@ $pagename = "प्राप्त आवेदन";
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
-    $sql = "UPDATE $tblname SET status='1' WHERE id='$vid'";
+    $anumodit_amount =$_POST['anumodit_amount'];
+    $aadesh_no = $_POST['aadesh_no'];
+    $anumodit_date =$_POST['anumodit_date'];
+    $view_comment =$_POST['view_comment'];
+
+   $sql = "UPDATE $tblname SET status='1',anumodit_amount='$anumodit_amount',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE id='$vid'";
+//    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
         echo "<script>alert($vid+'Approved Successfully')</script>";
         // echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
@@ -19,13 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
 }}
 // Close Approve Admin
 
-
 // If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
     $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Rejected Successfully')</script>";
+        echo "<script>alert('Un Approve Successfully')</script>";
         // echo "<script>window.open('view.php?view=$tblname','_self')</script>";
     } else {
         echo "<script>alert('Error')</script>";
@@ -33,51 +38,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     }
 }
 // Close For Reject By Admin
+// Search Option With Filter
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
+    $district_id = isset($_POST['district_id']) ? $_POST['district_id'] : '';
+    $vidhansabha_id = isset($_POST['vidhansabha_id']) ? $_POST['vidhansabha_id'] : '';
+    $vikaskhand_id = isset($_POST['vikaskhand_id']) ? $_POST['vikaskhand_id'] : '';
+    $sector_id = isset($_POST['sector_id']) ? $_POST['sector_id'] : '';
+    $gram_panchayat_id = isset($_POST['gram_panchayat_id']) ? $_POST['gram_panchayat_id'] : '';
+    $gram_id = isset($_POST['gram_id']) ? $_POST['gram_id'] : '';
+    $phone_number = isset($_POST['phone_number']) ? $_POST['phone_number'] : '';
+    $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
+    $to_date = isset($_POST['to_date']) ? $_POST['to_date'] : '';
 
-// Search Option Button 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Search'])) {
-    $vidhansabha = $_POST['vidhansabha'];
-    $sector = $_POST['sector'];
-    $gram = $_POST['gram'];
-    $mobile = $_POST['mobile'];
-    $to_date = $_POST['to_date'];
-    $from_date = $_POST['from_date'];
+    // Start building the SQL query
+    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    FROM swekshanudan a 
+    LEFT JOIN district_master d ON a.district_id = d.district_id
+    LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
+    LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
+    LEFT JOIN sector_master s ON a.sector_id = s.sector_id
+    LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
+    LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+    WHERE a.status=0";
 
-    $sql = "SELECT * FROM swekshanudan WHERE 
-            vidhansabha = '$vidhansabha' AND 
-            sector = '$sector' AND 
-            gram = '$gram' AND 
-            mobile = '$mobile' AND 
-            application_date BETWEEN '$to_date' AND '$from_date'
-            ORDER BY id DESC";
+    // Add conditions if fields are set
+    if (!empty($district_id)) {
+        $sql .= " AND a.district_id = '" . mysqli_real_escape_string($conn, $district_id) . "'";
+    }
+    if (!empty($vidhansabha_id)) {
+        $sql .= " AND a.vidhansabha_id = '" . mysqli_real_escape_string($conn, $vidhansabha_id) . "'";
+    }
+    if (!empty($vikaskhand_id)) {
+        $sql .= " AND a.vikaskhand_id = '" . mysqli_real_escape_string($conn, $vikaskhand_id) . "'";
+    }
+    if (!empty($sector_id)) {
+        $sql .= " AND a.sector_id = '" . mysqli_real_escape_string($conn, $sector_id) . "'";
+    }
+    if (!empty($gram_panchayat_id)) {
+        $sql .= " AND a.gram_panchayat_id = '" . mysqli_real_escape_string($conn, $gram_panchayat_id) . "'";
+    }
+    if (!empty($gram_id)) {
+        $sql .= " AND a.gram_id = '" . mysqli_real_escape_string($conn, $gram_id) . "'";
+    }
+    if (!empty($phone_number)) {
+        $sql .= " AND phone_number = '" . mysqli_real_escape_string($conn, $phone_number) . "'";
+    }
+    if (!empty($from_date) && !empty($to_date)) {
+        $sql .= " AND application_date BETWEEN '" . mysqli_real_escape_string($conn, $from_date) . "' AND '" . mysqli_real_escape_string($conn, $to_date) . "'";
+    }
+    $sql .= " ORDER BY id DESC";
+    // echo $sql;die;
 } else {
-    $sql = "SELECT * FROM swekshanudan WHERE 1 ORDER BY id DESC";
+    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    FROM swekshanudan a 
+    LEFT JOIN district_master d ON a.district_id = d.district_id
+    LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
+    LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
+    LEFT JOIN sector_master s ON a.sector_id = s.sector_id
+    LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
+    LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+    WHERE a.status=0
+    ORDER BY a.id DESC";
 }
 
 $fetch = mysqli_query($conn, $sql);
+//  Close Search
+
 ?>
-<!--  -->
+
+
+
+
+
+
+
+
+
+
+
 
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
-<style>
-    .action{  
-        display:flex;
-        /* justify-content: center;
-        align-items: center; */
-    }
-    .action a {
-        text-decoration: none;
-        color: #666;
-        transition: color 0.2s ease;
-  
-    }
 
-    .action a:hover {
-        color: #337ab7;
-    }
-</style>
 <!-- aavedak search start -->
 <div class="container-fluid pt-4 px-4">
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
@@ -93,8 +136,7 @@ $fetch = mysqli_query($conn, $sql);
                     $district_query = "SELECT * FROM district_master";
                     $district_result = mysqli_query($conn, $district_query);
                     ?>
-
-                    <option selected>जिले का नाम चुनें</option>
+                    <option value="" selected>जिले का नाम चुनें</option>
                     <?php
                     while ($district_row = mysqli_fetch_assoc($district_result)) {
                         echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
@@ -111,7 +153,7 @@ $fetch = mysqli_query($conn, $sql);
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                     <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                    <option selected>विधानसभा का नाम चुनें</option>
+                    <option value="" selected>विधानसभा का नाम चुनें</option>
                     <!-- Options for vidhansabha will go here -->
                 </select>
                         <label for="vidhansabha">विधानसभा का नाम चुनें </label>
@@ -122,7 +164,7 @@ $fetch = mysqli_query($conn, $sql);
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                     <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" >
-                    <option selected>विकासखंड का नाम चुनें</option>
+                    <option value="" selected disabled>विकासखंड का नाम चुनें</option>
                     <!-- Option Load By AJAX -->
 
                 </select>
@@ -135,7 +177,7 @@ $fetch = mysqli_query($conn, $sql);
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                     <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                    <option selected>सेक्टर का नाम चुनें</option>
+                    <option value="" selected>सेक्टर का नाम चुनें</option>
                     <!-- Options for sectors will go here -->
                 </select>
                         <label for="sector">सेक्टर का नाम चुनें  </label>
@@ -145,8 +187,8 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="sector_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                    <option selected>ग्राम पंचायत का नाम चुनें</option>
+                    <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
+                    <option value="" selected>ग्राम पंचायत का नाम चुनें</option>
                     <!-- Options for panchayat will go here -->
                 </select>
                         <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें  </label>
@@ -156,8 +198,8 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram">
-                        <option selected>ग्राम का नाम चुनें</option>
+                        <select class="form-select" id="gramSelect" name="gram_id">
+                        <option value="" selected>ग्राम का नाम चुनें</option>
                    <!-- by load ajax -->
                         </select>
                         <label for="gram">ग्राम का नाम चुनें </label>
@@ -167,7 +209,7 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="mobile" placeholder="आवेदक का फ़ोन नंबर"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="आवेदक का फ़ोन नंबर"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                         <label for="mobile">आवेदक का फ़ोन नंबर </label>
                     </div>
 
@@ -176,19 +218,20 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="to-date" placeholder="कब से ">
-                        <label for="to-date">कब से </label>
+                        <input type="date" name="from_date" class="form-control" id="from_date" placeholder="कब से " >
+                        <label for="from_date">कब से</label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="from-date" placeholder="कब तक" >
-                        <label for="from-date">कब तक </label>
+                        <input type="date" name="to_date" class="form-control" id="to_date" placeholder="कब तक ">
+                        <label for="to_date">कब तक</label>
                     </div>
                 </div>
             </div>
+            
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
@@ -200,7 +243,7 @@ $fetch = mysqli_query($conn, $sql);
             </div>
             <!-- 3 -->
             <div class="col-lg-4 text-center mb-3">
-                <button name="Search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
+                <button name="search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
             </div>
         </div>
     </form>
@@ -217,7 +260,7 @@ $fetch = mysqli_query($conn, $sql);
                 
                 <table class="table table-striped border shadow">
                     <thead class=" head">
-                        <tr>
+                        <tr class="text-center">
                             <th scope="col">क्रमांक</th>
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>
@@ -241,20 +284,20 @@ $fetch = mysqli_query($conn, $sql);
                     <tbody>
         <?php
         $i = 1;
-        $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-                FROM swekshanudan a 
-                LEFT JOIN district_master d ON a.district_id = d.district_id
-                LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
-                LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
-                LEFT JOIN sector_master s ON a.sector_id = s.sector_id
-                LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
-                LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-                WHERE a.status=0
-                ORDER BY a.id DESC";
-        $fetch = mysqli_query($conn, $sql);
+        // $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+        //         FROM swekshanudan a 
+        //         LEFT JOIN district_master d ON a.district_id = d.district_id
+        //         LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
+        //         LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
+        //         LEFT JOIN sector_master s ON a.sector_id = s.sector_id
+        //         LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
+        //         LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+        //         WHERE a.status=0
+        //         ORDER BY a.id DESC";
+        // $fetch = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_array($fetch)) {
         ?>
-            <tr>
+            <tr class=" text-center">
                 <th scope="row"><?= $i++ ?></th>
                 <td><?= $row['name'] ?></td>
                 <td><?= $row['phone_number'] ?></td>
@@ -320,7 +363,7 @@ $fetch = mysqli_query($conn, $sql);
         //  alert(v_id);
         $.ajax({
             type: 'POST',
-            url: 'view.php',
+            url: 'aavedak_view.php',
             data: {
                 id: v_id
             },
@@ -374,7 +417,7 @@ $fetch = mysqli_query($conn, $sql);
                 success: function(data) {
                     var vidhansabha = JSON.parse(data);
                     $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
+                    $('#vidhansabhaSelect').append('<option value="">विधानसभा का नाम चुनें</option>');
                     $.each(vidhansabha, function(index, vidhansabha) {
                         $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
                     });

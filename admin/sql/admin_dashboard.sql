@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2024 at 01:48 PM
+-- Generation Time: Jul 13, 2024 at 02:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -88,11 +88,7 @@ INSERT INTO `district_master` (`district_id`, `district_name`) VALUES
 (27, 'Raipur / रायपुर'),
 (28, 'Rajnandgaon / राजनांदगांव'),
 (29, 'Sakti / शक्ति'),
-(30, 'Sarangarh-Bilaigarh / सारंगढ़-बिलाईगढ़'),
-(31, 'Mohla-Manpur / मोहला-मानपुर'),
-(32, 'Sukma / सुकमा'),
-(33, 'Surajpur / सूरजपुर'),
-(34, 'Abcd');
+(30, 'Sarangarh-Bilaigarh / सारंगढ़-बिलाईगढ़');
 
 -- --------------------------------------------------------
 
@@ -103,11 +99,21 @@ INSERT INTO `district_master` (`district_id`, `district_name`) VALUES
 CREATE TABLE `gram_master` (
   `gram_id` int(11) NOT NULL,
   `gram_name` varchar(200) NOT NULL,
+  `gram_panchayat_id` int(11) NOT NULL,
   `district_id` int(11) NOT NULL,
   `vidhansabha_id` int(11) NOT NULL,
   `vikaskhand_id` int(11) NOT NULL,
   `sector_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `gram_master`
+--
+
+INSERT INTO `gram_master` (`gram_id`, `gram_name`, `gram_panchayat_id`, `district_id`, `vidhansabha_id`, `vikaskhand_id`, `sector_id`) VALUES
+(1, 'Mujagahan', 4, 10, 1, 3, 4),
+(2, 'Loharsi', 0, 10, 1, 3, 4),
+(3, 'Mujagahan', 0, 10, 1, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -124,6 +130,16 @@ CREATE TABLE `gram_panchayat_master` (
   `sector_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `gram_panchayat_master`
+--
+
+INSERT INTO `gram_panchayat_master` (`gram_panchayat_id`, `gram_panchayat_name`, `vikaskhand_id`, `vidhansabha_id`, `district_id`, `sector_id`) VALUES
+(1, 'Hii', 3, 1, 10, 0),
+(2, 'Qswd', 0, 0, 0, 0),
+(3, 'Semra', 4, 2, 10, 5),
+(4, 'Mujgahan', 3, 1, 10, 6);
+
 -- --------------------------------------------------------
 
 --
@@ -138,6 +154,19 @@ CREATE TABLE `sector_master` (
   `vikaskhand_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `sector_master`
+--
+
+INSERT INTO `sector_master` (`sector_id`, `sector_name`, `district_id`, `vidhansabha_id`, `vikaskhand_id`) VALUES
+(1, 'C-23', 10, 1, 3),
+(2, 'C-23', 27, 3, 0),
+(3, 'C-23', 0, 0, 0),
+(4, 'C-24', 10, 1, 3),
+(5, 'CBK-25', 10, 2, 4),
+(6, 'CBK-25', 10, 1, 3),
+(7, 'CBK-50', 10, 1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -149,18 +178,19 @@ CREATE TABLE `swekshanudan` (
   `name` varchar(100) NOT NULL,
   `phone_number` varchar(15) NOT NULL,
   `designation` varchar(100) NOT NULL,
-  `vidhansabha` varchar(100) NOT NULL,
-  `vikaskhand` varchar(100) NOT NULL,
-  `sector` varchar(100) NOT NULL,
-  `gram_panchayt` varchar(100) NOT NULL,
-  `gram` varchar(100) NOT NULL,
+  `district_id` int(11) NOT NULL,
+  `vidhansabha_id` int(11) NOT NULL,
+  `vikaskhand_id` int(11) NOT NULL,
+  `sector_id` int(11) NOT NULL,
+  `gram_panchayat_id` varchar(100) NOT NULL,
+  `gram_id` varchar(100) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `reference` varchar(100) NOT NULL,
   `expectations_amount` int(11) NOT NULL,
   `application_date` date NOT NULL,
   `file_upload` varchar(255) NOT NULL,
   `comment` text NOT NULL,
-  `status` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
   `create_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -169,9 +199,10 @@ CREATE TABLE `swekshanudan` (
 -- Dumping data for table `swekshanudan`
 --
 
-INSERT INTO `swekshanudan` (`id`, `name`, `phone_number`, `designation`, `vidhansabha`, `vikaskhand`, `sector`, `gram_panchayt`, `gram`, `subject`, `reference`, `expectations_amount`, `application_date`, `file_upload`, `comment`, `status`, `create_date`, `update_date`) VALUES
-(1, 'वैभव गुप्ता ', '1234567890', 'डेवलपर', 'छत्तीसगढ़', '3', 'धरसींवा', 'पहला', 'पहला', 'डेवलपर', 'सर ', 20000, '2024-07-05', '', 'मेरा नाम वैभव गुप्ता है और में डेवलपर हु |', 0, '2024-07-05 11:23:53', '2024-07-05 11:23:53'),
-(2, 'Vaibhav Gupta', '9301323211', 'डेवलपर', 'असम', 'दुर्ग', 'धरसींवा', 'पहला', 'पहला', 'Job', 'सर', 20000, '2024-07-06', 'dummy-pdf_2.pdf', 'asldhasdaskdhadj', 0, '2024-07-06 07:37:33', '2024-07-06 07:37:33');
+INSERT INTO `swekshanudan` (`id`, `name`, `phone_number`, `designation`, `district_id`, `vidhansabha_id`, `vikaskhand_id`, `sector_id`, `gram_panchayat_id`, `gram_id`, `subject`, `reference`, `expectations_amount`, `application_date`, `file_upload`, `comment`, `status`, `create_date`, `update_date`) VALUES
+(8, 'Lomash Rishi', '9977679866', 'FullStack Dev', 10, 1, 3, 4, '', '', 'Devlopment', 'CBK', 50000, '2024-07-11', 'tree-736885_640.jpg', 'Mobile App devlopment', 4, '2024-07-11 09:06:22', '2024-07-13 12:30:41'),
+(9, 'Lomash Rishi', '9977679866', 'FullStack Dev', 10, 1, 3, 4, '', '', 'Devlopment', 'CBK', 50000, '2024-07-11', 'tree-736885_640.jpg', 'Mobile App devlopment', 1, '2024-07-11 09:10:23', '2024-07-13 12:25:40'),
+(10, 'Lomash Rishi', '9977679866', 'FullStack Dev', 10, 1, 3, 6, '4', '1', 'Devlopment', 'CBK', 50000, '2024-07-11', 'tree-736885_640.jpg', 'For Ne Project', 1, '2024-07-11 09:22:11', '2024-07-13 12:12:50');
 
 -- --------------------------------------------------------
 
@@ -190,7 +221,8 @@ CREATE TABLE `vibhag_master` (
 
 INSERT INTO `vibhag_master` (`vibhag_id`, `vibhag_name`) VALUES
 (1, 'Abcd'),
-(2, 'CS&IT');
+(2, 'CS&IT'),
+(3, 'जल विभाग');
 
 -- --------------------------------------------------------
 
@@ -233,7 +265,10 @@ CREATE TABLE `vikaskhand_master` (
 
 INSERT INTO `vikaskhand_master` (`vikaskhand_id`, `vikaskhand_name`, `vidhansabha_id`, `district_id`) VALUES
 (1, 'Hii', 0, 0),
-(2, 'Dhamtari', 10, 10);
+(2, 'Dhamtari', 10, 10),
+(3, 'Dhamtari', 1, 10),
+(4, 'Kurud', 2, 10),
+(5, 'Bhakhara', 2, 10);
 
 -- --------------------------------------------------------
 
@@ -292,7 +327,8 @@ ALTER TABLE `sector_master`
 -- Indexes for table `swekshanudan`
 --
 ALTER TABLE `swekshanudan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_district_id` (`district_id`);
 
 --
 -- Indexes for table `vibhag_master`
@@ -338,31 +374,31 @@ ALTER TABLE `district_master`
 -- AUTO_INCREMENT for table `gram_master`
 --
 ALTER TABLE `gram_master`
-  MODIFY `gram_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gram_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `gram_panchayat_master`
 --
 ALTER TABLE `gram_panchayat_master`
-  MODIFY `gram_panchayat_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gram_panchayat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sector_master`
 --
 ALTER TABLE `sector_master`
-  MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `swekshanudan`
 --
 ALTER TABLE `swekshanudan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `vibhag_master`
 --
 ALTER TABLE `vibhag_master`
-  MODIFY `vibhag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `vibhag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `vidhansabha_master`
@@ -374,13 +410,23 @@ ALTER TABLE `vidhansabha_master`
 -- AUTO_INCREMENT for table `vikaskhand_master`
 --
 ALTER TABLE `vikaskhand_master`
-  MODIFY `vikaskhand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `vikaskhand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `yojna_master`
 --
 ALTER TABLE `yojna_master`
   MODIFY `yojna_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `swekshanudan`
+--
+ALTER TABLE `swekshanudan`
+  ADD CONSTRAINT `fk_district_id` FOREIGN KEY (`district_id`) REFERENCES `district_master` (`district_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
