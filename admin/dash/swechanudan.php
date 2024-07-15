@@ -73,8 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         }
     }
 
-    // Close database connection
-    $conn->close();
+
 }
 ?>
 

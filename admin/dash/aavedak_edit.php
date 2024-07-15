@@ -4,72 +4,112 @@
 $tblname = "Aavedak";
 $tblkey = "id";
 $pagename = "आवेदक";
-if (isset($_REQUEST['id']))
-    $id = $_REQUEST['id'];
+
+// $vikaskhand_name = "";
+$vidhansabha_id = "";
+$district_id = "";
+$vikaskhand_id = "";
+$sector_id = "";
+$gram_id = "";
+$gram_panchayat_id = "";
+
+if (isset($_REQUEST['edit_id']))
+    $edit_id = $_REQUEST['edit_id'];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
+    $name = $_POST['name'];
+    $phone_number = $_POST['phone_number'];
+    $designation = $_POST['designation'];
+    $district_id = $_POST['district_id'];
+    $vidhansabha_id = $_POST['vidhansabha_id'];
+    $vikaskhand_id = $_POST['vikaskhand_id'];
+    $sector_id = $_POST['sector_id'];
+    $gram_panchayat_id = $_POST['gram_panchayat_id'];
+    $gram_id = $_POST['gram_id'];
+    $subject = $_POST['subject'];
+    $reference = $_POST['reference'];
+    $expectations_amount = $_POST['expectations_amount'];
+    $application_date = $_POST['application_date'];
+    $comment = $_POST['comment'];
+    $file_upload = $_FILES['file_upload']['name'];
+    if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
+        $s_id = $_POST['edit_id'];
+
+        // Check if a new file was uploaded
+        if (!empty($file_upload)) {
+            // Handle file upload logic
+            $target_dir = "uploads/swekshanudan/";
+            $target_file = $target_dir . basename($file_upload);
+
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
+                // File upload successful
+                $uploaded_file_path = $target_file;
+            } else {
+                // Handle error
+                $error_message = "Sorry, there was an error uploading your file.";
+            }
+        } else {
+            // No new file uploaded, use the existing file
+            $uploaded_file_path = $_POST['existing_file'];
+        }
+
+        // Save the form data along with the file path to the database
+        // Your database logic here
+        $update_query = "UPDATE your_table_name SET 
+                    name = '$name', 
+                    phone_number = '$phone_number', 
+                    designation = '$designation', 
+                    district_id = '$district_id', 
+                    vidhansabha_id = '$vidhansabha_id', 
+                    vikaskhand_id = '$vikaskhand_id', 
+                    sector_id = '$sector_id', 
+                    gram_panchayat_id = '$gram_panchayat_id', 
+                    gram_id = '$gram_id', 
+                    subject = '$subject', 
+                    reference = '$reference', 
+                    expectations_amount = '$expectations_amount', 
+                    application_date = '$application_date', 
+                    comment = '$comment', 
+                    file_upload = '$uploaded_file_path' 
+                WHERE id = '$s_id'";
+        echo $update_query;
+        die;
+
+
+        if (mysqli_query($conn, $update_query)) {
+            echo "<b class='alert alert-success'>Update Successfully</b>";
+        } else {
+            echo "<b class='alert alert-danger'>Error: " . mysqli_error($conn) . "</b>";
+        }
+    }
+}
+
+// Fetch districts for dropdown
+$district_query = "SELECT * FROM district_master";
+$district_result = mysqli_query($conn, $district_query);
+
 // View Id Recived
-if ($id) {
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM swekshanudan a 
-    LEFT JOIN district_master d ON a.district_id = d.district_id
-    LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
-    LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
-    LEFT JOIN sector_master s ON a.sector_id = s.sector_id
-    LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
-    LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    ORDER BY a.id DESC";
-    $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
+if (isset($_REQUEST['edit_id'])) {
+    $edit_query = "SELECT * FROM swekshanudan WHERE id='$edit_id'";
+    $fetch = mysqli_fetch_array(mysqli_query($conn, $edit_query));
     $id = $fetch['id'];
     $name = $fetch['name'];
     $phone_number = $fetch['phone_number'];
     $designation = $fetch['designation'];
     $district_id = $fetch['district_id'];
-    $vidhansabha_name = $fetch['vidhansabha_name'];
-    $vikaskhand_name = $fetch['vikaskhand_name'];
-    $sector_name = $fetch['sector_name'];
-    $gram_panchayat_name = $fetch['gram_panchayat_name'];
-    $gram_name = $fetch['gram_name'];
+    $vidhansabha_id = $fetch['vidhansabha_id'];
+    $vikaskhand_id = $fetch['vikaskhand_id'];
+    $sector_id = $fetch['sector_id'];
+    $gram_panchayat_id = $fetch['gram_panchayat_id'];
+    $gram_id = $fetch['gram_id'];
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
     $expectations_amount = $fetch['expectations_amount'];
     $application_date = $fetch['application_date'];
-    // $application_date =date("d-m-Y",strtotime($fetch['application_date'])); 
     $comment = $fetch['comment'];
     $file_upload = $fetch['file_upload'];
 }
-// Close For Buinding Db To form Data 
-
-
-// Update the record in the database
-//         $update_query = "UPDATE swekshanudan SET 
-//             name = '$name', 
-//             phone_number = '$phone_number', 
-//             designation = '$designation', 
-//             district_id = $district_id, 
-//             vidhansabha_id = $vidhansabha_id, 
-//             vikaskhand_id = $vikaskhand_id, 
-//             sector_id = $sector_id, 
-//             gram_panchayat_id = '$gram_panchayat_id', 
-//             gram_id = '$gram_id', 
-//             subject = '$subject', 
-//             reference = '$reference', 
-//             expectations_amount = $expectations_amount, 
-//             application_date = '$application_date', 
-//             comment = '$comment',
-//             file_upload = '$file_upload' 
-//             WHERE id = $id";
-
-//         if (mysqli_query($conn, $update_query)) {
-//             echo "Record updated successfully";
-//         } else {
-//             echo "Error updating record: " . mysqli_error($conn);
-// }
-
-//     // Fetch the existing record
-//     $id = intval($_GET['id']);
-//     $query = "SELECT * FROM swekshanudan WHERE id = $id";
-//     $result = mysqli_query($conn, $query);
-//     $row = mysqli_fetch_assoc($result);
-//     
 ?>
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -79,7 +119,7 @@ if ($id) {
     input[type="file"]::file-selector-button {
         color: #00698f;
         /* change the text color to blue */
-        background-color: white;
+        background-color: transparent;
         /* change the background color to light gray */
         border: none;
     }
@@ -119,22 +159,17 @@ if ($id) {
             <div class="col-lg-4 text-center mb-3">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-<select name="district_id" id="districtSelect" class="form-select form-control bg-white" onchange="vidhansabhaChange(this.value)">
-    <?php
-    // Fetch districts for dropdown
-    $district_query = "SELECT * FROM district_master";
-    $district_result = mysqli_query($conn, $district_query);
-    ?>
-
-    <option value="">-- Select --</option>
-    <?php
-    while ($district_row = mysqli_fetch_assoc($district_result)) {
-        $selected = ($district_row['district_id'] == $fetch['district_id']) ? 'selected' : '';
-        echo "<option value='" . $district_row['district_id'] . "' " . $selected . ">" . $district_row['district_name'] . "</option>";
-    }
-    ?>
-</select>
-<label for="districtSelect">जिले का नाम चुनें </label>
+                        <select name="district_id" id="districtSelect" class="form-select form-control bg-white" required>
+                            <option selected>जिले का नाम चुनें</option>
+                            <?php
+                            mysqli_data_seek($district_result, 0); // Reset pointer to fetch districts again
+                            while ($district_row = mysqli_fetch_assoc($district_result)) {
+                                $selected = ($district_row['district_id'] == $district_id) ? 'selected' : '';
+                                echo "<option value='" . $district_row['district_id'] . "' $selected>" . $district_row['district_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="districtSelect">जिले का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -142,14 +177,20 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                            <option selected>विधानसभा का नाम चुनें</option>
-                            <!-- Options for vidhansabha will go here -->
+                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white" required>
+                            <option>विधानसभा का नाम चुनें</option>
+                            <?php
+                            if (isset($vidhansabha_id) && !empty($vidhansabha_id)) {
+                                $vidhansabha_query = "SELECT * FROM vidhansabha_master WHERE district_id = '$district_id'";
+                                $vidhansabha_result = mysqli_query($conn, $vidhansabha_query);
+                                while ($vidhansabha_row = mysqli_fetch_assoc($vidhansabha_result)) {
+                                    $selected = ($vidhansabha_row['vidhansabha_id'] == $vidhansabha_id) ? 'selected' : '';
+                                    echo "<option value='" . $vidhansabha_row['vidhansabha_id'] . "' $selected>" . $vidhansabha_row['vidhansabha_name'] . "</option>";
+                                }
+                            }
+                            ?>
                         </select>
-                        <script>  
-                        // document.getElementById('vidhansabhaSelect').value="1";
-                        </script>
-                        <label for="vidhansabha">विधानसभा का नाम चुनें </label>
+                        <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -158,10 +199,18 @@ if ($id) {
                     <div class="form-floating mb-3">
                         <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
                             <option selected>विकासखंड का नाम चुनें</option>
-                            <!-- Option Load By AJAX -->
-
+                            <?php
+                            if (isset($vikaskhand_id) && !empty($vikaskhand_id)) {
+                                $vikaskhand_query = "SELECT * FROM vikaskhand_master WHERE vidhansabha_id = '$vidhansabha_id'";
+                                $vikaskhand_result = mysqli_query($conn, $vikaskhand_query);
+                                while ($vikaskhand_row = mysqli_fetch_assoc($vikaskhand_result)) {
+                                    $selected = ($vikaskhand_row['vikaskhand_id'] == $vikaskhand_id) ? 'selected' : '';
+                                    echo "<option value='" . $vikaskhand_row['vikaskhand_id'] . "' $selected>" . $vikaskhand_row['vikaskhand_name'] . "</option>";
+                                }
+                            }
+                            ?>
                         </select>
-                        <label for="vikaskhand">विकासखंड का नाम चुनें </label>
+                        <label for="vikaskhand">विकासखंड का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -171,20 +220,38 @@ if ($id) {
                     <div class="form-floating mb-3">
                         <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
                             <option selected>सेक्टर का नाम चुनें</option>
-                            <!-- Options for sectors will go here -->
+                            <?php
+                            if (isset($sector_id) && !empty($sector_id)) {
+                                $sector_query = "SELECT * FROM sector_master WHERE vikaskhand_id = '$vikaskhand_id'";
+                                $sector_result = mysqli_query($conn, $sector_query);
+                                while ($sector_row = mysqli_fetch_assoc($sector_result)) {
+                                    $selected = ($sector_row['sector_id'] == $sector_id) ? 'selected' : '';
+                                    echo "<option value='" . $sector_row['sector_id'] . "' $selected>" . $sector_row['sector_name'] . "</option>";
+                                }
+                            }
+                            ?>
                         </select>
-                        <label for="sector">सेक्टर का नाम चुनें </label>
+                        <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select name="sector_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
+                        <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
                             <option selected>ग्राम पंचायत का नाम चुनें</option>
-                            <!-- Options for panchayat will go here -->
+                            <?php
+                            if (isset($gram_panchayat_id) && !empty($gram_panchayat_id)) {
+                                $gram_panchayat_query = "SELECT * FROM gram_panchayat_master WHERE sector_id = '$sector_id'";
+                                $gram_panchayat_result = mysqli_query($conn, $gram_panchayat_query);
+                                while ($gram_panchayat_row = mysqli_fetch_assoc($gram_panchayat_result)) {
+                                    $selected = ($gram_panchayat_row['gram_panchayat_id'] == $gram_panchayat_id) ? 'selected' : '';
+                                    echo "<option value='" . $gram_panchayat_row['gram_panchayat_id'] . "' $selected>" . $gram_panchayat_row['gram_panchayat_name'] . "</option>";
+                                }
+                            }
+                            ?>
                         </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें </label>
+                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -193,24 +260,36 @@ if ($id) {
                     <div class="form-floating mb-3">
                         <select class="form-select" id="gramSelect" name="gram">
                             <option selected>ग्राम का नाम चुनें</option>
-                            <!-- by load ajax -->
+                            <?php
+                            if (isset($gram_id) && !empty($gram_id)) {
+                                $gram_query = "SELECT * FROM gram_master WHERE gram_panchayat_id='$gram_panchayat_id'";
+                                $gram_result = mysqli_query($conn, $gram_query);
+                                while ($gram_row = mysqli_fetch_assoc($gram_result)) {
+                                    $selected = ($gram_row['gram_id'] == $gram_id) ? 'selected' : '';
+                                    echo "<option value='" . $gram_row['gram_id'] . "' $selected>" . $gram_row['gram_name'] . "</option>";
+                                }
+                            }
+                            ?>
                         </select>
-                        <label for="gram">ग्राम का नाम चुनें </label>
+                        <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
-                    <div class="form-floating mb-3 ">
-                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                        <label for="file_upload">फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    <div class="form-floating mb-3 input-group">
+                        <input type="file" class="form-control" id="file_upload" name="file_upload" value="<?= $file_upload ?>" required>
+                        <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
+                        <span class="input-group-text bg-">
+                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
+                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject" value="<?= $subject ?>">
                         <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -218,7 +297,7 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference">
+                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference" value="<?= $reference ?>">
                         <label for="reference">द्वारा <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -227,7 +306,7 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="application_date" value="" placeholder="आवेदन दिनांक" required name="application_date">
+                        <input type="date" class="form-control" id="application_date" value="<?= $application_date ?>" placeholder="आवेदन दिनांक" required name="application_date">
                         <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -235,7 +314,7 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?= $expectations_amount ?>">
                         <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -248,7 +327,7 @@ if ($id) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="update_date" value="<?= $currentDate ?>" placeholder="अपडेट दिनांक" required name="update_date">
+                        <input type="date" class="form-control" id="update_date" value="<?= $currentDate ?>" placeholder="अपडेट दिनांक" required name="update_date" readonly>
                         <label for="update_date">अपडेट दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -257,7 +336,7 @@ if ($id) {
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"></textarea>
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"><?= $comment ?></textarea>
                         <label for="comment">टिप्पणी <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -282,18 +361,13 @@ if ($id) {
 <!-- Script For DropDown List -->
 <!-- <a href="../"></a> -->
 <script>
-
-
-
-
-
     // For Vidhansabha
     // 
     // function vidhansabhaChange(dis_id)
     $(document).ready(function() {
         $('#districtSelect').change(function() {
             var district_id = $(this).val();
-            alert("Selected District ID: " + district_id);
+            // alert("Selected District ID: " + district_id);
             $.ajax({
                 url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
@@ -303,18 +377,23 @@ if ($id) {
                 success: function(data) {
                     var vidhansabha = JSON.parse(data);
                     $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
+                    $('#vidhansabhaSelect').append('<option>विधानसभा का नाम चुनें</option>');
                     $.each(vidhansabha, function(index, vidhansabha) {
                         $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
                     });
+                    // Pre-select the vidhansabha if editing
+                    <?php if (isset($vidhansabha_id) && !empty($vidhansabha_id)) { ?>
+                        $('#vidhansabhaSelect').val('<?= $vidhansabha_id ?>');
+                    <?php } ?>
                 }
             });
         });
+        // Trigger the change event if editing an existing record
+        <?php if (isset($vidhansabha_id) && !empty($vidhansabha_id)) { ?>
+            $('#districtSelect').trigger('change');
+        <?php } ?>
     });
 
-$(document).ready(function()) {
-        $('#districtSelect').change(function())
-}
     // For Vikaskhand
     $(document).ready(function() {
         $('#vidhansabhaSelect').change(function() {
@@ -333,13 +412,19 @@ $(document).ready(function()) {
                     $.each(vikaskhand, function(index, vikaskhand) {
                         $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
+                    // Pre-select the vidhansabha if editing
+                    <?php if (isset($vikaskhand_id) && !empty($vikaskhand_id)) { ?>
+                        $('#vikaskhandSelect').val('<?= $vikaskhand_id ?>');
+                    <?php } ?>
                 }
             });
         });
+        // Trigger the change event if editing an existing record
+        <?php if (isset($vikaskhand_id) && !empty($vikaskhand_id)) { ?>
+            $('#vidhansabhaSelect').trigger('change');
+        <?php } ?>
     });
+
     // For Sector Load 
     $(document).ready(function() {
         $('#vikaskhandSelect').change(function() {
@@ -358,13 +443,18 @@ $(document).ready(function()) {
                     $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
                         $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
+                    // Pre-select the vidhansabha if editing
+                    <?php if (isset($sector_id) && !empty($sector_id)) { ?>
+                        $('#sectorSelect').val('<?= $sector_id ?>');
+                    <?php } ?>
                 }
             });
         });
+        <?php if (isset($sector_id) && !empty($sector_id)) { ?>
+            $('#vikaskhandSelect').trigger('change');
+        <?php } ?>
     });
+
     // For Gram Panchayat From Sector id 
     $(document).ready(function() {
         $('#sectorSelect').change(function() {
@@ -383,12 +473,16 @@ $(document).ready(function()) {
                     $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
                         $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
+                    // Pre-select the vidhansabha if editing
+                    <?php if (isset($gram_panchayat_name) && !empty($gram_panchayat_name)) { ?>
+                        $('#gramPanchayatSelect').val('<?= $gram_panchayat_name ?>');
+                    <?php } ?>
                 }
             });
         });
+        <?php if (isset($gram_panchayat_name) && !empty($gram_panchayat_name)) { ?>
+            $('#gramPanchayatSelect').trigger('change');
+        <?php } ?>
     });
 
     //   For Grams  By Panchayat
@@ -409,12 +503,16 @@ $(document).ready(function()) {
                     $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
                         $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
+                    // Pre-select the vidhansabha if editing
+                    <?php if (isset($gram_id) && !empty($gram_id)) { ?>
+                        $('#gramSelect').val('<?= $gram_id ?>');
+                    <?php } ?>
                 }
             });
         });
+        <?php if (isset($gram_id) && !empty($gram_id)) { ?>
+            $('#gramSelect').trigger('change');
+        <?php } ?>
     });
 </script>
 

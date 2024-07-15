@@ -5,7 +5,12 @@ $tblname = "vidhansabha_master";
 $tblkey = "vidhansabha_id";
 $pagename = "Vidhansabha Master";
 
-// Assuming $conn is your MySQL connection object
+// Initialize variables
+$vidhansabha_name = "";
+$district_id = "";
+$vidhansabha_id = "";
+
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit_vidhansabha'])) {
         // Receive Data From Form
@@ -14,28 +19,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $vidhansabha_name = mysqli_real_escape_string($conn, $vidhansabha_name);
         $district_id = mysqli_real_escape_string($conn, $district_id);
 
-        // Check if vidhansabha_name already exists
-        $check_query = "SELECT * FROM vidhansabha_master WHERE vidhansabha_name = '$vidhansabha_name' AND district_id = '$district_id'";
-        $check_result = mysqli_query($conn, $check_query);
-
-        if (mysqli_num_rows($check_result) > 0) {
-            // Vidhansabha name already exists
-            echo "<b class='text-danger'>Error: Vidhansabha already exists!</b>";
-        } else {
-            // Vidhansabha name does not exist, proceed with insertion
-            $sql = "INSERT INTO vidhansabha_master (vidhansabha_name, district_id) VALUES ('$vidhansabha_name', '$district_id')";
+        if (!empty($_POST['vidhansabha_id'])) {
+            // Update existing vidhansabha
+            $vidhansabha_id = $_POST['vidhansabha_id'];
+            $sql = "UPDATE vidhansabha_master SET vidhansabha_name='$vidhansabha_name', district_id='$district_id' WHERE vidhansabha_id='$vidhansabha_id'";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>Vidhansabha Added Successfully</b>";
+                echo "<b class='text-success'>Vidhansabha Updated Successfully</b>";
             } else {
                 echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+            }
+        } else {
+            // Insert new vidhansabha
+            // Check if vidhansabha_name already exists
+            $check_query = "SELECT * FROM vidhansabha_master WHERE vidhansabha_name = '$vidhansabha_name' AND district_id = '$district_id'";
+            $check_result = mysqli_query($conn, $check_query);
+
+            if (mysqli_num_rows($check_result) > 0) {
+                // Vidhansabha name already exists
+                echo "<b class='text-danger'>Error: Vidhansabha already exists!</b>";
+            } else {
+                // Vidhansabha name does not exist, proceed with insertion
+                $sql = "INSERT INTO vidhansabha_master (vidhansabha_name, district_id) VALUES ('$vidhansabha_name', '$district_id')";
+                if (mysqli_query($conn, $sql)) {
+                    echo "<b class='text-success'>Vidhansabha Added Successfully</b>";
+                } else {
+                    echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                }
             }
         }
     }
 }
+
 // Fetch districts for dropdown
 $district_query = "SELECT * FROM district_master";
 $district_result = mysqli_query($conn, $district_query);
+
+// Fetch vidhansabha details if edit is requested
+if (isset($_GET['edit_id'])) {
+    $vidhansabha_id = $_GET['edit_id'];
+    $edit_query = "SELECT * FROM vidhansabha_master WHERE vidhansabha_id='$vidhansabha_id'";
+    $edit_result = mysqli_query($conn, $edit_query);
+    $edit_row = mysqli_fetch_assoc($edit_result);
+    $vidhansabha_name = $edit_row['vidhansabha_name'];
+    $district_id = $edit_row['district_id'];
+}
 ?>
+
 <?php include('includes/header.php') ?>
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
@@ -50,14 +79,15 @@ $district_result = mysqli_query($conn, $district_query);
                     <option selected>जिले का नाम चुनें</option>
                     <?php
                     while ($district_row = mysqli_fetch_assoc($district_result)) {
-                        echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
+                        $selected = ($district_row['district_id'] == $district_id) ? "selected" : "";
+                        echo "<option value='" . $district_row['district_id'] . "' $selected>" . $district_row['district_name'] . "</option>";
                     }
                     ?>
                 </select>
             </div>
 
             <div class="col-lg-6 text-center mb-3">
-                <input type="text" name="vidhansabha_name" class="form-control border-success" placeholder="विधानसभा का नाम" required>
+                <input type="text" name="vidhansabha_name" class="form-control border-success" placeholder="विधानसभा का नाम" value="<?= $vidhansabha_name ?>" required>
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <button name="submit_vidhansabha" class="form-control text-center text-white btn text-center shadow" type="submit" style="background-color:#4ac387;"><b>Save</b></button>
@@ -65,14 +95,14 @@ $district_result = mysqli_query($conn, $district_query);
             <div class="col-lg-6 text-center mb-3">
                 <button name="cancel_vidhansabha" class="form-control text-center text-white btn text-center shadow" type="submit" style="background-color:#57c2fc;"><b>Cancel</b></button>
             </div>
+            <input type="hidden" name="vidhansabha_id" value="<?= $vidhansabha_id ?>">
         </form>
-
 
         <!-- Vidhansabha Master Table -->
         <div class="row">
             <div class="col-sm-12 col-lg-12">
                 <div class="bg-light rounded table-h">
-                    <h5 class="mb-4 text-center mt-2 text-success fw-bolder">विधानसभा की सूची</h3>
+                    <h5 class="mb-4 text-center mt-2 text-success fw-bolder">विधानसभा की सूची</h5>
                     <table class="table table-striped">
                         <thead class="head">
                             <tr>
@@ -86,9 +116,9 @@ $district_result = mysqli_query($conn, $district_query);
                             <?php
                             $i = 1;
                             $sql = "SELECT v.*, v.vidhansabha_name, d.district_name 
-                                FROM vidhansabha_master v 
-                                JOIN district_master d ON v.district_id = d.district_id 
-                                ORDER BY v.vidhansabha_id DESC";
+                                    FROM vidhansabha_master v 
+                                    JOIN district_master d ON v.district_id = d.district_id 
+                                    ORDER BY v.vidhansabha_id DESC";
                             $fetch = mysqli_query($conn, $sql);
                             while ($row = mysqli_fetch_array($fetch)) {
                             ?>
@@ -97,8 +127,8 @@ $district_result = mysqli_query($conn, $district_query);
                                     <td><?= $row['vidhansabha_name'] ?></td>
                                     <td><?= $row['district_name'] ?></td>
                                     <td class="d-flex justify-content-center flex-row action">
-                                        <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                        <a href="#" onclick="confirmDelete(<?=$row['vidhansabha_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                        <a href="?edit_id=<?= $row['vidhansabha_id'] ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
+                                        <a href="#" onclick="confirmDelete(<?= $row['vidhansabha_id']; ?>, '<?= $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -109,7 +139,5 @@ $district_result = mysqli_query($conn, $district_query);
         </div>
     </div>
 </div>
-
-
 
 <?php include('includes/footer.php'); ?>

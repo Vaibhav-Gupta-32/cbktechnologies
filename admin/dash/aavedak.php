@@ -337,7 +337,7 @@ $fetch = mysqli_query($conn, $sql);
             type: 'POST',
             url: 'aavedak_edit.php',
             data: {
-                id: e_id
+                edit_id: e_id
             },
             success: function(data) {
                 $('#myModal-edit').find('.modal-body').html(data);
