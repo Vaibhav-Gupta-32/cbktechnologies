@@ -22,7 +22,7 @@
                      <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
                      <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
                      <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="element.html" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="sveekrt_presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
                      <a href="asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
@@ -34,7 +34,7 @@
                      <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
                      <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
                      <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="element.html" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="sveekrt_presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
                      <a href="asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>

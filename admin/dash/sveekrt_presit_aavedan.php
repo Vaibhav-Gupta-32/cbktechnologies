@@ -3,27 +3,29 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "स्वीकृत आवेदन";
+$pagename = "स्वीकृत प्रेषित आवेदन ";
 
-// If Presit For Print Data By Admin 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
-    $presit_id = $_POST['presit_id'];
-    $ptr_sender = $_POST['ptr_sender'];
-    $presit_date = $_POST['presit_date'];
-    $anudan_prapt_add = $_POST['anudan_prapt_add'];
 
-    $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE id='$presit_id'";
-    // echo $sql; die;
+// If Approve By Admin 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
+    $vid = $_POST['id'];
+    $anumodit_amount =$_POST['anumodit_amount'];
+    $aadesh_no = $_POST['aadesh_no'];
+    $anumodit_date =$_POST['anumodit_date'];
+    $view_comment =$_POST['view_comment'];
+
+   $sql = "UPDATE $tblname SET status='1',anumodit_amount='$anumodit_amount',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE id='$vid'";
+//    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('$presit_id आवेदन स्वीकृत प्रेषित Successfully')</script>";
-        echo "<script>window.open('print_presit_details.php?id=$presit_id','_self')</script>";
+        echo "<script>alert($vid+'Approved Successfully')</script>";
+        // echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
     } else {
         echo "<script>alert('Error')</script>";
         echo "<script>window.open('view.php?view=$tblname','_self')</script>";
-    }
-}
+}}
 // Close Approve Admin
 
+// If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
     $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
@@ -57,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=0";
+    WHERE a.status=3";
 
     // Add conditions if fields are set
     if (!empty($district_id)) {
@@ -95,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=2
+    WHERE a.status=3
     ORDER BY a.id DESC";
 }
 
@@ -284,9 +286,6 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     &nbsp;
                     &nbsp;
-                    <a href="#"  onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="Presit"></i></a>
-                    &nbsp;
-                    &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                     &nbsp;
                     &nbsp;
@@ -318,22 +317,7 @@ $fetch = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-<!-- The Presit For Print  Modal -->
-<div class="modal fade" id="myModal-presit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- This will be replaced with the content from view.php -->
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- The Edit Modal -->
 <div class="modal fade" id="myModal-edit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -365,21 +349,6 @@ $fetch = mysqli_query($conn, $sql);
             success: function(data) {
                 $('#myModal-view').find('.modal-body').html(data);
                 $('#myModal-view').modal('show');
-            }
-        });
-    }
-//   presit print ajax
-    function presit(p_id) {
-        //  alert(v_id);
-        $.ajax({
-            type: 'POST',
-            url: 'presit_print.php',
-            data: {
-                id: p_id
-            },
-            success: function(data) {
-                $('#myModal-presit').find('.modal-body').html(data);
-                $('#myModal-presit').modal('show');
             }
         });
     }
