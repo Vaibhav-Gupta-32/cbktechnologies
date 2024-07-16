@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
     // echo $sql; die;
     if (mysqli_query($conn, $sql)) {
         echo "<script>alert('$presit_id आवेदन स्वीकृत प्रेषित Successfully')</script>";
-        echo "<script>window.open('print_presit_details.php?id=$presit_id','_self')</script>";
+        echo "<script>window.open('print_presit_details.php?id=$presit_id','_blank')</script>";
     } else {
         echo "<script>alert('Error')</script>";
         echo "<script>window.open('view.php?view=$tblname','_self')</script>";
