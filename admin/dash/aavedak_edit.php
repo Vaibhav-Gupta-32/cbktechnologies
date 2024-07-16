@@ -219,7 +219,7 @@ if (isset($_REQUEST['edit_id'])) {
                         <input type="file" class="form-control" id="file_upload" name="file_upload">
                         <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                     <input type="hidden" name="existing_file" value="<?= $file_upload ?>">

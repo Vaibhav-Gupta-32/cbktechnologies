@@ -217,7 +217,7 @@ if ($id) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date">
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date" readonly>
                         <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>

@@ -4,6 +4,7 @@
 $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
+// $msg="";
 
 // Update Form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
@@ -22,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
     $application_date = $_POST['application_date'];
     $comment = $_POST['comment'];
     $file_upload = $_FILES['file_upload']['name'];
-
+    // echo 'vaibhav';die;
     if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
         $s_id = $_POST['edit_id'];
 
@@ -30,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
         // Check if a new file was uploaded
         if (!empty($file_upload)) {
             // Handle file upload logic
-            $target_dir = "uploads/swekshanudan/";
+            $target_dir = "uploads/swechanudan/";
             $target_file = $target_dir . basename($file_upload);
 
             // Move the uploaded file to the target directory
@@ -68,9 +69,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
         // die;
 
         if (mysqli_query($conn, $update_query)) {
-            echo "<b class='alert alert-success'>Update Successfully</b>";
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>Update Successfully</b></div>";
         } else {
-            echo "<b class='alert alert-danger'>Error: " . mysqli_error($conn) . "</b>";
+            // $msg = "<div class='msg-container'><b class='alert alert-success msg';'>Error: " . mysqli_error($conn) ."</b></div>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
         }
     }
 }
@@ -86,11 +88,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $sql = "UPDATE $tblname SET status='1',anumodit_amount='$anumodit_amount',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE id='$vid'";
     //    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert($vid+'Approved Successfully')</script>";
-        // echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
     } else {
-        echo "<script>alert('Error')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Error</b></div>";
     }
 }
 // Close Approve Admin
@@ -100,11 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
     $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Un Approve Successfully')</script>";
-        // echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapprove Successfully</b></div>";
     } else {
-        echo "<script>alert('Error')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Error</b></div>";
     }
 }
 // Close For Reject By Admin
@@ -182,6 +180,7 @@ $fetch = mysqli_query($conn, $sql);
 
 <!-- aavedak search start -->
 <div class="container-fluid pt-4 px-4">
+        <?php if(isset($msg))echo $msg;?>
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">

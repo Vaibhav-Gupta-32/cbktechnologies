@@ -1,3 +1,12 @@
+$(document).ready(function() {
+    var msgElement = $('.msg-container');
+    msgElement.slideDown(500, function() { // Slide down over 0.5 seconds
+        setTimeout(function() {
+            msgElement.slideUp(1000); // Slide up over 0.10 seconds
+        }, 1500); // Wait for 2 seconds before sliding up
+    });
+});
+
 (function ($) {
     "use strict";
 
