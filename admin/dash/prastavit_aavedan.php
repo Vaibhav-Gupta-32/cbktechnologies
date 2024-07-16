@@ -6,24 +6,29 @@ $tblkey = "id";
 $pagename = "प्रस्तावित आवेदन";
 
 
-// If Approve By Admin 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
-    $vid = $_POST['id'];
-    $anumodit_amount =$_POST['anumodit_amount'];
-    $aadesh_no = $_POST['aadesh_no'];
-    $anumodit_date =$_POST['anumodit_date'];
-    $view_comment =$_POST['view_comment'];
 
-   $sql = "UPDATE $tblname SET status='1',anumodit_amount='$anumodit_amount',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE id='$vid'";
-//    echo $sql;die;
+
+// If Approve By Admin For Modal Code Prastavit View 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
+    $vid = $_POST['vid'];
+    $sveekrt_amount = $_POST['sveekrt_amount'];
+    $sveekrt_no = $_POST['sveekrt_no'];
+    $yojna_id = $_POST['yojna_id'];
+    $sveekrt_date = $_POST['sveekrt_date'];
+    $sveekrt_comment = $_POST['sveekrt_comment'];
+// Sql Query
+    $sql = "UPDATE $tblname SET status='2', sveekrt_amount='$sveekrt_amount', sveekrt_no='$sveekrt_no', yojna_id='$yojna_id', sveekrt_date='$sveekrt_date', sveekrt_comment='$sveekrt_comment' WHERE id='$vid'";
+    // echo $sql; die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert($vid+'Approved Successfully')</script>";
+        echo "<script>alert($vid + 'Approved Successfully')</script>";
         // echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
     } else {
         echo "<script>alert('Error')</script>";
         echo "<script>window.open('view.php?view=$tblname','_self')</script>";
-}}
+    }
+}
 // Close Approve Admin
+
 
 // If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
@@ -38,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     }
 }
 // Close For Reject By Admin
+
+
+
+
 // Search Option With Filter
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     $district_id = isset($_POST['district_id']) ? $_POST['district_id'] : '';
@@ -216,7 +225,11 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" name="to_date" class="form-control" id="to_date" placeholder="कब तक ">
+                    <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" name="to_date" value="<?= $currentDate ?>" class="form-control" id="to_date" placeholder="कब तक ">
                         <label for="to_date">कब तक</label>
                     </div>
                 </div>
@@ -328,7 +341,7 @@ $fetch = mysqli_query($conn, $sql);
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> आवेदन विवरण बदले </h5>
+                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> विवरण बदले </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->

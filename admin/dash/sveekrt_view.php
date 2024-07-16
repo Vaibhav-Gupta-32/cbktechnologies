@@ -3,13 +3,13 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = " प्रस्तावित आवेदन ";
+$pagename = "स्वीकृत आवेदन";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name, y.yojna_name
     FROM swekshanudan a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
@@ -17,7 +17,8 @@ if ($id) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=1
+    LEFT JOIN yojna_master y ON a.yojna_id = y.yojna_id
+    WHERE a.status=2
     ORDER BY a.id DESC";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
     $id = $fetch['id'];
@@ -40,6 +41,11 @@ if ($id) {
     $aadesh_no = $fetch['aadesh_no'];
     $anumodit_date = $fetch['anumodit_date'];
     $view_comment = $fetch['view_comment'];
+    $sveekrt_amount = $fetch['sveekrt_amount'];
+    $sveekrt_no = $fetch['sveekrt_no'];
+    $yojna_name = $fetch['yojna_name'];
+    $sveekrt_date = $fetch['sveekrt_date'];
+    $sveekrt_comment = $fetch['sveekrt_comment'];
 }
 // Close For Buinding Db To form Data 
 
@@ -231,34 +237,24 @@ if ($id) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="sveekrt_amount" placeholder="स्वीकृत राशि" required name="sveekrt_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="sveekrt_amount">स्वीकृत राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="sveekrt_amount" value="<?= $sveekrt_amount?>" placeholder="स्वीकृत राशि" readonly name="sveekrt_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="sveekrt_amount">स्वीकृत राशि  </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="sveekrt_no" placeholder="स्वीकृत क्रमांक" required name="sveekrt_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="sveekrt_no">स्वीकृत क्रमांक <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="sveekrt_no" value="<?= $sveekrt_no?>" placeholder="स्वीकृत क्रमांक" readonly name="sveekrt_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="sveekrt_no">स्वीकृत क्रमांक </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select name="yojna_id" id="selectYojna" class="form-select form-control bg-white" required>
-                            <option selected>योजना का नाम चुनें</option>
-                            <?php
-                    // Fetch districts for dropdown
-                    $yojna_query = "SELECT * FROM yojna_master";
-                    $yojna_result = mysqli_query($conn, $yojna_query);
-                    while ($yojna_row = mysqli_fetch_assoc($yojna_result)) {
-                        echo "<option value='" . $yojna_row['yojna_id'] . "'>" . $yojna_row['yojna_name'] . "</option>";
-                    }
-                    ?>
-                        </select>
-                        <label for="districtSelect">योजना का नाम चुनें <span class="text-danger">*</span></label>
+                        <input name="yojna_id" id="yojna" value="<?= $yojna_name?>" class=" form-control" placeholder="योजना का नाम" readonly>
+                        <label for="yojna">योजना का नाम </label>
                     </div>
                 </div>
             </div>
@@ -269,8 +265,8 @@ if ($id) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="sveekrt_date" value="<?= $currentDate ?>" placeholder="स्वीकृत दिनांक" required name="sveekrt_date" readonly>
-                        <label for="sveekrt_date">स्वीकृत दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="sveekrt_date" value="<?=$sveekrt_date?>" placeholder="स्वीकृत दिनांक" name="sveekrt_date" readonly>
+                        <label for="sveekrt_date">स्वीकृत दिनांक  </label>
                     </div>
                 </div>
             </div>
@@ -278,8 +274,8 @@ if ($id) {
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="sveekrt_comment" style="height: 110px;" name="sveekrt_comment" required></textarea>
-                        <label for="sveekrt_comment">टिप्पणी <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="sveekrt_comment" style="height: 60px;" name="sveekrt_comment" readonly><?=$sveekrt_comment?></textarea>
+                        <label for="sveekrt_comment">टिप्पणी </label>
                     </div>
                 </div>
             </div>
