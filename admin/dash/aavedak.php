@@ -5,7 +5,6 @@ $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
 
-
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
@@ -307,7 +306,7 @@ $fetch = mysqli_query($conn, $sql);
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">प्राप्त आवेदन विवरण</h5>
+                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> विवरण</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -324,7 +323,7 @@ $fetch = mysqli_query($conn, $sql);
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">आवेदन विवरण बदले </h5>
+                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> विवरण बदले </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
