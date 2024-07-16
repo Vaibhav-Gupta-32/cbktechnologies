@@ -5,6 +5,75 @@ $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
 
+// Update Form 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
+    $name = $_POST['name'];
+    $phone_number = $_POST['phone_number'];
+    $designation = $_POST['designation'];
+    $district_id = $_POST['district_id'];
+    $vidhansabha_id = $_POST['vidhansabha_id'];
+    $vikaskhand_id = $_POST['vikaskhand_id'];
+    $sector_id = $_POST['sector_id'];
+    $gram_panchayat_id = $_POST['gram_panchayat_id'];
+    $gram_id = $_POST['gram_id'];
+    $subject = $_POST['subject'];
+    $reference = $_POST['reference'];
+    $expectations_amount = $_POST['expectations_amount'];
+    $application_date = $_POST['application_date'];
+    $comment = $_POST['comment'];
+    $file_upload = $_FILES['file_upload']['name'];
+    
+    if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
+        $s_id = $_POST['edit_id'];
+        
+        // echo 'vaibhav'.$_POST['edit_id'];die;
+        // Check if a new file was uploaded
+        if (!empty($file_upload)) {
+            // Handle file upload logic
+            $target_dir = "uploads/swekshanudan/";
+            $target_file = $target_dir . basename($file_upload);
+
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
+                // File upload successful
+                $uploaded_file_path = $target_file;
+            } else {
+                // Handle error
+                $error_message = "Sorry, there was an error uploading your file.";
+            }
+        } else {
+            // No new file uploaded, use the existing file
+            $uploaded_file_path = $_POST['existing_file'];
+        }
+
+        // Save the form data along with the file path to the database
+        $update_query = "UPDATE $tblname SET 
+                        name = '$name', 
+                        phone_number = '$phone_number', 
+                        designation = '$designation', 
+                        district_id = '$district_id', 
+                        vidhansabha_id = '$vidhansabha_id', 
+                        vikaskhand_id = '$vikaskhand_id', 
+                        sector_id = '$sector_id', 
+                        gram_panchayat_id = '$gram_panchayat_id', 
+                        gram_id = '$gram_id', 
+                        subject = '$subject', 
+                        reference = '$reference', 
+                        expectations_amount = '$expectations_amount', 
+                        application_date = '$application_date', 
+                        comment = '$comment', 
+                        file_upload = '$uploaded_file_path' 
+                    WHERE id = '$s_id'";
+        // echo $update_query;
+        // die;
+
+        if (mysqli_query($conn, $update_query)) {
+            echo "<b class='alert alert-success'>Update Successfully</b>";
+        } else {
+            echo "<b class='alert alert-danger'>Error: " . mysqli_error($conn) . "</b>";
+        }
+    }
+}
 
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {

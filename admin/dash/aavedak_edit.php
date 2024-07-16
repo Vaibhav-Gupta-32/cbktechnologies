@@ -13,84 +13,17 @@ $sector_id = "";
 $gram_id = "";
 $gram_panchayat_id = "";
 
-if (isset($_REQUEST['edit_id']))
-    $edit_id = $_REQUEST['edit_id'];
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
-    $name = $_POST['name'];
-    $phone_number = $_POST['phone_number'];
-    $designation = $_POST['designation'];
-    $district_id = $_POST['district_id'];
-    $vidhansabha_id = $_POST['vidhansabha_id'];
-    $vikaskhand_id = $_POST['vikaskhand_id'];
-    $sector_id = $_POST['sector_id'];
-    $gram_panchayat_id = $_POST['gram_panchayat_id'];
-    $gram_id = $_POST['gram_id'];
-    $subject = $_POST['subject'];
-    $reference = $_POST['reference'];
-    $expectations_amount = $_POST['expectations_amount'];
-    $application_date = $_POST['application_date'];
-    $comment = $_POST['comment'];
-    $file_upload = $_FILES['file_upload']['name'];
-    if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
-        $s_id = $_POST['edit_id'];
-
-        // Check if a new file was uploaded
-        if (!empty($file_upload)) {
-            // Handle file upload logic
-            $target_dir = "uploads/swekshanudan/";
-            $target_file = $target_dir . basename($file_upload);
-
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
-                // File upload successful
-                $uploaded_file_path = $target_file;
-            } else {
-                // Handle error
-                $error_message = "Sorry, there was an error uploading your file.";
-            }
-        } else {
-            // No new file uploaded, use the existing file
-            $uploaded_file_path = $_POST['existing_file'];
-        }
-
-        // Save the form data along with the file path to the database
-        // Your database logic here
-        $update_query = "UPDATE your_table_name SET 
-                    name = '$name', 
-                    phone_number = '$phone_number', 
-                    designation = '$designation', 
-                    district_id = '$district_id', 
-                    vidhansabha_id = '$vidhansabha_id', 
-                    vikaskhand_id = '$vikaskhand_id', 
-                    sector_id = '$sector_id', 
-                    gram_panchayat_id = '$gram_panchayat_id', 
-                    gram_id = '$gram_id', 
-                    subject = '$subject', 
-                    reference = '$reference', 
-                    expectations_amount = '$expectations_amount', 
-                    application_date = '$application_date', 
-                    comment = '$comment', 
-                    file_upload = '$uploaded_file_path' 
-                WHERE id = '$s_id'";
-        echo $update_query;
-        die;
 
 
-        if (mysqli_query($conn, $update_query)) {
-            echo "<b class='alert alert-success'>Update Successfully</b>";
-        } else {
-            echo "<b class='alert alert-danger'>Error: " . mysqli_error($conn) . "</b>";
-        }
-    }
-}
+
 
 // Fetch districts for dropdown
 $district_query = "SELECT * FROM district_master";
 $district_result = mysqli_query($conn, $district_query);
 
-// View Id Recived
+// View Id Received
 if (isset($_REQUEST['edit_id'])) {
+    $edit_id = $_REQUEST['edit_id']; // Add this line
     $edit_query = "SELECT * FROM swekshanudan WHERE id='$edit_id'";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $edit_query));
     $id = $fetch['id'];
@@ -137,6 +70,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="aavedak" value="<?= $name ?>" placeholder="आवेदक का नाम" required>
+                        <input type="hidden"  name="edit_id" id="id" value="<?=$id ?>">
                         <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
                     </div>
 
@@ -262,7 +196,7 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram">
+                        <select class="form-select" id="gramSelect" name="gram_id">
                             <option selected>ग्राम का नाम चुनें</option>
                             <?php
                             if (isset($gram_id) && !empty($gram_id)) {
@@ -282,12 +216,13 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 input-group">
-                        <input type="file" class="form-control" id="file_upload" name="file_upload" value="<?= $file_upload ?>" required>
+                        <input type="file" class="form-control" id="file_upload" name="file_upload">
                         <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
+                    <input type="hidden" name="existing_file" value="<?= $file_upload ?>">
                 </div>
             </div>
             <div class="col-lg-4">
@@ -347,7 +282,7 @@ if (isset($_REQUEST['edit_id'])) {
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
+                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?=$id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">
@@ -366,6 +301,24 @@ if (isset($_REQUEST['edit_id'])) {
 <!-- Script For Print button -->
 
 <script>
+    // update form
+    // $(document).ready(function() {
+    //     $('#Update').click(function() {
+    //         var id = $(this).val();
+    //         // alert("Selected District ID: " + district_id);
+    //         $.ajax({
+    //             url: 'aavedak.php',
+    //             type: 'POST',
+    //             data: {
+    //                 edit_id: id
+    //             },
+    //             success: function(data) {
+                   
+    //             }
+    //         });
+    //     });
+    // });
+
     $(document).ready(function() {
         $('#Print').on('click', function() {
             // Serialize the form data and store it in the hidden field
