@@ -250,7 +250,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 text-center mb-3">
+            <div class="col-lg-6 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input name="yojna_id" id="yojna" value="<?= $yojna_name?>" class=" form-control" placeholder="योजना का नाम" readonly>
@@ -261,16 +261,11 @@ if ($id) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <?php
-                        // Set default current date
-                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                        ?>
                         <input type="date" class="form-control" id="sveekrt_date" value="<?=$sveekrt_date?>" placeholder="स्वीकृत दिनांक" name="sveekrt_date" readonly>
-                        <label for="sveekrt_date">स्वीकृत दिनांक  </label>
+                        <label for="sveekrt_date">स्वीकृत दिनांक </label>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
