@@ -17,14 +17,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_num_rows($check_result) > 0) {
             // Vibhag name already exists
-            echo "<b class='text-danger'>Error: Vibhag already exists!</b>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vibhag already exists!</b></div>";
         } else {
             // Vibhag name does not exist, proceed with insertion
             $sql = "INSERT INTO $tblname (vibhag_name) VALUES ('$vibhag_name')";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>Vibhag Added Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vibhag Added Successfully</b></div>";
+
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vibhag Added Unsuccessfully!!</b></div>";
+
             }
         }
     }
@@ -45,9 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($check_result) > 0) {
             $sql = "UPDATE $tblname SET vibhag_name='$vibhag_name' WHERE $tblkey='$vibhag_id'";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>Vibhag Update Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Vibhag Update Successfully</b></div>";           
+
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vibhag Update Unsuccessfully!!</b></div>";
+
             }
         }
     }

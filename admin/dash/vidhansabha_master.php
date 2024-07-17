@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $vidhansabha_id = $_POST['vidhansabha_id'];
             $sql = "UPDATE $tblname SET vidhansabha_name='$vidhansabha_name', district_id='$district_id' WHERE $tblkey='$vidhansabha_id'";
             if (mysqli_query($conn, $sql)) {
-                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vidhansabha Update Successfully</b></div>";
+                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Vidhansabha Update Successfully</b></div>";
             } else {
                 $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vidhansabha Update Unsuccessfully!!</b></div>";
             }

@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $vikaskhand_id = $_POST['vikaskhand_id'];
             $update_query = "UPDATE $tblname SET vikaskhand_name='$vikaskhand_name', vidhansabha_id='$vidhansabha_id', district_id='$district_id' WHERE $tblkey='$vikaskhand_id'";
             if (mysqli_query($conn, $update_query)) {
-                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vikaskhand Update Successfully</b></div>";
+                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Vikaskhand Update Successfully</b></div>";
             } else {
                 $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vikaskhand Update Unsuccessfully!!</b></div>";
             }
@@ -53,20 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Fetch vidhansabhas for dropdown
-// $vidhansabha_query = "SELECT v.vidhansabha_id, v.vidhansabha_name, d.district_name 
-//                       FROM vidhansabha_master v 
-//                       JOIN district_master d ON v.district_id = d.district_id";
-// $vidhansabha_result = mysqli_query($conn, $vidhansabha_query);
-
-// Fetch districts for dropdown
 $district_query = "SELECT * FROM district_master";
 $district_result = mysqli_query($conn, $district_query);
 
 // Handle edit request
 if (isset($_GET['edit_id'])) {
     $vikaskhand_id = $_GET['edit_id'];
-    $edit_query = "SELECT * FROM vikaskhand_master WHERE vikaskhand_id='$vikaskhand_id'";
+    $edit_query = "SELECT * FROM $tblname WHERE $tblkey='$vikaskhand_id'";
     $edit_result = mysqli_query($conn, $edit_query);
     if ($row = mysqli_fetch_assoc($edit_result)) {
         $vikaskhand_name = $row['vikaskhand_name'];

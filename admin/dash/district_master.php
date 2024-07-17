@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($check_result) > 0) {
             $sql = "UPDATE $tblname SET district_name='$district_name' WHERE $tblkey='$district_id'";
             if (mysqli_query($conn, $sql)) {
-                $msg = "<div class='msg-container'><b class='alert alert-success msg'>District Update Successfully</b></div>";
+                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>District Update Successfully</b></div>";
             } else {
                 $msg = "<div class='msg-container'><b class='alert alert-danger msg'>District Update Unsuccessfully!!</b></div>";
             }

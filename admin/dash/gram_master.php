@@ -4,40 +4,70 @@
 $tblname = "gram_master";
 $tblkey = "gram_id";
 $pagename = "ग्राम मास्टर";
+$gram_name = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit_gram'])) {
         // Receive Data From Form
         $gram_name = ucfirst($_POST['gram_name']);
-        $district_id = $_POST['district_id'];
-        $vidhansabha_id = $_POST['vidhansabha_id'];
-        $vikaskhand_id = $_POST['vikaskhand_id'];
-        $sector_id = $_POST['sector_id'];
         $gram_panchayat_id = $_POST['gram_panchayat_id'];
-
-        // Escape strings to prevent SQL injection
-        $gram_name = mysqli_real_escape_string($conn, $gram_name);
-        $district_id = mysqli_real_escape_string($conn, $district_id);
-        $vidhansabha_id = mysqli_real_escape_string($conn, $vidhansabha_id);
+        $sector_id = $_POST['sector_id'];
+        $vikaskhand_id = $_POST['vikaskhand_id'];
+        $vidhansabha_id = $_POST['vidhansabha_id'];
+        $district_id = $_POST['district_id'];
         $vikaskhand_id = mysqli_real_escape_string($conn, $vikaskhand_id);
-        $sector_id = mysqli_real_escape_string($conn, $sector_id);  
+        $vidhansabha_id = mysqli_real_escape_string($conn, $vidhansabha_id);
+        $district_id = mysqli_real_escape_string($conn, $district_id);
+        $sector_id = mysqli_real_escape_string($conn, $sector_id);
+        $gram_panchayat_id = mysqli_real_escape_string($conn, $gram_panchayat_id);
 
-        // Check if gram_name already exists for the selected district, vidhansabha, vikaskhand, and sector
-        $check_query = "SELECT * FROM gram_master WHERE gram_name = '$gram_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id' AND vikaskhand_id = '$vikaskhand_id' AND sector_id = '$sector_id'";
-        $check_result = mysqli_query($conn, $check_query);
-
-        if (mysqli_num_rows($check_result) > 0) {
-            // Gram name already exists
-            echo "<b class='text-danger'>Error: Gram Name already exists!</b>";
-        } else {
-            // Gram name does not exist, proceed with insertion
-            $sql = "INSERT INTO gram_master (gram_name, district_id, gram_panchayat_id, vidhansabha_id, vikaskhand_id, sector_id) VALUES ('$gram_name', '$district_id', '$gram_panchayat_id','$vidhansabha_id', '$vikaskhand_id', '$sector_id')";
-            if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>Gram Name Added Successfully</b>";
+        if (isset($_POST['gram_id']) && !empty($_POST['gram_id'])) {
+            // echo 'vaibhav';die;
+            // Update existing record
+            $gram_id = $_POST['gram_id'];
+            $update_query = "UPDATE $tblname SET gram_name='$gram_name', gram_panchayat_id='$gram_panchayat_id',sector_id='$sector_id',vikaskhand_id='$vikaskhand_id', vidhansabha_id='$vidhansabha_id', district_id='$district_id' WHERE $tblkey='$gram_id'";
+            if (mysqli_query($conn, $update_query)) {
+                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Gram Update Successfully</b></div>";
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Gram Update Unsuccessfully!!</b></div>";
+            }
+        } else {
+            // Insert new record
+            // Check if sector_id already exists for the selected district and vidhansabha
+            $check_query = "SELECT * FROM $tblname WHERE gram_panchayat_id='$gram_panchayat_id', sector_id = '$sector_id' AND vikaskhand_id='$vikaskhand_id' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id'";
+            $check_result = mysqli_query($conn, $check_query);
+
+            if (mysqli_num_rows($check_result) > 0) {
+                // Vikaskhand name already exists
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Gram already Exists!!</b></div>";
+            } else {
+                // Vikaskhand name does not exist, proceed with insertion
+                $insert_query = "INSERT INTO $tblname (gram_name, gram_panchayat_id, sector_id,vikaskhand_id, vidhansabha_id, district_id) VALUES ('$gram_name', '$gram_panchayat_id', '$sector_id','$vikaskhand_id' '$vidhansabha_id', '$district_id')";
+                if (mysqli_query($conn, $insert_query)) {
+                    $msg = "<div class='msg-container'><b class='alert alert-success msg'>Gram Added Successfully</b></div>";
+                } else {
+                    $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Gram Added Unsuccessfully!!</b></div>";
+                }
             }
         }
+    }
+}
+
+$district_query = "SELECT * FROM district_master";
+$district_result = mysqli_query($conn, $district_query);
+
+// Handle edit request
+if (isset($_GET['edit_id'])) {
+    $gram_id = $_GET['edit_id'];
+    $edit_query = "SELECT * FROM $tblname WHERE $tblkey='$gram_id'";
+    $edit_result = mysqli_query($conn, $edit_query);
+    if ($row = mysqli_fetch_assoc($edit_result)) {
+        $gram_name = $row['gram_name'];
+        $gram_panchayat_id = $row['gram_panchayat_id'];
+        $sector_id = $row['sector_id'];
+        $vikaskhand_id = $row['vikaskhand_id'];
+        $vidhansabha_id = $row['vidhansabha_id'];
+        $district_id = $row['district_id'];
     }
 }
 ?>
@@ -52,53 +82,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="row text-center align-items-center">
             <h5 class="text-center fw-bolder text-primary mb-3">नया ग्राम जोड़ें</h5>
 
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-6 text-center mb-3">
                 <select name="district_id" id="districtSelect" class="form-select form-control border-success" required>
-                    <?php
-                    // Fetch districts for dropdown
-                    $district_query = "SELECT * FROM district_master";
-                    $district_result = mysqli_query($conn, $district_query);
-                    ?>
-
                     <option selected>जिले का नाम चुनें</option>
                     <?php
+                    mysqli_data_seek($district_result, 0); // Reset pointer to fetch districts again
                     while ($district_row = mysqli_fetch_assoc($district_result)) {
-                        echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
+                        $selected = ($district_row['district_id'] == $district_id) ? 'selected' : '';
+                        echo "<option value='" . $district_row['district_id'] . "' $selected>" . $district_row['district_name'] . "</option>";
                     }
                     ?>
                 </select>
             </div>
 
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-6 text-center mb-3">
                 <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control border-success" required>
                     <option selected>विधानसभा का नाम चुनें</option>
-                    <!-- Options for vidhansabha will go here -->
+                    <?php
+                    if (isset($vidhansabha_id) && !empty($vidhansabha_id)) {
+                        $vidhansabha_query = "SELECT * FROM vidhansabha_master WHERE district_id = '$district_id'";
+                        $vidhansabha_result = mysqli_query($conn, $vidhansabha_query);
+                        while ($vidhansabha_row = mysqli_fetch_assoc($vidhansabha_result)) {
+                            $selected = ($vidhansabha_row['vidhansabha_id'] == $vidhansabha_id) ? 'selected' : '';
+                            echo "<option value='" . $vidhansabha_row['vidhansabha_id'] . "' $selected>" . $vidhansabha_row['vidhansabha_name'] . "</option>";
+                        }
+                    }
+                    ?>
                 </select>
             </div>
 
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-6 text-center mb-3">
                 <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control border-success" required>
                     <option selected>विकासखंड का नाम चुनें</option>
-                    <!-- Option Load By AJAX -->
+                    <?php
+                    if (isset($vikaskhand_id) && !empty($vikaskhand_id)) {
+                        $vikaskhand_query = "SELECT * FROM vikaskhand_master WHERE vidhansabha_id = '$vidhansabha_id'";
+                        $vikaskhand_result = mysqli_query($conn, $vikaskhand_query);
+                        while ($vikaskhand_row = mysqli_fetch_assoc($vikaskhand_result)) {
+                            $selected = ($vikaskhand_row['vikaskhand_id'] == $vikaskhand_id) ? 'selected' : '';
+                            echo "<option value='" . $vikaskhand_row['vikaskhand_id'] . "' $selected>" . $vikaskhand_row['vikaskhand_name'] . "</option>";
+                        }
+                    }
+                    ?>
 
                 </select>
             </div>
 
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-6 text-center mb-3">
                 <select name="sector_id" id="sectorSelect" class="form-select form-control border-success" required>
                     <option selected>सेक्टर का नाम चुनें</option>
-                    <!-- Options for sectors will go here -->
-                </select>
-            </div>
-            <div class="col-lg-4 text-center mb-3">
-                <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control border-success" required>
-                    <option selected>ग्राम पंचायत का नाम चुनें</option>
-                    <!-- Options for panchayat will go here -->
+                    <?php
+                    if (isset($sector_id) && !empty($sector_id)) {
+                        $sector_query = "SELECT * FROM sector_master WHERE vikaskhand_id = '$vikaskhand_id'";
+                        $sector_result = mysqli_query($conn, $sector_query);
+                        while ($sector_row = mysqli_fetch_assoc($sector_result)) {
+                            $selected = ($sector_row['sector_id'] == $sector_id) ? 'selected' : '';
+                            echo "<option value='" . $sector_row['sector_id'] . "' $selected>" . $sector_row['sector_name'] . "</option>";
+                        }
+                    }
+                    ?>
                 </select>
             </div>
 
-            <div class="col-lg-4 text-center mb-3">
-                <input type="text" name="gram_name" class="form-control border-success" placeholder="ग्राम का नाम" required>
+            <div class="col-lg-6 text-center mb-3">
+                <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
+                    <option selected>ग्राम पंचायत का नाम चुनें</option>
+                    <?php
+                    if (isset($gram_panchayat_id) && !empty($gram_panchayat_id)) {
+                        $gram_panchayat_query = "SELECT * FROM gram_panchayat_master WHERE sector_id = '$sector_id'";
+                        $gram_panchayat_result = mysqli_query($conn, $gram_panchayat_query);
+                        while ($gram_panchayat_row = mysqli_fetch_assoc($gram_panchayat_result)) {
+                            $selected = ($gram_panchayat_row['gram_panchayat_id'] == $gram_panchayat_id) ? 'selected' : '';
+                            echo "<option value='" . $gram_panchayat_row['gram_panchayat_id'] . "' $selected>" . $gram_panchayat_row['gram_panchayat_name'] . "</option>";
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-lg-6 text-center mb-3">
+                <input type="text" name="gram_name" class="form-control border-success" placeholder="ग्राम का नाम" required value="<?= $gram_name ?>">
+                <input type="hidden" name="gram_id" value="<?= $gram_id ?>">
             </div>
 
             <div class="col-lg-6 text-center mb-3">
@@ -152,8 +216,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <td><?= $row['vidhansabha_name'] ?></td>
                                 <td><?= $row['district_name'] ?></td>
                                 <td class="d-flex justify-content-center flex-row action">
-                                    <a href="#"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="#" onclick="confirmDelete(<?=$row['gram_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                    <a href="?edit_id=<?= $row['gram_id'] ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
+                                    <a href="#" onclick="confirmDelete(<?= $row['gram_id']; ?>, '<?= $tblname; ?>' ,'<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -165,111 +229,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
-
-<!-- Script -->
-<script>
-    // For Vidhansabha
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-           // alert("Selected District ID: " + district_id);
-            $.ajax({
-                url: 'ajax/get_vidhansabha.php',
-                type: 'POST',
-                data: {
-                    district_id: district_id
-                },
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-    // For Vikaskhand
-    $(document).ready(function() {
-        $('#vidhansabhaSelect').change(function() {
-            var vidhansabha_id = $(this).val();
-          //  alert("Selected Vidhansabha ID: " + vidhansabha_id);
-            $.ajax({
-                url: 'ajax/get_vikaskhand.php',
-                type: 'POST',
-                data: {
-                    vidhansabha_id: vidhansabha_id
-                },
-                success: function(data) {
-                    var vikaskhand = JSON.parse(data);
-                    $('#vikaskhandSelect').empty();
-                    $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                    $.each(vikaskhand, function(index, vikaskhand) {
-                        $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-    // For Sector Load 
-    $(document).ready(function() {
-        $('#vikaskhandSelect').change(function() {
-            var vikaskhand_id = $(this).val();
-          //  alert("Selected Vikaskhand ID: " + vikaskhand_id);
-            $.ajax({
-                url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    vikaskhand_id: vikaskhand_id
-                },
-                success: function(data) {
-                    var sectors = JSON.parse(data);
-                    $('#sectorSelect').empty();
-                    $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                    $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                        $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-    // For Gram Panchayat
-    // For Sector Load 
-    $(document).ready(function() {
-        $('#sectorSelect').change(function() {
-            var sector_id = $(this).val();
-           // alert("Selected Vikaskhand ID: " + sector_id);
-            $.ajax({
-                url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    sector_id: sector_id
-                },
-                success: function(data) {
-                    var gram_panchayats = JSON.parse(data);
-                    $('#gramPanchayatSelect').empty();
-                    $('#gramPanchayatSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                    $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                        $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-</script>
-<!--  -->
-
-
 
 <?php include('includes/footer.php'); ?>

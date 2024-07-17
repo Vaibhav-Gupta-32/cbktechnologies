@@ -69,9 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
         // die;
 
         if (mysqli_query($conn, $update_query)) {
-            $msg = "<div class='msg-container'><b class='alert alert-success msg'>Update Successfully</b></div>";
+            $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Update Successfully</b></div>";
         } else {
-            // $msg = "<div class='msg-container'><b class='alert alert-success msg';'>Error: " . mysqli_error($conn) ."</b></div>";
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
         }
     }
