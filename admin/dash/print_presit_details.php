@@ -68,16 +68,9 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
         @media print {
             @page {
                 size: A4;
-                margin: 10mm;
+                margin:20mm;
             }
 
-            .content {
-                margin: 10mm;
-                display:block;
-                justify-content:center;
-                justify-items: center;
-                /* line-height:5px; */
-            }
 
         }
     </style>
@@ -85,16 +78,12 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
 
 <body>
     <!--  -->
-            <div class="container content">
-                <!-- heder -->
-                <div class="mt-5 p-5 ">
-                </div>
-<!-- heder -->
+            <div class="container mt-5 mb-5 pt-5 pb-5  border border-dark border-3">
+
                 <div class="Title mb-5">
                     <h1 class="text-center text-primary fw-bolder">स्वेच्छानुदान-स्वीकृति 
                     </h1>
                 </div>
-
                <div class="main_data text-justify">
                <h4 class="fw-bold fs-3" style="line-height:2;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;माननीय श्री <b><?= $maananeey_info ?></b> की अनुशंसा पर वित्तीय वर्ष
                     <?php $year = date('Y');

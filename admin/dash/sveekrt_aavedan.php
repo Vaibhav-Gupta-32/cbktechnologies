@@ -247,8 +247,7 @@ $fetch = mysqli_query($conn, $sql);
     <div class="row">
         <div class="col-sm-12 col-lg-12">
         <h6 class="mb-4 text-center mt-2 pt-3 "><?= $pagename; ?> सूची</h6>
-            <div class=" rounded" style="overflow-y: scroll;">
-                
+            <div class=" rounded" style="overflow-y: scroll;">     
                 <table class="table table-striped border shadow">
                     <thead class=" head">
                         <tr class="text-center">
@@ -262,7 +261,6 @@ $fetch = mysqli_query($conn, $sql);
                             <th scope="col">विधानसभा</th>
                             <th scope="col">जिला</th>
                             <th scope="col">Action</th>
-
                         </tr>
                     </thead>
                     <tbody>
