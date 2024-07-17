@@ -284,7 +284,7 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     &nbsp;
                     &nbsp;
-                    <a href="#"  onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="Presit"></i></a>
+                    <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
                     &nbsp;
                     &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>

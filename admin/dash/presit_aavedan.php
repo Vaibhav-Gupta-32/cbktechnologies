@@ -3,7 +3,7 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "स्वीकृत प्रेषित आवेदन ";
+$pagename = "प्रेषित स्वीकृत आवेदन ";
 
 
 // If Approve By Admin 
