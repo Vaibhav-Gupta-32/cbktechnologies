@@ -22,7 +22,7 @@
                      <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
                      <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
                      <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="sveekrt_presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
                      <a href="asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
@@ -49,6 +49,7 @@
                      <a href="gram_master.php" class="dropdown-item">ग्राम मास्टर</a>
                      <a href="yojana_master.php" class="dropdown-item">योजना मास्टर</a>
                      <a href="vibhag_master.php" class="dropdown-item">विभाग मास्टर</a>
+                     <a href="maananeey_master.php" class="dropdown-item">प्रिंट मास्टर</a>
                  </div>
              </div>
              <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>

@@ -114,16 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-      
 
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="designation" id="designation" placeholder="पद का नाम" required>
-                        <label for="designation">पद का नाम <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -232,6 +223,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="designation" id="designation" placeholder="पद का नाम" required>
+                        <label for="designation">पद का नाम <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                         <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
                     </div>
@@ -244,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             // Set default current date
             $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
             ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date">
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date" readonly>
                         <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>

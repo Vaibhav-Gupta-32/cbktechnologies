@@ -3,9 +3,7 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "स्वीकृत प्रेषित आवेदन ";
-
-
+$pagename = "प्रेषित स्वीकृत आवेदन ";
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
@@ -284,6 +282,9 @@ $fetch = mysqli_query($conn, $sql);
                 <td><?= $row['district_name'] ?></td>
                 <td class="action">
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                    &nbsp;
+                    &nbsp;
+                    <a href="#" onclick="window.open('print_presit_details.php?id=<?= $row['id'] ?>','_blank')"><i class="fas fa-solid fa-print" title="Print-Presit"></i></a>
                     &nbsp;
                     &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
