@@ -5,34 +5,80 @@ $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "स्वीकृत आवेदन";
 
+// Update Form 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
+    $edit_id=$_POST['edit_id'];
+    // $name = $_POST['name'];
+    // $phone_number = $_POST['phone_number'];
+    // $designation = $_POST['designation'];
+    // $district_id = $_POST['district_id'];
+    // $vidhansabha_id = $_POST['vidhansabha_id'];
+    // $vikaskhand_id = $_POST['vikaskhand_id'];
+    // $sector_id = $_POST['sector_id'];
+    // $gram_panchayat_id = $_POST['gram_panchayat_id'];
+    // $gram_id = $_POST['gram_id'];
+    // $subject = $_POST['subject'];
+    // $reference = $_POST['reference'];
+    // $expectations_amount = $_POST['expectations_amount'];
+    // $application_date = $_POST['application_date'];
+    // $comment = $_POST['comment'];
+    // $existing_file = $_POST['existing_file'];
+    $anumodit_amount = $_POST['anumodit_amount'];
+    $aadesh_no = $_POST['aadesh_no'];
+    $anumodit_date = $_POST['anumodit_date'];
+    $view_comment = $_POST['view_comment'];
+    // $file_upload = $_FILES['file_upload']['name'];
+    
+    if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
+        $s_id = $_POST['edit_id'];
+        // echo 'vaibhav'.$edit_id;die;
+
+
+        // Save the form data along with the file path to the database
+        $update_query = "UPDATE $tblname SET 
+                        anumodit_amount = '$anumodit_amount',
+                        aadesh_no = '$aadesh_no',
+                        anumodit_date = '$anumodit_date',
+                        view_comment = '$view_comment'
+                        WHERE $tblkey = '$s_id'";
+        // echo $update_query;
+        // die;
+
+        if (mysqli_query($conn, $update_query)) {
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>Update Successfully</b></div>";
+        } else {
+            // $msg = "<div class='msg-container'><b class='alert alert-success msg';'>Error: " . mysqli_error($conn) ."</b></div>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
+        }
+    }
+}
+
 // If Presit For Print Data By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
+    die;
     $presit_id = $_POST['presit_id'];
     $ptr_sender = $_POST['ptr_sender'];
     $presit_date = $_POST['presit_date'];
     $anudan_prapt_add = $_POST['anudan_prapt_add'];
 
-    $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE id='$presit_id'";
+    $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE $tblkey ='$presit_id'";
     // echo $sql; die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('$presit_id आवेदन स्वीकृत प्रेषित Successfully')</script>";
-        echo "<script>window.open('print_presit_details.php?id=$presit_id','_blank')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
+
     } else {
-        echo "<script>alert('Error')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Approved!! </b></div>";
     }
 }
 // Close Approve Admin
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
-    $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
+    $sql = "UPDATE $tblname SET status='4' WHERE $tblkey ='$id'";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Un Approve Successfully')</script>";
-        // echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapproved Successfully</b></div>";
     } else {
-        echo "<script>alert('Error')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Unapproved!!</b></div>";
     }
 }
 // Close For Reject By Admin
@@ -88,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     // echo $sql;die;
 } else {
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM swekshanudan a 
+    FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
     LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
@@ -96,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
     WHERE a.status=2
-    ORDER BY a.id DESC";
+    ORDER BY a.$tblkey  DESC";
 }
 
 $fetch = mysqli_query($conn, $sql);
@@ -226,7 +272,7 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
+                <a name="Add_New" onclick="location.href='swekshanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
@@ -283,12 +329,12 @@ $fetch = mysqli_query($conn, $sql);
                 <td class="action">
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     &nbsp;
-                    &nbsp;
+                    <!-- &nbsp; -->
                     <a href="#"  onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="Presit"></i></a>
                     &nbsp;
-                    &nbsp;
+                    <!-- &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                    &nbsp;
+                    &nbsp; -->
                     &nbsp;
                     <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
@@ -308,7 +354,7 @@ $fetch = mysqli_query($conn, $sql);
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> विवरण</h5>
+                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -388,7 +434,7 @@ $fetch = mysqli_query($conn, $sql);
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'aavedak_edit.php',
+            url: 'sweekrt_aavedan_edit.php',
             data: {
                 edit_id: e_id
             },

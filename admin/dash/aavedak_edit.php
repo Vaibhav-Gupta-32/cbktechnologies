@@ -1,9 +1,9 @@
 <?php include('../dbconnection.php') ?>
 <?php include('../session_check.php') ?>
 <?php
-$tblname = "Aavedak";
+$tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "आवेदक";
+$pagename = "विवरण बदले ";
 
 // $vikaskhand_name = "";
 $vidhansabha_id = "";
@@ -13,10 +13,6 @@ $sector_id = "";
 $gram_id = "";
 $gram_panchayat_id = "";
 
-
-
-
-
 // Fetch districts for dropdown
 $district_query = "SELECT * FROM district_master";
 $district_result = mysqli_query($conn, $district_query);
@@ -24,7 +20,7 @@ $district_result = mysqli_query($conn, $district_query);
 // View Id Received
 if (isset($_REQUEST['edit_id'])) {
     $edit_id = $_REQUEST['edit_id']; // Add this line
-    $edit_query = "SELECT * FROM swekshanudan WHERE id='$edit_id'";
+    $edit_query = "SELECT * FROM $tblname WHERE $tblkey='$edit_id'";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $edit_query));
     $id = $fetch['id'];
     $name = $fetch['name'];
@@ -44,12 +40,6 @@ if (isset($_REQUEST['edit_id'])) {
     $file_upload = $fetch['file_upload'];
 }
 ?>
-
-
-
-
-<!-- Include jQuery library
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 <!-- Start New Swekshanudan Form -->
 <style>
@@ -219,7 +209,7 @@ if (isset($_REQUEST['edit_id'])) {
                         <input type="file" class="form-control" id="file_upload" name="file_upload">
                         <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                     <input type="hidden" name="existing_file" value="<?= $file_upload ?>">
@@ -296,199 +286,3 @@ if (isset($_REQUEST['edit_id'])) {
     </div>
 </form>
 <!-- New Swekshanudan close -->
-
-
-<!-- Script For Print button -->
-
-<script>
-    // update form
-    // $(document).ready(function() {
-    //     $('#Update').click(function() {
-    //         var id = $(this).val();
-    //         // alert("Selected District ID: " + district_id);
-    //         $.ajax({
-    //             url: 'aavedak.php',
-    //             type: 'POST',
-    //             data: {
-    //                 edit_id: id
-    //             },
-    //             success: function(data) {
-                   
-    //             }
-    //         });
-    //     });
-    // });
-
-    $(document).ready(function() {
-        $('#Print').on('click', function() {
-            // Serialize the form data and store it in the hidden field
-            var formData = $('form').serialize();
-            $('#form_data').val(formData);
-
-            // Submit the form
-            $('form').submit();
-        });
-    });
-</script>
-
-<!-- Print  -->
-
-<!-- Script For DropDown List -->
-
-<script>
-    // For Vidhansabha
-    // 
-    // function vidhansabhaChange(dis_id)
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-            // alert("Selected District ID: " + district_id);
-            $.ajax({
-                url: 'ajax/get_vidhansabha.php',
-                type: 'POST',
-                data: {
-                    district_id: district_id
-                },
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option>विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-                    // Pre-select the vidhansabha if editing
-                    <?php if (isset($vidhansabha_id) && !empty($vidhansabha_id)) { ?>
-                        $('#vidhansabhaSelect').val('<?= $vidhansabha_id ?>');
-                    <?php } ?>
-                }
-            });
-        });
-        // Trigger the change event if editing an existing record
-        <?php if (isset($vidhansabha_id) && !empty($vidhansabha_id)) { ?>
-            $('#districtSelect').trigger('change');
-        <?php } ?>
-    });
-
-    // For Vikaskhand
-    $(document).ready(function() {
-        $('#vidhansabhaSelect').change(function() {
-            var vidhansabha_id = $(this).val();
-            //alert("Selected Vidhansabha ID: " + vidhansabha_id);
-            $.ajax({
-                url: 'ajax/get_vikaskhand.php',
-                type: 'POST',
-                data: {
-                    vidhansabha_id: vidhansabha_id
-                },
-                success: function(data) {
-                    var vikaskhand = JSON.parse(data);
-                    $('#vikaskhandSelect').empty();
-                    $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                    $.each(vikaskhand, function(index, vikaskhand) {
-                        $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                    });
-                    // Pre-select the vidhansabha if editing
-                    <?php if (isset($vikaskhand_id) && !empty($vikaskhand_id)) { ?>
-                        $('#vikaskhandSelect').val('<?= $vikaskhand_id ?>');
-                    <?php } ?>
-                }
-            });
-        });
-        // Trigger the change event if editing an existing record
-        <?php if (isset($vikaskhand_id) && !empty($vikaskhand_id)) { ?>
-            $('#vidhansabhaSelect').trigger('change');
-        <?php } ?>
-    });
-
-    // For Sector Load 
-    $(document).ready(function() {
-        $('#vikaskhandSelect').change(function() {
-            var vikaskhand_id = $(this).val();
-            //alert("Selected Vikaskhand ID: " + vikaskhand_id);
-            $.ajax({
-                url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    vikaskhand_id: vikaskhand_id
-                },
-                success: function(data) {
-                    var sectors = JSON.parse(data);
-                    $('#sectorSelect').empty();
-                    $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                    $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                        $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                    });
-                    // Pre-select the vidhansabha if editing
-                    <?php if (isset($sector_id) && !empty($sector_id)) { ?>
-                        $('#sectorSelect').val('<?= $sector_id ?>');
-                    <?php } ?>
-                }
-            });
-        });
-        <?php if (isset($sector_id) && !empty($sector_id)) { ?>
-            $('#vikaskhandSelect').trigger('change');
-        <?php } ?>
-    });
-
-    // For Gram Panchayat From Sector id 
-    $(document).ready(function() {
-        $('#sectorSelect').change(function() {
-            var sector_id = $(this).val();
-            //alert("Selected Sector ID: " + sector_id);
-            $.ajax({
-                url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    sector_id: sector_id
-                },
-                success: function(data) {
-                    var gram_panchayats = JSON.parse(data);
-                    $('#gramPanchayatSelect').empty();
-                    $('#gramPanchayatSelect').append('<option selected>ग्राम पंचायत का नाम चुनें</option>');
-                    $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                        $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                    });
-                    // Pre-select the vidhansabha if editing
-                    <?php if (isset($gram_panchayat_name) && !empty($gram_panchayat_name)) { ?>
-                        $('#gramPanchayatSelect').val('<?= $gram_panchayat_name ?>');
-                    <?php } ?>
-                }
-            });
-        });
-        <?php if (isset($gram_panchayat_name) && !empty($gram_panchayat_name)) { ?>
-            $('#gramPanchayatSelect').trigger('change');
-        <?php } ?>
-    });
-
-    //   For Grams  By Panchayat
-    $(document).ready(function() {
-        $('#gramPanchayatSelect').change(function() {
-            var gram_panchayat_id = $(this).val();
-            //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
-            $.ajax({
-                url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
-                type: 'POST',
-                data: {
-                    gram_panchayat_id: gram_panchayat_id
-                },
-                success: function(data) {
-                    var grams = JSON.parse(data);
-                    $('#gramSelect').empty();
-                    $('#gramSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                    $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                        $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
-                    });
-                    // Pre-select the vidhansabha if editing
-                    <?php if (isset($gram_id) && !empty($gram_id)) { ?>
-                        $('#gramSelect').val('<?= $gram_id ?>');
-                    <?php } ?>
-                }
-            });
-        });
-        <?php if (isset($gram_id) && !empty($gram_id)) { ?>
-            $('#gramSelect').trigger('change');
-        <?php } ?>
-    });
-</script>
-
-<!--  -->

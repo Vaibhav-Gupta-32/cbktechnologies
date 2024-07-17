@@ -25,28 +25,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['vikaskhand_id']) && !empty($_POST['vikaskhand_id'])) {
             // Update existing record
             $vikaskhand_id = $_POST['vikaskhand_id'];
-            $update_query = "UPDATE vikaskhand_master SET vikaskhand_name='$vikaskhand_name', vidhansabha_id='$vidhansabha_id', district_id='$district_id' WHERE vikaskhand_id='$vikaskhand_id'";
+            $update_query = "UPDATE $tblname SET vikaskhand_name='$vikaskhand_name', vidhansabha_id='$vidhansabha_id', district_id='$district_id' WHERE $tblkey='$vikaskhand_id'";
             if (mysqli_query($conn, $update_query)) {
-                echo "<b class='text-success'>Vikaskhand Updated Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vikaskhand Update Successfully</b></div>";
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vikaskhand Update Unsuccessfully!!</b></div>";
             }
         } else {
             // Insert new record
             // Check if vikaskhand_name already exists for the selected district and vidhansabha
-            $check_query = "SELECT * FROM vikaskhand_master WHERE vikaskhand_name = '$vikaskhand_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id'";
+            $check_query = "SELECT * FROM $tblname WHERE vikaskhand_name = '$vikaskhand_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id'";
             $check_result = mysqli_query($conn, $check_query);
 
             if (mysqli_num_rows($check_result) > 0) {
                 // Vikaskhand name already exists
-                echo "<b class='text-danger'>Error: Vikaskhand already exists!</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vikaskhand already Exists!!</b></div>";
             } else {
                 // Vikaskhand name does not exist, proceed with insertion
-                $insert_query = "INSERT INTO vikaskhand_master (vikaskhand_name, vidhansabha_id, district_id) VALUES ('$vikaskhand_name', '$vidhansabha_id', '$district_id')";
+                $insert_query = "INSERT INTO $tblname (vikaskhand_name, vidhansabha_id, district_id) VALUES ('$vikaskhand_name', '$vidhansabha_id', '$district_id')";
                 if (mysqli_query($conn, $insert_query)) {
-                    echo "<b class='text-success'>Vikaskhand Added Successfully</b>";
+                    $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vikaskhand Added Successfully</b></div>";
                 } else {
-                    echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                    $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vikaskhand Added Unsuccessfully!!</b></div>";
                 }
             }
         }
@@ -168,38 +168,5 @@ if (isset($_GET['edit_id'])) {
     </div>
 </div>
 
-<!-- Script -->
-<script>
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-            $.ajax({
-                url: 'ajax/get_vidhansabha.php',
-                type: 'POST',
-                data: {district_id: district_id},
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-
-                    // Pre-select the vidhansabha if editing
-                    <?php if (isset($vidhansabha_id) && !empty($vidhansabha_id)) { ?>
-                        $('#vidhansabhaSelect').val('<?= $vidhansabha_id ?>');
-                    <?php } ?>
-                }
-            });
-        });
-
-        // Trigger the change event if editing an existing record
-        <?php if (isset($vidhansabha_id) && !empty($vidhansabha_id)) { ?>
-            $('#districtSelect').trigger('change');
-        <?php } ?>
-    });
-</script>
-
 
 <?php include('includes/footer.php'); ?>
-

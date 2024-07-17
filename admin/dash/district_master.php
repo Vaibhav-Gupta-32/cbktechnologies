@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_num_rows($check_result) > 0) {
             // District name already exists
-            echo "<b class='text-danger'>Error: District already exists!</b>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>District already exists!</b></div>";
         } else {
             // District name does not exist, proceed with insertion
             $sql = "INSERT INTO $tblname (district_name) VALUES ('$district_name')";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>District Added Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>District Added Successfully</b></div>";
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>District Added Unsuccessfully!!</b></div>";
             }
         }
     }
@@ -44,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($check_result) > 0) {
             $sql = "UPDATE $tblname SET district_name='$district_name' WHERE $tblkey='$district_id'";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>district Update Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>District Update Successfully</b></div>";
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>District Update Unsuccessfully!!</b></div>";
             }
         }
     }

@@ -4,7 +4,7 @@ include('../session_check.php'); // Adjust path as needed
 
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "Register New Swekshanudan";
+$pagename = "नया आवेदन भरे";
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
 
     // File upload handling
-    $target_dir = "uploads/swechanudan/";
+    $target_dir = "uploads/swekshanudan/";
     $file_upload = $_FILES['file_upload']['name'];
     $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
     $uploadOk = 1;
@@ -33,25 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     // Check if file already exists
     if (file_exists($target_file)) {
-        echo "<script>alert('Sorry, file already exists.');</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, file already exists.</b></div>";
         $uploadOk = 0;
     }
 
     // Check file size (500 KB limit)
     if ($_FILES["file_upload"]["size"] > 500000) {
-        echo "<script>alert('Sorry, your file is too large (limit is 500 KB).');</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file is too large (limit is 500 KB).</b></div>";
         $uploadOk = 0;
     }
 
     // Allow certain file formats (JPG, PNG, PDF)
     if ($fileType != "jpg" && $fileType != "png" && $fileType != "pdf") {
-        echo "<script>alert('Sorry, only JPG, PNG, and PDF files are allowed.');</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, only JPG, PNG, and PDF files are allowed.</b></div>";
         $uploadOk = 0;
     }
 
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
-        echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file was not uploaded.</b></div>";
     } else {
         // Attempt to upload file
         if (move_uploaded_file($_FILES["file_upload"]["tmp_name"], $target_file)) {
@@ -64,12 +64,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
             // Execute SQL statement
             if ($conn->query($sql) === TRUE) {
-                echo "<script>alert('New Record Created Successfully.');</script>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>New Record Created Successfully.</b></div>";
             } else {
-                echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>New Record Created Unsuccessfully!!</b></div>";
             }
         } else {
-            echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, there was an error uploading your file.</b></div>";
+            
         }
     }
 
@@ -93,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 <!-- Start New Swekshanudan Form -->
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
+    <?php if(isset($msg))echo $msg;?>
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12 col-sm-12 align-content-center">
@@ -267,141 +269,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     </div>
 </form>
 <!-- New Swekshanudan close -->
-
-
-<!-- Script -->
-
-<script>
-    // For Vidhansabha
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-           // alert("Selected District ID: " + district_id);
-            $.ajax({
-                url: 'ajax/get_vidhansabha.php',
-                type: 'POST',
-                data: {
-                    district_id: district_id
-                },
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-    // For Vikaskhand
-    $(document).ready(function() {
-    $('#vidhansabhaSelect').change(function() {
-        var vidhansabha_id = $(this).val();
-     //   alert("Selected Vidhansabha ID: " + vidhansabha_id);
-        $.ajax({
-            url: 'ajax/get_vikaskhand.php',
-            type: 'POST',
-            data: {
-                vidhansabha_id: vidhansabha_id
-            },
-            success: function(data) {
-                var vikaskhand = JSON.parse(data);
-                $('#vikaskhandSelect').empty();
-                $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                $.each(vikaskhand, function(index, vikaskhand) {
-                    $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-    });
-    // For Sector Load 
-    $(document).ready(function() {
-    $('#vikaskhandSelect').change(function() {
-        var vikaskhand_id = $(this).val();
-       // alert("Selected Vikaskhand ID: " + vikaskhand_id);
-        $.ajax({
-            url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                vikaskhand_id: vikaskhand_id
-            },
-            success: function(data) {
-                var sectors = JSON.parse(data);
-                $('#sectorSelect').empty();
-                $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                    $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-// For Gram Panchayat From Sector id 
- $(document).ready(function() {
-    $('#sectorSelect').change(function() {
-        var sector_id = $(this).val();
-      //  alert("Selected Sector ID: " + sector_id);
-        $.ajax({
-            url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                sector_id: sector_id
-            },
-            success: function(data) {
-                var gram_panchayats = JSON.parse(data);
-                $('#gramPanchayatSelect').empty();
-                $('#gramPanchayatSelect').append('<option selected>ग्राम पंचायत का नाम चुनें</option>');
-                $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-
-//   For Grams  By Panchayat
-$(document).ready(function() {
-    $('#gramPanchayatSelect').change(function() {
-        var gram_panchayat_id = $(this).val();
-     //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
-        $.ajax({
-            url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
-            type: 'POST',
-            data: {
-                gram_panchayat_id: gram_panchayat_id
-            },
-            success: function(data) {
-                var grams = JSON.parse(data);
-                $('#gramSelect').empty();
-                $('#gramSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-
-
-</script>
-
-<!--  -->
-
-
 
 <?php include('includes/footer.php'); ?>

@@ -5,44 +5,91 @@
 <?php include('includes/sidebar.php') ?>
 <?php include('includes/navbar.php') ?>
 
+<?php
+// get value from any condition //
+function getvalfield($con,$table,$field,$where)
+{
+	if($where == "")
+	$where =1;
+	
+	 $sql = "select $field from $table where $where";
+	
+//echo $sql."<br>";
+	 $getvalue =  mysqli_query($con,$sql);
+     $getval   =  mysqli_fetch_row($getvalue); 
+
+	return $getval[0];
+}
+
+$prapth_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=0');
+$prastavit_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=1');
+$sveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=2');
+$sveekrt_presit_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=3');
+$asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
+?>
+<style>
+    a{
+        text-decoration: none;
+        color: grey;
+    }
+</style>
     <!-- Sale & Revenue Start -->
     <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
             <div class="col-sm-6 col-xl-3">
+                <a href="aavedak.php">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-chart-line fa-3x text-primary"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Today Sale</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">प्राप्त आवेदन </p>
+                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-sm-6 col-xl-3">
+            <a href="prastavit_aavedan.php">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-chart-bar fa-3x text-primary"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Total Sale</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">प्रस्तावित आवेदन</p>
+                        <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
                     </div>
                 </div>
+            </a>
             </div>
             <div class="col-sm-6 col-xl-3">
+            <a href="sveekrt_aavedan.php">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-chart-area fa-3x text-primary"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Today Revenue</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">स्वीकृत आवेदन</p>
+                        <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
                     </div>
                 </div>
+            </a>
             </div>
             <div class="col-sm-6 col-xl-3">
+            <a href="sveekrt_presit_aavedan.php">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-chart-pie fa-3x text-primary"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Total Revenue</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">स्वीकृत ( प्रेषित )</p>
+                        <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
                     </div>
                 </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+            <a href="asveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">अस्वीकृत आवेदन</p>
+                        <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
             </div>
         </div>
     </div>
@@ -63,8 +110,9 @@
         </div>
      </div>
     <!-- Status Code End -->
+
     <!-- Sales Chart Start -->
-    <div class="container-fluid pt-4 px-4">
+    <!-- <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
             <div class="col-sm-12 col-xl-6">
                 <div class="bg-light text-center rounded p-4">
@@ -85,12 +133,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Sales Chart End -->
 
 
     <!-- Recent Sales Start -->
-    <div class="container-fluid pt-4 px-4">
+    <!-- <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h6 class="mb-0">Recent Salse</h6>
@@ -159,12 +207,12 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Recent Sales End -->
 
 
     <!-- Widgets Start -->
-    <div class="container-fluid pt-4 px-4">
+    <!-- <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
             <div class="col-sm-12 col-md-6 col-xl-4">
                 <div class="h-100 bg-light rounded p-4">
@@ -281,7 +329,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Widgets End -->
 
 

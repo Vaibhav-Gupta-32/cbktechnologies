@@ -24,7 +24,7 @@
 
     </div>
 
-
+    
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetCDN.com/ajax/jQuery/jQuery-1.9.0.min.js"></script>
@@ -40,6 +40,7 @@
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/custom.js"></script>
     </body>
 
     </html>

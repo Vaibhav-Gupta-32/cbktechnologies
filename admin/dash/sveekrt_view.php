@@ -3,14 +3,14 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "स्वीकृत आवेदन";
+$pagename = "विवरण";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name, y.yojna_name
-    FROM swekshanudan a 
+    FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
     LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
@@ -19,7 +19,7 @@ if ($id) {
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
     LEFT JOIN yojna_master y ON a.yojna_id = y.yojna_id
     WHERE a.status=2
-    ORDER BY a.id DESC";
+    ORDER BY a.$tblkey DESC";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
     $id = $fetch['id'];
     $name = $fetch['name'];
@@ -170,7 +170,7 @@ if ($id) {
                         <input type="text" class="form-control" id="file_upload" name="file_upload" value="<?= $file_upload ?>" readonly>
                         <label for="file_upload"> अपलोडेड फाइल </label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                 </div>
@@ -274,7 +274,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 text-center mb-3">
+            <!-- <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
                     <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
                 </div>
@@ -283,7 +283,7 @@ if ($id) {
                 <div class="form-group">
                     <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                 </div>
-            </div>
+            </div> -->
 
             <!--  -->
         </div>

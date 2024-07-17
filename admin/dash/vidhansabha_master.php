@@ -22,28 +22,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_POST['vidhansabha_id'])) {
             // Update existing vidhansabha
             $vidhansabha_id = $_POST['vidhansabha_id'];
-            $sql = "UPDATE vidhansabha_master SET vidhansabha_name='$vidhansabha_name', district_id='$district_id' WHERE vidhansabha_id='$vidhansabha_id'";
+            $sql = "UPDATE $tblname SET vidhansabha_name='$vidhansabha_name', district_id='$district_id' WHERE $tblkey='$vidhansabha_id'";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>Vidhansabha Updated Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vidhansabha Update Successfully</b></div>";
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vidhansabha Update Unsuccessfully!!</b></div>";
             }
         } else {
             // Insert new vidhansabha
             // Check if vidhansabha_name already exists
-            $check_query = "SELECT * FROM vidhansabha_master WHERE vidhansabha_name = '$vidhansabha_name' AND district_id = '$district_id'";
+            $check_query = "SELECT * FROM $tblname WHERE vidhansabha_name = '$vidhansabha_name' AND district_id = '$district_id'";
             $check_result = mysqli_query($conn, $check_query);
 
             if (mysqli_num_rows($check_result) > 0) {
                 // Vidhansabha name already exists
-                echo "<b class='text-danger'>Error: Vidhansabha already exists!</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vidhansabha Already Exists!!</b></div>";
             } else {
                 // Vidhansabha name does not exist, proceed with insertion
-                $sql = "INSERT INTO vidhansabha_master (vidhansabha_name, district_id) VALUES ('$vidhansabha_name', '$district_id')";
+                $sql = "INSERT INTO $tblname (vidhansabha_name, district_id) VALUES ('$vidhansabha_name', '$district_id')";
                 if (mysqli_query($conn, $sql)) {
-                    echo "<b class='text-success'>Vidhansabha Added Successfully</b>";
+                    $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vidhansabha Added Successfully</b></div>";
                 } else {
-                    echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                    $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vidhansabha Added Unsuccessfully!!</b></div>";
                 }
             }
         }

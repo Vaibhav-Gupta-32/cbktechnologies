@@ -18,7 +18,7 @@
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>स्वेच्छानुदान</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="swechanudan.php" class="dropdown-item"><b>नया आवेदन</b></a>
+                     <a href="swekshanudan.php" class="dropdown-item"><b>नया आवेदन</b></a>
                      <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
                      <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
                      <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
@@ -30,7 +30,7 @@
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>निर्माण</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="swechanudan.php" class="dropdown-item"><b>नया आवेदन</b></a>
+                     <a href="swekshanudan.php" class="dropdown-item"><b>नया आवेदन</b></a>
                      <a href="aavedak.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
                      <a href="prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
                      <a href="sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
