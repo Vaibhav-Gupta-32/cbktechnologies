@@ -1,10 +1,9 @@
+<?php include('../config/dbconnection.php') ?>
+<?php include('../config/session_check.php') ?>
 <?php
-include('../../dbconnection.php'); // Adjust path as needed
-include('../../session_check.php'); // Adjust path as needed
-
-$tblname = "nirmaan";
+$tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "नया निर्माण आवेदन भरे";
+$pagename = "नया आवेदन भरे";
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -25,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
 
     // File upload handling
-    $target_dir = "uploads";
+    $target_dir = "uploads/swekshanudan/";
     $file_upload = $_FILES['file_upload']['name'];
     $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
     $uploadOk = 1;

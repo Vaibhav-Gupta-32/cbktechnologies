@@ -17,14 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_num_rows($check_result) > 0) {
             // Yojna name already exists
-            echo "<b class='text-danger'>Error: Yojna already exists!</b>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Yojna already exists!</b></div>";
         } else {
             // Yojna name does not exist, proceed with insertion
             $sql = "INSERT INTO $tblname (yojna_name) VALUES ('$yojna_name')";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>Yojna Added Successfully</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Yojna Added Successfully</b></div>";
             } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Yojna Added Unsuccessfully!!</b></div>";
             }
         }
     }
@@ -45,9 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($check_result) > 0) {
             $sql = "UPDATE $tblname SET yojna_name='$yojna_name' WHERE $tblkey='$yojna_id'";
             if (mysqli_query($conn, $sql)) {
-                echo "<b class='text-success'>yojna Update Successfully</b>";
-            } else {
-                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
+                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Yojna Update Successfully</b></div>";           
+             } else {
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Yojna Update Unsuccessfully!!</b></div>";
             }
         }
     }

@@ -1,9 +1,9 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "nirmaan";
 $tblkey = "id";
-$pagename = "प्राप्त आवेदन";
+$pagename = "निर्माण प्राप्त आवेदन";
 // $msg="";
 
 // Update Form 
@@ -408,7 +408,7 @@ $fetch = mysqli_query($conn, $sql);
         //  alert(v_id);
         $.ajax({
             type: 'POST',
-            url: 'aavedak_view.php',
+            url: 'nirmaan_aavedan_view.php',
             data: {
                 id: v_id
             },
@@ -423,7 +423,7 @@ $fetch = mysqli_query($conn, $sql);
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'aavedak_edit.php',
+            url: 'nirmaan_aavedan_edit.php',
             data: {
                 edit_id: e_id
             },

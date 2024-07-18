@@ -149,10 +149,9 @@ $fetch = mysqli_query($conn, $sql);
 //  Close Search
 
 ?>
-
-<?php include('includes/header.php') ?>
-<?php include('includes/sidebar.php') ?>
-<?php include('includes/navbar.php') ?>
+<?php include('../includes/header.php') ?>
+<?php include('../includes/sidebar.php') ?>
+<?php include('../includes/navbar.php') ?>
 
 <!-- aavedak search start -->
 <div class="container-fluid pt-4 px-4">

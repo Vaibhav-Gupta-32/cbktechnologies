@@ -1,38 +1,84 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "nirmaan";
 $tblkey = "id";
-$pagename = "प्रेषित स्वीकृत आवेदन ";
-// If Approve By Admin 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
-    $vid = $_POST['id'];
-    $anumodit_amount =$_POST['anumodit_amount'];
-    $aadesh_no = $_POST['aadesh_no'];
-    $anumodit_date =$_POST['anumodit_date'];
-    $view_comment =$_POST['view_comment'];
+$pagename = "स्वीकृत आवेदन";
 
-   $sql = "UPDATE $tblname SET status='1',anumodit_amount='$anumodit_amount',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE id='$vid'";
-//    echo $sql;die;
+// Update Form 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
+    $edit_id=$_POST['edit_id'];
+    // $name = $_POST['name'];
+    // $phone_number = $_POST['phone_number'];
+    // $designation = $_POST['designation'];
+    // $district_id = $_POST['district_id'];
+    // $vidhansabha_id = $_POST['vidhansabha_id'];
+    // $vikaskhand_id = $_POST['vikaskhand_id'];
+    // $sector_id = $_POST['sector_id'];
+    // $gram_panchayat_id = $_POST['gram_panchayat_id'];
+    // $gram_id = $_POST['gram_id'];
+    // $subject = $_POST['subject'];
+    // $reference = $_POST['reference'];
+    // $expectations_amount = $_POST['expectations_amount'];
+    // $application_date = $_POST['application_date'];
+    // $comment = $_POST['comment'];
+    // $existing_file = $_POST['existing_file'];
+    $anumodit_amount = $_POST['anumodit_amount'];
+    $aadesh_no = $_POST['aadesh_no'];
+    $anumodit_date = $_POST['anumodit_date'];
+    $view_comment = $_POST['view_comment'];
+    // $file_upload = $_FILES['file_upload']['name'];
+    
+    if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
+        $s_id = $_POST['edit_id'];
+        // echo 'vaibhav'.$edit_id;die;
+
+
+        // Save the form data along with the file path to the database
+        $update_query = "UPDATE $tblname SET 
+                        anumodit_amount = '$anumodit_amount',
+                        aadesh_no = '$aadesh_no',
+                        anumodit_date = '$anumodit_date',
+                        view_comment = '$view_comment'
+                        WHERE $tblkey = '$s_id'";
+        // echo $update_query;
+        // die;
+
+        if (mysqli_query($conn, $update_query)) {
+            $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Update Successfully</b></div>";
+        } else {
+            // $msg = "<div class='msg-container'><b class='alert alert-success msg';'>Error: " . mysqli_error($conn) ."</b></div>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
+        }
+    }
+}
+
+// If Presit For Print Data By Admin 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
+    die;
+    $presit_id = $_POST['presit_id'];
+    $ptr_sender = $_POST['ptr_sender'];
+    $presit_date = $_POST['presit_date'];
+    $anudan_prapt_add = $_POST['anudan_prapt_add'];
+
+    $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE $tblkey ='$presit_id'";
+    // echo $sql; die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert($vid+'Approved Successfully')</script>";
-        // echo "<script>window.open('prastavit_aavedak.php?view=$vid','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
+
     } else {
-        echo "<script>alert('Error')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
-}}
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Approved!! </b></div>";
+    }
+}
 // Close Approve Admin
 
-// If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
-    $sql = "UPDATE $tblname SET status='4' WHERE id='$id'";
+    $sql = "UPDATE $tblname SET status='4' WHERE $tblkey ='$id'";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>alert('Un Approve Successfully')</script>";
-        // echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapproved Successfully</b></div>";
     } else {
-        echo "<script>alert('Error')</script>";
-        echo "<script>window.open('view.php?view=$tblname','_self')</script>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Unapproved!!</b></div>";
     }
 }
 // Close For Reject By Admin
@@ -57,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=3";
+    WHERE a.status=0";
 
     // Add conditions if fields are set
     if (!empty($district_id)) {
@@ -88,22 +134,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     // echo $sql;die;
 } else {
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM swekshanudan a 
+    FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
     LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=3
-    ORDER BY a.id DESC";
+    WHERE a.status=2
+    ORDER BY a.$tblkey  DESC";
 }
 
 $fetch = mysqli_query($conn, $sql);
 //  Close Search
 
 ?>
-
 <?php include('../includes/header.php') ?>
 <?php include('../includes/sidebar.php') ?>
 <?php include('../includes/navbar.php') ?>
@@ -226,7 +271,7 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
+                <a name="Add_New" onclick="location.href='swekshanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
@@ -247,8 +292,7 @@ $fetch = mysqli_query($conn, $sql);
     <div class="row">
         <div class="col-sm-12 col-lg-12">
         <h6 class="mb-4 text-center mt-2 pt-3 "><?= $pagename; ?> सूची</h6>
-            <div class=" rounded" style="overflow-y: scroll;">
-                
+            <div class=" rounded" style="overflow-y: scroll;">     
                 <table class="table table-striped border shadow">
                     <thead class=" head">
                         <tr class="text-center">
@@ -262,7 +306,6 @@ $fetch = mysqli_query($conn, $sql);
                             <th scope="col">विधानसभा</th>
                             <th scope="col">जिला</th>
                             <th scope="col">Action</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -284,11 +327,11 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     &nbsp;
                     &nbsp;
-                    <a href="#" onclick="window.open('print_presit_details.php?id=<?= $row['id'] ?>','_blank')"><i class="fas fa-solid fa-print" title="Print-Presit"></i></a>
+                    <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
                     &nbsp;
-                    &nbsp;
+                    <!-- &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                    &nbsp;
+                    &nbsp; -->
                     &nbsp;
                     <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
@@ -308,7 +351,7 @@ $fetch = mysqli_query($conn, $sql);
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> विवरण</h5>
+                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -318,7 +361,22 @@ $fetch = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-
+<!-- The Presit For Print  Modal -->
+<div class="modal fade" id="myModal-presit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- This will be replaced with the content from view.php -->
+            </div>
+        </div>
+    </div>
+</div>
 <!-- The Edit Modal -->
 <div class="modal fade" id="myModal-edit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -353,12 +411,27 @@ $fetch = mysqli_query($conn, $sql);
             }
         });
     }
+//   presit print ajax
+    function presit(p_id) {
+        //  alert(v_id);
+        $.ajax({
+            type: 'POST',
+            url: 'presit_print.php',
+            data: {
+                id: p_id
+            },
+            success: function(data) {
+                $('#myModal-presit').find('.modal-body').html(data);
+                $('#myModal-presit').modal('show');
+            }
+        });
+    }
 
     function edit(e_id) {
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'aavedak_edit.php',
+            url: 'sweekrt_aavedan_edit.php',
             data: {
                 edit_id: e_id
             },
@@ -376,142 +449,4 @@ $fetch = mysqli_query($conn, $sql);
     // }
 </script>
 
-
-    <!-- Close Modal And Table View Scripts -->
-
-
-<!-- Script For DropDown List -->
-
-<script>
-    // For Vidhansabha
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-          //  alert("Selected District ID: " + district_id);
-            $.ajax({
-                url: 'ajax/get_vidhansabha.php',
-                type: 'POST',
-                data: {
-                    district_id: district_id
-                },
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option value="">विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-    // For Vikaskhand
-    $(document).ready(function() {
-    $('#vidhansabhaSelect').change(function() {
-        var vidhansabha_id = $(this).val();
-        //alert("Selected Vidhansabha ID: " + vidhansabha_id);
-        $.ajax({
-            url: 'ajax/get_vikaskhand.php',
-            type: 'POST',
-            data: {
-                vidhansabha_id: vidhansabha_id
-            },
-            success: function(data) {
-                var vikaskhand = JSON.parse(data);
-                $('#vikaskhandSelect').empty();
-                $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                $.each(vikaskhand, function(index, vikaskhand) {
-                    $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-    });
-    // For Sector Load 
-    $(document).ready(function() {
-    $('#vikaskhandSelect').change(function() {
-        var vikaskhand_id = $(this).val();
-        //alert("Selected Vikaskhand ID: " + vikaskhand_id);
-        $.ajax({
-            url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                vikaskhand_id: vikaskhand_id
-            },
-            success: function(data) {
-                var sectors = JSON.parse(data);
-                $('#sectorSelect').empty();
-                $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                    $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-// For Gram Panchayat From Sector id 
- $(document).ready(function() {
-    $('#sectorSelect').change(function() {
-        var sector_id = $(this).val();
-        //alert("Selected Sector ID: " + sector_id);
-        $.ajax({
-            url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-            type: 'POST',
-            data: {
-                sector_id: sector_id
-            },
-            success: function(data) {
-                var gram_panchayats = JSON.parse(data);
-                $('#gramPanchayatSelect').empty();
-                $('#gramPanchayatSelect').append('<option selected>ग्राम पंचायत का नाम चुनें</option>');
-                $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-
-//   For Grams  By Panchayat
-$(document).ready(function() {
-    $('#gramPanchayatSelect').change(function() {
-        var gram_panchayat_id = $(this).val();
-     //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
-        $.ajax({
-            url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
-            type: 'POST',
-            data: {
-                gram_panchayat_id: gram_panchayat_id
-            },
-            success: function(data) {
-                var grams = JSON.parse(data);
-                $('#gramSelect').empty();
-                $('#gramSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                    $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ' + status + ' - ' + error);
-            }
-        });
-    });
-});
-
-
-
-</script>
-
-<!--  -->
-
-<?php include('../includes/footer.php'); ?>
+<?php include('includes/footer.php'); ?>

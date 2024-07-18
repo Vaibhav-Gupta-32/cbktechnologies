@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "nirmaan";
 $tblkey = "id";
 $pagename = "प्रेषित स्वीकृत आवेदन ";
 // If Approve By Admin 
