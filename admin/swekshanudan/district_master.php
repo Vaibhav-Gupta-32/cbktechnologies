@@ -53,9 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-<?php include('includes/header.php') ?>
-<?php include('includes/sidebar.php') ?>
-<?php include('includes/navbar.php') ?>
+<?php include('../includes/header.php') ?>
+<?php include('../includes/sidebar.php') ?>
+<?php include('../includes/navbar.php') ?>
 
 <!-- District Form -->
 <!-- Add New District Name -->
@@ -165,4 +165,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     });
 </script>
 
-<?php include('includes/footer.php'); ?>
+<?php include('../includes/footer.php'); ?>

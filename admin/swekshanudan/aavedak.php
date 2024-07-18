@@ -173,9 +173,9 @@ $fetch = mysqli_query($conn, $sql);
 
 ?>
 
-<?php include('includes/header.php') ?>
-<?php include('includes/sidebar.php') ?>
-<?php include('includes/navbar.php') ?>
+<?php include('../includes/header.php') ?>
+<?php include('../includes/sidebar.php') ?>
+<?php include('../includes/navbar.php') ?>
 
 <!-- aavedak search start -->
 <div class="container-fluid pt-4 px-4">
@@ -437,4 +437,4 @@ $fetch = mysqli_query($conn, $sql);
 <!-- Close Modal And Table View Scripts -->
 
 
-<?php include('includes/footer.php'); ?>
+<?php include('../includes/footer.php'); ?>

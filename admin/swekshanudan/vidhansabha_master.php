@@ -65,9 +65,9 @@ if (isset($_GET['edit_id'])) {
 }
 ?>
 
-<?php include('includes/header.php') ?>
-<?php include('includes/sidebar.php') ?>
-<?php include('includes/navbar.php') ?>
+<?php include('../includes/header.php') ?>
+<?php include('../includes/sidebar.php') ?>
+<?php include('../includes/navbar.php') ?>
 
 <div class="container-fluid pt-4 px-4">
     <!-- Form Vidhansabha -->
@@ -140,4 +140,4 @@ if (isset($_GET['edit_id'])) {
     </div>
 </div>
 
-<?php include('includes/footer.php'); ?>
+<?php include('../includes/footer.php'); ?>
