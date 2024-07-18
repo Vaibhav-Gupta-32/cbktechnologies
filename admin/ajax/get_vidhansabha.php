@@ -1,6 +1,6 @@
 <?php
-require('../../dbconnection.php'); // Adjust path as needed
-require('../../session_check.php'); // Adjust path as needed
+require('../config/dbconnection.php'); // Adjust path as needed
+require('../config/session_check.php'); // Adjust path as needed
 
 if (isset($_POST['district_id'])) {
     $district_id = $_POST['district_id'];

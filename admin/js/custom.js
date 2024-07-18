@@ -39,7 +39,7 @@ $(document).ready(function() {
         var district_id = $(this).val();
         //  alert("Selected District ID: " + district_id);
         $.ajax({
-            url: 'ajax/get_vidhansabha.php',
+            url: '../ajax/get_vidhansabha.php',
             type: 'POST',
             data: {
                 district_id: district_id
@@ -62,7 +62,7 @@ $(document).ready(function() {
         var vidhansabha_id = $(this).val();
         //alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
-            url: 'ajax/get_vikaskhand.php',
+            url: '../ajax/get_vikaskhand.php',
             type: 'POST',
             data: {
                 vidhansabha_id: vidhansabha_id
@@ -87,7 +87,7 @@ $(document).ready(function() {
         var vikaskhand_id = $(this).val();
         //alert("Selected Vikaskhand ID: " + vikaskhand_id);
         $.ajax({
-            url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
+            url: '../ajax/get_sector.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 vikaskhand_id: vikaskhand_id
@@ -112,7 +112,7 @@ $(document).ready(function() {
         var sector_id = $(this).val();
         //alert("Selected Sector ID: " + sector_id);
         $.ajax({
-            url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
+            url: '../ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 sector_id: sector_id
@@ -138,7 +138,7 @@ $(document).ready(function() {
         var gram_panchayat_id = $(this).val();
         //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
         $.ajax({
-            url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
+            url: '../ajax/get_gram.php', // Replace with your PHP file to fetch gram
             type: 'POST',
             data: {
                 gram_panchayat_id: gram_panchayat_id

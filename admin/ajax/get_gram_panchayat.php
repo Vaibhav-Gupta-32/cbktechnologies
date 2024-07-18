@@ -1,6 +1,6 @@
 <?php
-require('../../dbconnection.php'); // Adjust path as needed
-require('../../session_check.php'); // Adjust path as needed
+require('../config/dbconnection.php'); // Adjust path as needed
+require('../config/session_check.php'); // Adjust path as needed
 
 if (isset($_POST['sector_id'])) {
     $sector_id = $_POST['sector_id'];

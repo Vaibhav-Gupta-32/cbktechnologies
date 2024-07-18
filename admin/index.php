@@ -4,11 +4,14 @@ session_start();
 $msg="";
 $suc="";
 $err="";
+$otp="";
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = base64_encode($_POST['password']);
-    $otp = isset($_POST['usr-otp']) ? $_POST['usr-otp'] : null;
-
+    // $otp = isset($_POST['usr-otp']) ? $_POST['usr-otp'] : null;
+    // $length=6;
+    // $otp=generateOTP($length);
+    // $response=sendOTP($phoneNumber, $otp);
     if ($otp) {
         // Verify OTP
         if ($_SESSION['otp'] == $otp) {
@@ -84,14 +87,14 @@ if (isset($_POST['login'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="dash/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="dash/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="dash/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="dash/css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -269,17 +272,17 @@ if (isset($_POST['login'])) {
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="dash/lib/chart/chart.min.js"></script>
-    <script src="dash/lib/easing/easing.min.js"></script>
-    <script src="dash/lib/waypoints/waypoints.min.js"></script>
-    <script src="dash/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="dash/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="dash/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="dash/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
    
 
     <!-- Template Javascript -->
-    <script src="dash/js/main.js"></script>
+    <script src="js/main.js"></script>
 
 <hr>
 
