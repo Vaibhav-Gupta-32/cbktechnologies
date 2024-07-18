@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <td><?= $row['vibhag_name'] ?></td>
                                     <td class="d-flex justify-content-center flex-row action">
                                         <a href="#" id="switch_edit" class="edit-btn" data-id="<?= $row[$tblkey]; ?>" data-name="<?= htmlspecialchars($row['vibhag_name']); ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                        <a href="#" onclick="confirmDelete(<?= $row[$tblkey]; ?>, '<?= $tblname; ?>' ,'<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                        <a class="text-danger " href="#" onclick="confirmDelete(<?= $row[$tblkey]; ?>, '<?= $tblname; ?>' ,'<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>

@@ -333,7 +333,7 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                     &nbsp; -->
                     &nbsp;
-                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
+                    <a class="text-danger " href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
             </tr>
         <?php } ?>
@@ -431,7 +431,7 @@ $fetch = mysqli_query($conn, $sql);
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'sweekrt_aavedan_edit.php',
+            url: 'sveekrt_aavedan_edit.php',
             data: {
                 edit_id: e_id
             },
@@ -449,4 +449,4 @@ $fetch = mysqli_query($conn, $sql);
     // }
 </script>
 
-<?php include('includes/footer.php'); ?>
+<?php include('../includes/footer.php'); ?>

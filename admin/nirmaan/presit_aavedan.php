@@ -290,7 +290,7 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                     &nbsp;
                     &nbsp;
-                    <a href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
+                    <a class="text-danger " href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>
             </tr>
         <?php } ?>

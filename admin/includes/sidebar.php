@@ -15,6 +15,7 @@
          </div>
          <div class="navbar-nav w-100">
              <a href="dashboard.php" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>डैशबोर्ड</a>
+           <!-- For Swekshanudan -->
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>स्वेच्छानुदान</a>
                  <div class="dropdown-menu bg-transparent border-0">
@@ -26,7 +27,7 @@
                      <a href="../swekshanudan/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
-
+<!-- For nirmaan  -->
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>निर्माण</a>
                  <div class="dropdown-menu bg-transparent border-0">
@@ -38,18 +39,31 @@
                      <a href="../nirmaan/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
+             <!-- For चिकित्सा अनुदान -->
+             <div class="nav-item dropdown">
+                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>चिकित्सा अनुदान</a>
+                 <div class="dropdown-menu bg-transparent border-0">
+                     <a href="../nirmaan/new_nirmaan.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
+                     <a href="../nirmaan/nirmaan_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <a href="../nirmaan/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
+                     <a href="../nirmaan/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="../nirmaan/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="../nirmaan/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                 </div>
+             </div>
+
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>मास्टर सेटिंग्स</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="district_master.php" class="dropdown-item">डिस्ट्रिक्ट मास्टर</a>
-                     <a href="vidhansabha_master.php" class="dropdown-item">विधानसभा मास्टर</a>
-                     <a href="vikaskhand_master.php" class="dropdown-item">विकासखंड मास्टर</a>
-                     <a href="sector_master.php" class="dropdown-item">सेक्टर मास्टर</a>
-                     <a href="gram_panchayat_master.php" class="dropdown-item">ग्राम पंचायत मास्टर</a>
-                     <a href="gram_master.php" class="dropdown-item">ग्राम मास्टर</a>
-                     <a href="yojana_master.php" class="dropdown-item">योजना मास्टर</a>
-                     <a href="vibhag_master.php" class="dropdown-item">विभाग मास्टर</a>
-                     <a href="maananeey_master.php" class="dropdown-item">प्रिंट मास्टर</a>
+                     <a href="../master/district_master.php" class="dropdown-item">डिस्ट्रिक्ट मास्टर</a>
+                     <a href="../master/vidhansabha_master.php" class="dropdown-item">विधानसभा मास्टर</a>
+                     <a href="../master/vikaskhand_master.php" class="dropdown-item">विकासखंड मास्टर</a>
+                     <a href="../master/sector_master.php" class="dropdown-item">सेक्टर मास्टर</a>
+                     <a href="../master/gram_panchayat_master.php" class="dropdown-item">ग्राम पंचायत मास्टर</a>
+                     <a href="../master/gram_master.php" class="dropdown-item">ग्राम मास्टर</a>
+                     <a href="../master/yojana_master.php" class="dropdown-item">योजना मास्टर</a>
+                     <a href="../master/vibhag_master.php" class="dropdown-item">विभाग मास्टर</a>
+                     <a href="../master/maananeey_master.php" class="dropdown-item">माननीय मास्टर</a>
                  </div>
              </div>
              <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>

@@ -1,6 +1,6 @@
 <?php
-include('../../dbconnection.php'); // Adjust path as needed
-include('../../session_check.php'); // Adjust path as needed
+include('../config/dbconnection.php'); // Adjust path as needed
+include('../config/session_check.php'); // Adjust path as needed
 
 $tblname = "nirmaan";
 $tblkey = "id";

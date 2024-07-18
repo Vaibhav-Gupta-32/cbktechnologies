@@ -217,7 +217,7 @@ if (isset($_GET['edit_id'])) {
                                 <td><?= $row['district_name'] ?></td>
                                 <td class="d-flex justify-content-center flex-row action">
                                     <a href="?edit_id=<?= $row['gram_id'] ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a href="#" onclick="confirmDelete(<?= $row['gram_id']; ?>, '<?= $tblname; ?>' ,'<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                    <a class="text-danger " href="#" onclick="confirmDelete(<?= $row['gram_id']; ?>, '<?= $tblname; ?>' ,'<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>

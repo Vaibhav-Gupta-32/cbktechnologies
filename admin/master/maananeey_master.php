@@ -17,14 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_num_rows($check_result) > 0) {
             // Yojna name already exists
-            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Yojna already exists!</b></div>";
+            echo "<b class='text-danger'>Error: Yojna already exists!</b>";
         } else {
             // Yojna name does not exist, proceed with insertion
             $sql = "INSERT INTO $tblname (yojna_name) VALUES ('$yojna_name')";
             if (mysqli_query($conn, $sql)) {
-                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Yojna Added Successfully</b></div>";
+                echo "<b class='text-success'>Yojna Added Successfully</b>";
             } else {
-                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Yojna Added Unsuccessfully!!</b></div>";
+                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
             }
         }
     }
@@ -45,9 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_num_rows($check_result) > 0) {
             $sql = "UPDATE $tblname SET yojna_name='$yojna_name' WHERE $tblkey='$yojna_id'";
             if (mysqli_query($conn, $sql)) {
-                $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Yojna Update Successfully</b></div>";           
-             } else {
-                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Yojna Update Unsuccessfully!!</b></div>";
+                echo "<b class='text-success'>yojna Update Successfully</b>";
+            } else {
+                echo "<b class='text-danger'>Error: " . mysqli_error($conn) . "</b>";
             }
         }
     }
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <td><?= $row['yojna_name'] ?></td>
                                 <td class="d-flex justify-content-center flex-row action">
                                 <a href="#" id="switch_edit" class="edit-btn" data-id="<?= $row[$tblkey]; ?>" data-name="<?= htmlspecialchars($row['yojna_name']); ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                <a href="#" onclick="confirmDelete(<?=$row[$tblkey];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+                                <a class="text-danger " href="#" onclick="confirmDelete(<?=$row[$tblkey];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
                                 </td>
                             </tr>
                         <?php } ?>
