@@ -1,10 +1,9 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "nirmaan";
 $tblkey = "id";
-$pagename = "अस्वीकृत आवेदन";
-
+$pagename = "प्रेषित स्वीकृत आवेदन ";
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
@@ -58,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=4";
+    WHERE a.status=3";
 
     // Add conditions if fields are set
     if (!empty($district_id)) {
@@ -96,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=4
+    WHERE a.status=3
     ORDER BY a.id DESC";
 }
 
@@ -285,6 +284,9 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     &nbsp;
                     &nbsp;
+                    <a href="#" onclick="window.open('print_presit_details.php?id=<?= $row['id'] ?>','_blank')"><i class="fas fa-solid fa-print" title="Print-Presit"></i></a>
+                    &nbsp;
+                    &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                     &nbsp;
                     &nbsp;
@@ -341,7 +343,7 @@ $fetch = mysqli_query($conn, $sql);
         //  alert(v_id);
         $.ajax({
             type: 'POST',
-            url: 'aavedak_view.php',
+            url: 'sveekrt_view.php',
             data: {
                 id: v_id
             },
@@ -387,7 +389,7 @@ $fetch = mysqli_query($conn, $sql);
             var district_id = $(this).val();
           //  alert("Selected District ID: " + district_id);
             $.ajax({
-                url: '../ajax/get_vidhansabha.php',
+                url: 'ajax/get_vidhansabha.php',
                 type: 'POST',
                 data: {
                     district_id: district_id
@@ -410,7 +412,7 @@ $fetch = mysqli_query($conn, $sql);
         var vidhansabha_id = $(this).val();
         //alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
-            url: '../ajax/get_vikaskhand.php',
+            url: 'ajax/get_vikaskhand.php',
             type: 'POST',
             data: {
                 vidhansabha_id: vidhansabha_id
@@ -435,7 +437,7 @@ $fetch = mysqli_query($conn, $sql);
         var vikaskhand_id = $(this).val();
         //alert("Selected Vikaskhand ID: " + vikaskhand_id);
         $.ajax({
-            url: '../ajax/get_sector.php', // Replace with your PHP file to fetch sectors
+            url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 vikaskhand_id: vikaskhand_id
@@ -460,7 +462,7 @@ $fetch = mysqli_query($conn, $sql);
         var sector_id = $(this).val();
         //alert("Selected Sector ID: " + sector_id);
         $.ajax({
-            url: '../ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
+            url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
                 sector_id: sector_id
@@ -486,7 +488,7 @@ $(document).ready(function() {
         var gram_panchayat_id = $(this).val();
      //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
         $.ajax({
-            url: '../ajax/get_gram.php', // Replace with your PHP file to fetch gram
+            url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
             type: 'POST',
             data: {
                 gram_panchayat_id: gram_panchayat_id
