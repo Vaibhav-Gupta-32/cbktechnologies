@@ -1,6 +1,6 @@
+<?php include('config/dbconnection.php') ?>
 <?php
 session_start();
-include('dbconnection.php');
 $msg="";
 $suc="";
 $err="";
@@ -45,7 +45,7 @@ if (isset($_POST['login'])) {
                 echo "<script>
                 // Redirect to dashboard after 3 seconds (3000 milliseconds)
                 setTimeout(function() {
-                    window.location.href = 'dash/dashboard.php';
+                    window.location.href = 'dash';
                 }, 2000); // 3000 milliseconds = 3 seconds
             </script>";
         
