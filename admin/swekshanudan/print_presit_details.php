@@ -70,30 +70,29 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
                 size: A4;
                 margin:20mm;
             }
-
-
         }
     </style>
 </head>
 
 <body>
     <!--  -->
-            <div class="container mt-5 mb-5 pt-5 pb-5  border border-dark border-3">
+            <div class="container mt-5 mb-5 pt-5 pb-5">
 
                 <div class="Title mb-5">
                     <h1 class="text-center text-primary fw-bolder">स्वेच्छानुदान-स्वीकृति 
                     </h1>
                 </div>
-               <div class="main_data text-justify">
+               <div class="main_data text-justify p-3">
                <h4 class="fw-bold fs-3" style="line-height:2;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;माननीय श्री <b><?= $maananeey_info ?></b> की अनुशंसा पर वित्तीय वर्ष
                     <?php $year = date('Y');
                     $session = $year . '-' . ($year + 1); ?> <b><?= $session ?></b>
                     में जनसंपर्क मद से <strong><?= $subject ?>,</strong> के लिए <strong><?= $gram_name ?></strong> को <strong><?= $yojna_name ?></strong> हेतु <?= $sveekrt_amount ?> रू. राशि की स्वीकृति दी गई है । आप <?= $anudan_prapt_add ?> से सम्पर्क कर
                     स्वीकृत राशि का चेक प्राप्त कर लेवें |
                 </h4>
-                <h4 class="fw-bold fs-3" style="line-height: 2;"><strong><?= $maananeey_info ?></strong> द्वारा मुझें निर्देष दिया गया हैं, कि पत्र द्वारा आपको अवगत करा दूँ | कृपया अवगत होना चाहेंगें |</h4>
+                <br>
+                <h4 class="fw-bold fs-3" style="line-height:2;"> <strong><?= $maananeey_info ?></strong> द्वारा मुझें निर्देष दिया गया हैं, कि पत्र द्वारा आपको अवगत करा दूँ | कृपया अवगत होना चाहेंगें |</h4>
                </div>
-                <div class="d-flex justify-content-end mt-5">
+                <div class="d-flex justify-content-end mt-5 p-3">
                     <div class="info_prati " style="line-height:2;">
                         <h5 ><strong>प्रति </strong></h5>
                         <h5 ><strong>आवेदक का नाम : </strong><?= $name ?></h5>
