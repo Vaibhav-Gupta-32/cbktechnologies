@@ -17,7 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -35,6 +36,31 @@
 
     <!-- SweetAlerts2 -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> -->
+<style>
+    /* Scroll Sart Css */
+::-webkit-scrollbar {
+    width:9px; /* Set the width of the scrollbar */
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background:#44bd9e; /* Set the color of the scrollbar handle */
+    border:solid  #ffffff;
+    border-radius:9px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f5731c; /* Set the color of the scrollbar handle on hover */
+    border:solid  #ffffff;
+    border-radius:9px;
+  }
+
+
+/* End Scroall  Css */
+</style>
+
+
 </head>
 
 <body>

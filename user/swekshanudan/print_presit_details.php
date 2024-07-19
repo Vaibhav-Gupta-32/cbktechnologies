@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudaan";
+$tblname = "swekshanudan";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name, y.yojna_name
@@ -79,7 +79,7 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
             <div class="container mt-5 mb-5 pt-5 pb-5">
 
                 <div class="Title mb-5">
-                    <h1 class="text-center text-primary fw-bolder">निर्माण - स्वेच्छानुदान-स्वीकृति 
+                    <h1 class="text-center text-primary fw-bolder">स्वेच्छानुदान-स्वीकृति 
                     </h1>
                 </div>
                <div class="main_data text-justify p-3">
@@ -90,7 +90,7 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
                     स्वीकृत राशि का चेक प्राप्त कर लेवें |
                 </h4>
                 <br>
-                <h4 class="fw-bold fs-3" style="line-height:2;"> <strong><?= $maananeey_info ?></strong> द्वारा मुझें निर्देष दिया गया हैं, कि पत्र द्वारा आपको अवगत करा दूँ | कृपया अवगत होना चाहेंगें |</h4>
+                <h4 class="fw-bold fs-3" style="line-height:2;"> श्री <strong><?= $maananeey_info ?></strong> द्वारा मुझें निर्देष दिया गया हैं, कि पत्र द्वारा आपको अवगत करा दूँ | कृपया अवगत होना चाहेंगें |</h4>
                </div>
                 <div class="d-flex justify-content-end mt-5 p-3">
                     <div class="info_prati " style="line-height:2;">
