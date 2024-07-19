@@ -132,6 +132,7 @@
                      <a href="../master/yojana_master.php" class="dropdown-item">योजना मास्टर</a>
                      <a href="../master/vibhag_master.php" class="dropdown-item">विभाग मास्टर</a>
                      <a href="../master/maananeey_master.php" class="dropdown-item">माननीय मास्टर</a>
+                     <a href="../master/nirmaan_type_master.php" class="dropdown-item">निर्माण प्रकार मास्टर</a>
                  </div>
              </div>
              <!-- सेटिंग्स -->

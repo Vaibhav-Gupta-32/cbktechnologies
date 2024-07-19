@@ -90,7 +90,7 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
                     स्वीकृत राशि का चेक प्राप्त कर लेवें |
                 </h4>
                 <br>
-                <h4 class="fw-bold fs-3" style="line-height:2;"> <strong><?= $maananeey_info ?></strong> द्वारा मुझें निर्देष दिया गया हैं, कि पत्र द्वारा आपको अवगत करा दूँ | कृपया अवगत होना चाहेंगें |</h4>
+                <h4 class="fw-bold fs-3" style="line-height:2;"> श्री <strong><?= $maananeey_info ?></strong> द्वारा मुझें निर्देष दिया गया हैं, कि पत्र द्वारा आपको अवगत करा दूँ | कृपया अवगत होना चाहेंगें |</h4>
                </div>
                 <div class="d-flex justify-content-end mt-5 p-3">
                     <div class="info_prati " style="line-height:2;">
