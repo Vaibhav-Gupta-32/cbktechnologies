@@ -6,21 +6,32 @@ $suc = "";
 $err = "";
 $otp = "";
 if (isset($_POST['login_otp'])) {
-//   $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Incorrect OTP. Please entere vailed OTP</b></div>";
+    //   $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Incorrect OTP. Please entere vailed OTP</b></div>";
     // die;
-    $mobile_no=isset($_POST['amdin_otp']);
-    $otp = isset($_POST['amdin_otp']) ? $_POST['amdin_otp'] : null;
-    // if ($otp) {
-    //     // Verify OTP
-    //     if ($_SESSION['otp'] == $otp) {
-    //         $style = 'style="background-color:#70e55fa3"';
-    //         $msg = "OTP Verified";
-    //         echo "<script type='text/javascript'> document.location = 'dash/dashboard.php'; </script>";
-    //     } else {
-    //         $style = 'style="background-color:#df6161a3"';
-    //         $msg = "Invalid OTP Please Enter Correct OTP !!";
-    //     }
-    // }
+    $mobile_no = isset($_POST['amdin_otp']);
+    $otp = $_POST['amdin_otp'];
+    // echo "select * from otps where otp=$otp and created_at < valid_time";
+    // die;
+    $otp_check = getvalfield($conn, "otps", "count(*)", "otp=$otp and created_at < valid_time");
+    if ($otp) {
+        // Verify OTP
+        if ($otp_check > 0 && isset($otp_check)) {
+            // $otp = $_POST['amdin_otp'];
+            // echo 'vaaa';
+            // die;
+            $_SESSION['otp'] == $_POST['amdin_otp'];
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. Admin Login Successfully!..</b></div>";
+            echo "<script>
+        setTimeout(function() {
+            <?php header('Location: dash/'); ?>
+        }, 3000);
+    </script>";
+        } else {
+            // $style = 'style="background-color:#df6161a3"';
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP Please Enter Correct OTP !!</b></div>";
+            // $msg = "Invalid OTP Please Enter Correct OTP !!";
+        }
+    }
 }
 
 if (isset($_POST['login'])) {
@@ -39,7 +50,7 @@ if (isset($_POST['login'])) {
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
 
-            $msg = "Admin Login Successfully !..";
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>Admin Login Successfully!..</b></div>";
             $suc = true;
             echo "<script>
                 // Redirect to dashboard after 3 seconds (3000 milliseconds)
@@ -88,34 +99,24 @@ if (isset($_POST['login'])) {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    
+
 </head>
 
 <body>
-     <!-- Navbar End -->
-     <!-- <div class="mt-2"> -->
-         <!-- </div> -->
-         <div id="form-main-wrapper">
-             <div class="form-container">
-                 
-                 <script>
-                     // Hide message after 2 seconds (2000 milliseconds)
-                     setTimeout(function() {
-                         var messageDiv = document.getElementById('message');
-                         if (messageDiv) {
-                             messageDiv.style.display = 'none';
-                            }
-                        }, 3000); // 2000 milliseconds = 2 seconds
-                        </script>
+    <!-- Navbar End -->
+    <!-- <div class="mt-2"> -->
+    <!-- </div> -->
+    <div id="form-main-wrapper">
+        <div class="form-container">
 
-<!-- Sign In Start -->
-<div class="container-fluid">
-    <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-            <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-                
-                <?php if(isset($msg))echo $msg;?>
-                           
+            <!-- Sign In Start -->
+            <div class="container-fluid">
+                <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                        <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+
+                            <?php if (isset($msg)) echo $msg; ?>
+
                             <!-- Login With ID Pass -->
                             <form action="" method="POST" id="usernamePasswordForm">
                                 <div class="d-flex align-items-center justify-content-center mb-3">
@@ -153,34 +154,21 @@ if (isset($_POST['login'])) {
 
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="username" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value)">
+                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value); startCountdown()">
                                     <label for="floatingInput">Admin Mobile No. <span class="text-danger">*</span></label>
-                                    <div  id="aa_container">
-                                        <p class="text-success fw-bold"  style="font-size:12px" id="aa"></p>
+                                    <div id="aa_container">
+                                        <p class="text-success fw-bold" style="font-size:12px" id="aa"></p>
                                     </div>
                                 </div>
-                                <script>
-    function otpsend(mobile) {
-        //  alert(mobile);
-        $.ajax({
-            type: 'POST',
-            url: 'ajax_otpsend.php',
-            data: {
-                mobile_no: mobile
-            },
-            success: function(data) {
-                $('#aa_container').show();
-            //     document.getElementById('aa_container').remove()
-             document.getElementById('aa').append(data);
-            }
-        });
-    }
-    // otpsend(mobile);
-</script>
                                 <div class="form-floating mb-4">
-                                    <input type="password" class="form-control" id="passkey" name="amdin_otp" placeholder="Password">
+                                    <input type="text" class="form-control" name="amdin_otp" placeholder=" ">
                                     <label for="floatingPassword">OTP <span class="text-danger">*</span></label>
+                                    <div id="otp-time" class="d-flex align-items-center justify-content-between">
+                                        <span id="countdown"></span>
+                                        <a href="" id="resend" class="" style="display: none;" onclick="otpsend(this.value);">Resend otp</a>
+                                    </div>
                                 </div>
+
                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -219,6 +207,52 @@ if (isset($_POST['login'])) {
                 }
             });
         </script>
+
+        <script>
+            function startCountdown() {
+                var countDownDate = new Date(Date.now() + 300000); // 300000 = 5 minutes in milliseconds
+
+                var x = setInterval(function() {
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ";
+
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("countdown").innerHTML = "OTP expired";
+                        document.getElementById("resend").style.display = "block";
+                    }
+                }, 1000);
+            }
+        </script>
+        <script>
+            function otpsend(mobile) {
+
+                var mobile = document.getElementById('mobile_no').value;
+                // alert(mobile);
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'ajax_otpsend.php',
+                    data: {
+                        mobile_no: mobile
+                    },
+                    success: function(data) {
+                        $('#aa_container').show();
+                        //     document.getElementById('aa_container').remove()
+                        document.getElementById('aa').append(data);
+                    }
+                });
+            }
+            // otpsend(mobile);
+        </script>
+
+        <!-- <span id="otp-time"></span> -->
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
