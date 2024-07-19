@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudaan";
+$tblname = "swekshanudan";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name, y.yojna_name
@@ -79,7 +79,7 @@ if ($maananeey && mysqli_num_rows($maananeey) > 0) {
             <div class="container mt-5 mb-5 pt-5 pb-5">
 
                 <div class="Title mb-5">
-                    <h1 class="text-center text-primary fw-bolder">निर्माण - स्वेच्छानुदान-स्वीकृति 
+                    <h1 class="text-center text-primary fw-bolder">स्वेच्छानुदान-स्वीकृति 
                     </h1>
                 </div>
                <div class="main_data text-justify p-3">

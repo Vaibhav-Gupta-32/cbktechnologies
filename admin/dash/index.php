@@ -6,7 +6,6 @@
 <?php include('../includes/navbar.php') ?>
 
 <?php
-
 $prapth_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=0');
 $prastavit_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=1');
 $sveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=2');
@@ -20,12 +19,25 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
     }
 </style>
     <!-- Sale & Revenue Start -->
-    <div class="container-fluid pt-4 px-4">
-        <div class="row g-4">
-            <div class="col-sm-6 col-xl-3">
-                <a href="aavedak.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-line fa-3x text-primary"></i>
+ <div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <h3 class="mb-0 text-center fw-bold text-primary">स्वेच्छानुदान</h3>
+        <hr class=" p-1 text-primary">
+            <div class="col-sm-6 col-xl-4">
+                <a href="../swekshanudan/swekshanudan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-plus fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">नया आवेदन जोड़े</p>
+                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <a href="../swekshanudan/aavedak.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-list fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">प्राप्त आवेदन </p>
                         <h6 class="mb-0"><?=$prapth_aavedan?></h6>
@@ -33,10 +45,10 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
                 </div>
                 </a>
             </div>
-            <div class="col-sm-6 col-xl-3">
-            <a href="prastavit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-bar fa-3x text-primary"></i>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../swekshanudan/prastavit_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-list-check fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">प्रस्तावित आवेदन</p>
                         <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
@@ -44,10 +56,10 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
                 </div>
             </a>
             </div>
-            <div class="col-sm-6 col-xl-3">
-            <a href="sveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-area fa-3x text-primary"></i>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../swekshanudan/sveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-check-to-slot fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">स्वीकृत आवेदन</p>
                         <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
@@ -55,10 +67,10 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
                 </div>
             </a>
             </div>
-            <div class="col-sm-6 col-xl-3">
-            <a href="sveekrt_presit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-pie fa-3x text-primary"></i>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../swekshanudan/presit_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-file-signature fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">स्वीकृत ( प्रेषित )</p>
                         <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
@@ -66,10 +78,10 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
                 </div>
             </a>
             </div>
-            <div class="col-sm-6 col-xl-3">
-            <a href="asveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-pie fa-3x text-primary"></i>
+            <div class="col-sm-6 col-xl-4 ">
+            <a href="../swekshanudan/asveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-file-circle-xmark fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">अस्वीकृत आवेदन</p>
                         <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
@@ -78,7 +90,155 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
             </a>
             </div>
         </div>
-    </div>
+</div>
+        <!-- 2 -->
+<div class="container-fluid mt-4 pt-4 px-4">
+    <div class="row g-4 ">
+        <h3 class="mb-0 text-center fw-bold text-primary">निर्माण</h3>
+        <hr class=" p-1 text-primary">
+            <div class="col-sm-6 col-xl-4">
+                <a href="../nirmaan/new_nirmaan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-plus fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">नया आवेदन जोड़े</p>
+                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <a href="../nirmaan/nirmaan_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-list fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">प्राप्त आवेदन </p>
+                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../nirmaan/prastavit_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-list-check fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">प्रस्तावित आवेदन</p>
+                        <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../nirmaan/sveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-check-to-slot fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">स्वीकृत आवेदन</p>
+                        <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../nirmaan/presit_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-file-signature fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">स्वीकृत ( प्रेषित )</p>
+                        <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-4 ">
+            <a href="../nirmaan/asveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-file-circle-xmark fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">अस्वीकृत आवेदन</p>
+                        <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+        </div>
+</div>
+
+<!--  3-->
+<div class="container-fluid mt-4 pt-4 px-4">
+    <div class="row g-4 ">
+        <h3 class="mb-0 text-center fw-bold text-primary">चिकित्सा अनुदान</h3>
+        <hr class=" p-1 text-primary">
+            <div class="col-sm-6 col-xl-4">
+                <a href="../chikitsa/new_chikitsa.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-plus fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">नया आवेदन जोड़े</p>
+                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <a href="../chikitsa/chikitsa_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-list fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">प्राप्त आवेदन </p>
+                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../chikitsa/prastavit_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-list-check fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">प्रस्तावित आवेदन</p>
+                        <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../chikitsa/sveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-check-to-slot fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">स्वीकृत आवेदन</p>
+                        <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+            <a href="../chikitsa/presit_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-file-signature fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">स्वीकृत ( प्रेषित )</p>
+                        <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+            <div class="col-sm-6 col-xl-4 ">
+            <a href="../chikitsa/asveekrt_aavedan.php">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
+                    <i class="fa-solid fa-file-circle-xmark fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">अस्वीकृत आवेदन</p>
+                        <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
+                    </div>
+                </div>
+            </a>
+            </div>
+        </div>
+</div>
+      
     <!-- Sale & Revenue End -->
 
     <!-- Status Code Start -->
