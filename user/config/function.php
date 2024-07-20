@@ -39,8 +39,8 @@ function sendOTP($phoneNumber, $otp)
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // return $response;
-    print_r($response);
+    return $response;
+    // print_r($response);
 }
 
 //for store

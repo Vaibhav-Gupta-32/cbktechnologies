@@ -1,26 +1,44 @@
 <?php include('config/dbconnection.php') ?>
 <?php
+header('Content-Type: application/json');
+
 $phoneNumber = $_REQUEST['mobile_no'];
-// $resendOtp = $_REQUEST['resendOtp'];
+
+$response = [
+    'status' => 'error',
+    'message' => 'Unknown error'
+];
 
 if (!empty($phoneNumber) && isset($_REQUEST['mobile_no'])) {
-    $count = getvalfield($conn, "adminlogin", "count(*)", "mobile_no=$phoneNumber");
-    // echo $count;
-    if (isset($count)  && $count > 0) {
+    $count = getvalfield($conn, "adminlogin", "count(*)", "mobile_no='$phoneNumber'");
+
+    if (isset($count) && $count > 0) {
         $length = 6;
         $otp = generateOTP($length);
-        // $phoneNumber = $phoneNumber;
-        storeOTP($conn, $phoneNumber, $otp);
-        $response = sendOTP($phoneNumber, $otp);
+        $otpResponse = sendOTP($phoneNumber, $otp);
 
-        if (isset($response)) {
-            echo  "OTP has been sent to your number.";
+        if ($otpResponse) {
+            if (is_object($otpResponse)) {
+                if (isset($otpResponse->status) && $otpResponse->status == 'success') {
+                    storeOTP($conn, $phoneNumber, $otp, 1);
+                    $response['status'] = 'success';
+                    $response['message'] = "OTP has been sent to your number.";
+                } else {
+                    $response['message'] = "Failed to send OTP. Reason: " . $otpResponse->description;
+                }
+            } else {
+                $response['message'] = "Unexpected response format.";
+            }
         } else {
-            echo  "something went wrong";
+            $response['message'] = "Something went wrong.";
         }
     } else {
-        echo "Mobile Number Dose't Exesit !!";
+        $response['message'] = "Mobile Number Doesn't Exist !!";
     }
+} else {
+    $response['message'] = "Invalid mobile number.";
 }
+
+echo json_encode($response);
 
 ?>

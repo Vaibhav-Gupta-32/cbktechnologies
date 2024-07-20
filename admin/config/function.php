@@ -42,8 +42,8 @@ function sendOTP($phoneNumber, $otp)
     return $response;
 }
 
-//for store 
-function storeOTP($conn, $phoneNumber, $otp)
+//for store
+function storeOTP($conn, $phoneNumber, $otp, $status)
 {
     $date = new DateTime('now', new DateTimeZone('Asia/Kolkata')); // Set the timezone to Indian time
     $dateTime = $date->format('Y-m-d H:i:s');
@@ -52,8 +52,8 @@ function storeOTP($conn, $phoneNumber, $otp)
     $newDate->modify('+5 minutes'); // Add 5 minutes to the current date
     $newDateTime = $newDate->format('Y-m-d H:i:s');
 
-    $stmt = $conn->prepare("INSERT INTO otps (phone_number, otp, valid_time) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $phoneNumber, $otp, $newDateTime);
+    $stmt = $conn->prepare("INSERT INTO otps (phone_number, otp, valid_time, otpSend_status) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $phoneNumber, $otp, $newDateTime, $status);
     $stmt->execute();
     $stmt->close();
 }

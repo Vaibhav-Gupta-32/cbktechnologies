@@ -141,22 +141,29 @@ if (isset($_POST['login_otp'])) {
 
 </html>
 <script>
-    function otpsend(mobile) {
-        //  alert(mobile);
-        $.ajax({
-            type: 'POST',
-            url: 'ajax_otpsend.php',
-            data: {
-                mobile_no: mobile
-            },
-            success: function(data) {
-                $('#aa_container').show();
-                //     document.getElementById('aa_container').remove()
-                document.getElementById('aa').append(data);
+function otpsend(mobile) {
+    $.ajax({
+        type: 'POST',
+        url: 'ajax_otpsend.php',
+        data: {
+            mobile_no: mobile
+        },
+        success: function(data) {
+            $('#aa_container').show();
+            $('#aa').append(data.message);
+
+            if (data.status === 'success') {
+                startCountdown(); // Call startCountdown if the OTP was sent successfully
+            } else {
+                console.error(data.message);
             }
-        });
-    }
-    // otpsend(mobile);
+        },
+        error: function(xhr, status, error) {
+            console.error("An error occurred: " + error);
+        }
+    });
+}
+
 
     function startCountdown() {
             var countDownDate = new Date(Date.now() + 300000); // 300000 = 5 minutes in milliseconds
