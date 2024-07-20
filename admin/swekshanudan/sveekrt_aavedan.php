@@ -55,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
 
 // If Presit For Print Data By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
-    die;
     $presit_id = $_POST['presit_id'];
     $ptr_sender = $_POST['ptr_sender'];
     $presit_date = $_POST['presit_date'];

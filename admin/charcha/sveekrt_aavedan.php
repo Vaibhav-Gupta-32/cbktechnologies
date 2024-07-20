@@ -1,32 +1,32 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "charcha";
 $tblkey = "id";
 $pagename = "स्वीकृत आवेदन";
 
 // Update Form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
     $edit_id=$_POST['edit_id'];
-    // $name = $_POST['name'];
-    // $phone_number = $_POST['phone_number'];
-    // $designation = $_POST['designation'];
-    // $district_id = $_POST['district_id'];
-    // $vidhansabha_id = $_POST['vidhansabha_id'];
-    // $vikaskhand_id = $_POST['vikaskhand_id'];
-    // $sector_id = $_POST['sector_id'];
-    // $gram_panchayat_id = $_POST['gram_panchayat_id'];
-    // $gram_id = $_POST['gram_id'];
-    // $subject = $_POST['subject'];
-    // $reference = $_POST['reference'];
-    // $expectations_amount = $_POST['expectations_amount'];
-    // $application_date = $_POST['application_date'];
-    // $comment = $_POST['comment'];
-    // $existing_file = $_POST['existing_file'];
-    $anumodit_amount = $_POST['anumodit_amount'];
-    $aadesh_no = $_POST['aadesh_no'];
-    $anumodit_date = $_POST['anumodit_date'];
-    $view_comment = $_POST['view_comment'];
+    $name = $_POST['name'];
+    $phone_number = $_POST['phone_number'];
+    $designation = $_POST['designation'];
+    $district_id = $_POST['district_id'];
+    $vidhansabha_id = $_POST['vidhansabha_id'];
+    $vikaskhand_id = $_POST['vikaskhand_id'];
+    $sector_id = $_POST['sector_id'];
+    $gram_panchayat_id = $_POST['gram_panchayat_id'];
+    $gram_id = $_POST['gram_id'];
+    $subject = $_POST['subject'];
+    $reference = $_POST['reference'];
+    $saral_aadesh_no = $_POST['saral_aadesh_no'];
+    $application_date = $_POST['application_date'];
+    $comment = $_POST['comment'];
+    $existing_file = $_POST['existing_file'];
+    // $anumodit_amount = $_POST['anumodit_amount'];
+    // $aadesh_no = $_POST['aadesh_no'];
+    // $anumodit_date = $_POST['anumodit_date'];
+    // $view_comment = $_POST['view_comment'];
     // $file_upload = $_FILES['file_upload']['name'];
     
     if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
@@ -46,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
 
         if (mysqli_query($conn, $update_query)) {
             $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Update Successfully</b></div>";
-            
         } else {
             // $msg = "<div class='msg-container'><b class='alert alert-success msg';'>Error: " . mysqli_error($conn) ."</b></div>";
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
@@ -65,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
     $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE $tblkey ='$presit_id'";
     // echo $sql; die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>window.open('print_presit__details.php?id=$presit_id','_blank')</script>";
-        
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
+
     } else {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Approved!! </b></div>";
     }
@@ -97,14 +96,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
 
     // Start building the SQL query
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM swekshanudan a 
+    FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
     LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=0";
+    WHERE a.status=1";
 
     // Add conditions if fields are set
     if (!empty($district_id)) {
@@ -142,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=2
+    WHERE a.status=1
     ORDER BY a.$tblkey  DESC";
 }
 
@@ -301,7 +300,7 @@ $fetch = mysqli_query($conn, $sql);
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>
                             <th scope="col">विषय</th>
-                            <th scope="col">आपेक्षित राशि</th>
+                            <th scope="col">सरल आदेश क्र.</th>
                             <th scope="col">आवेदन दिनांक</th>
                             <th scope="col">टिप्पणी</th>
                             <th scope="col">विधानसभा</th>
@@ -319,7 +318,7 @@ $fetch = mysqli_query($conn, $sql);
                 <td><?= $row['name'] ?></td>
                 <td><?= $row['phone_number'] ?></td>
                 <td><?= $row['subject'] ?></td>
-                <td><?= $row['expectations_amount'] ?></td>
+                <td><?= $row['saral_aadesh_no'] ?></td>
                 <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
                 <td><?= $row['comment'] ?></td>
                 <td><?= $row['vidhansabha_name'] ?></td>
@@ -328,11 +327,11 @@ $fetch = mysqli_query($conn, $sql);
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     &nbsp;
                     &nbsp;
-                    <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
+                    <a href="#" onclick="window.open('print_charcha_details.php?id=<?= $row['id'] ?>','_blank')"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
                     &nbsp;
-                    <!-- &nbsp;
+                    &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                    &nbsp; -->
+                    &nbsp;
                     &nbsp;
                     <a class="text-danger " href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                 </td>

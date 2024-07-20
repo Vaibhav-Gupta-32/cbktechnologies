@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
 
     // File upload handling
-    $target_dir = "uploads";
+    $target_dir = "uploads/";
     $file_upload = $_FILES['file_upload']['name'];
     $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
     $uploadOk = 1;
