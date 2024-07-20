@@ -9,8 +9,8 @@ if (isset($_POST['login_otp'])) {
     if (!isset($_POST['amdin_otp'])) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>OTP is required</b></div>";
     } else {
-        $otp = $_POST['amdin_otp'];
-        $mobile_no = $_POST['mobile_no'];
+        $otp =mysqli_escape_string($conn,$_POST['amdin_otp']);
+        $mobile_no = mysqli_escape_string($conn,$_POST['mobile_no']);
         $stored_otp = getvalfield($conn, "otps", "count(*)", "otp='$otp' and created_at <= valid_time");
         $username = getvalfield($conn, "adminlogin", "username", "mobile_no='$mobile_no'");
         $password = getvalfield($conn, "adminlogin", "password", "mobile_no='$mobile_no'");
@@ -215,7 +215,7 @@ if (isset($_POST['login'])) {
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- <script src="js/main.js"></script> -->
-    <script src="js/custom.js"></script>
+    <!-- <script src="js/main.js"></script>
+    <script src="js/custom.js"></script> -->
 </body>
 </html>

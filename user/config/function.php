@@ -37,13 +37,22 @@ function sendOTP($phoneNumber, $otp) {
     $response = curl_exec($ch);
     curl_close($ch);
 
-    return $response;
+    // return $response;
+    print_r($response);
 }
 
-//for store 
-function storeOTP($conn, $phoneNumber, $otp) {
-    $stmt = $conn->prepare("INSERT INTO otps (phone_number, otp) VALUES (?, ?)");
-    $stmt->bind_param("ss", $phoneNumber, $otp);
+//for store
+function storeOTP($conn, $phoneNumber, $otp, $status)
+{
+    $date = new DateTime('now', new DateTimeZone('Asia/Kolkata')); // Set the timezone to Indian time
+    $dateTime = $date->format('Y-m-d H:i:s');
+
+    $newDate = clone $date; // Create a copy of the current date
+    $newDate->modify('+5 minutes'); // Add 5 minutes to the current date
+    $newDateTime = $newDate->format('Y-m-d H:i:s');
+
+    $stmt = $conn->prepare("INSERT INTO otps (phone_number, otp, valid_time, otpSend_status) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $phoneNumber, $otp, $newDateTime, $status);
     $stmt->execute();
     $stmt->close();
 }

@@ -2,58 +2,35 @@
 <?php
 session_start();
 $msg = "";
-$suc = "";
-$err = "";
 $otp = "";
+
 if (isset($_POST['login_otp'])) {
-//   $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Incorrect OTP. Please entere vailed OTP</b></div>";
-    // die;
-    $mobile_no=isset($_POST['amdin_otp']);
-    $otp = isset($_POST['amdin_otp']) ? $_POST['amdin_otp'] : null;
-    // if ($otp) {
-    //     // Verify OTP
-    //     if ($_SESSION['otp'] == $otp) {
-    //         $style = 'style="background-color:#70e55fa3"';
-    //         $msg = "OTP Verified";
-    //         echo "<script type='text/javascript'> document.location = 'dash/dashboard.php'; </script>";
-    //     } else {
-    //         $style = 'style="background-color:#df6161a3"';
-    //         $msg = "Invalid OTP Please Enter Correct OTP !!";
-    //     }
-    // }
-}
-
-if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = base64_encode($_POST['password']);
-    if (isset($username) && isset($password)) {
-        $sql = "SELECT username, password FROM adminlogin WHERE username='$username' and password='$password'";
-        // echo $sql;die;
-        $stmt = mysqli_query($conn, $sql);
-        // mysqli_stmt_bind_param($stmt, "ss", $username, $password);
-        // mysqli_stmt_execute($stmt);
-        // $result = mysqli_stmt_get_result($stmt);
-
-        if (mysqli_num_rows($stmt) > 0) {
-            // $_SESSION['alogin'] = $_POST['username'];
-            $_SESSION['username'] = $username;
-            $_SESSION['password'] = $password;
-
-            $msg = "Admin Login Successfully !..";
-            $suc = true;
+    if (!isset($_POST['user_otp'])) {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>OTP is required</b></div>";
+    } else {
+       $otp =mysqli_escape_string($conn,$_POST['user_otp']);
+        $mobile_no = mysqli_escape_string($conn,$_POST['mobile_no']);
+        $stored_otp = getvalfield($conn, "otps", "count(*)", "otp='$otp' and created_at <= valid_time");
+        // echo 'dsa'. $stored_otp;
+        // die;
+        if ($stored_otp > 0) {
+            // $_SESSION['otp'] = $otp;
+            $_SESSION['username'] = $mobile_no;
+            $_SESSION['password'] = $otp;
+            $sql = mysqli_query($conn,"INSERT INTO userlogin (username, mobile_no) VALUES ($mobile_no, $mobile_no)");
+            if($sql){
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. User Login Successfully!..</b></div>";
             echo "<script>
-                // Redirect to dashboard after 3 seconds (3000 milliseconds)
-                setTimeout(function() {
-                    window.location.href = 'dash';
-                }, 2000); // 3000 milliseconds = 3 seconds
-            </script>";
+            setTimeout(function() {
+                window.location.href = 'dash/';
+            }, 2000); // 3000 milliseconds = 3 seconds
+        </script>";
+            }
+        // die;
         } else {
-            // echo "<script>alert('Invalid Details');</script>";
-            $msg = "Invalid Username or Password !..";
-            $err = true;
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP Please Enter Correct OTP !!</b></div>";
         }
     }
-    mysqli_close($conn);
 }
 ?>
 <!-- Html Starting -->
@@ -88,137 +65,62 @@ if (isset($_POST['login'])) {
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    
+
 </head>
 
 <body>
-     <!-- Navbar End -->
-     <!-- <div class="mt-2"> -->
-         <!-- </div> -->
-         <div id="form-main-wrapper">
-             <div class="form-container">
-                 
-                 <script>
-                     // Hide message after 2 seconds (2000 milliseconds)
-                     setTimeout(function() {
-                         var messageDiv = document.getElementById('message');
-                         if (messageDiv) {
-                             messageDiv.style.display = 'none';
-                            }
-                        }, 3000); // 2000 milliseconds = 2 seconds
-                        </script>
+    <!-- Navbar End -->
+    <!-- <div class="mt-2"> -->
+    <!-- </div> -->
+    <div id="form-main-wrapper">
+        <div class="form-container">
+            <!-- Sign In Start -->
+            <div class="container-fluid">
+                <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                        <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
 
-<!-- Sign In Start -->
-<div class="container-fluid">
-    <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-            <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-                
-                <?php if(isset($msg))echo $msg;?>
-                           
-                            <!-- Login With ID Pass -->
-                            <form action="" method="POST" id="usernamePasswordForm">
+                            <?php if (isset($msg)) echo $msg; ?>
+
+                            <form action="" method="POST" id="">
                                 <div class="d-flex align-items-center justify-content-center mb-3">
                                     <a href="" class="">
-                                        <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Admin Sign In !..</h3>
-                                    </a>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="@Admin">
-                                    <label for="floatingInput">User Name <span class="text-danger">*</span></label>
-                                </div>
-                                <div class="form-floating mb-4">
-                                    <input type="password" class="form-control" id="passkey" name="password" placeholder="Password">
-                                    <label for="floatingPassword">Password <span class="text-danger">*</span></label>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                    </div>
-                                    <a href="">Forgot Password</a>
-                                </div>
-                                <button type="submit" name="login" value="Sign In" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-                                <p class="text-center fw-bold mb-0">Login With <a href="" id="switchToOTP">OTP</a></p>
-
-                            </form>
-                            <!-- Login With Password Close -->
-
-                            <!-- Login With OTP -->
-                            <form action="" method="POST" id="otpForm" class="d-none">
-                                <div class="d-flex align-items-center justify-content-center mb-3">
-                                    <a href="" class="">
-                                        <h3 class="text-success"><i class="fa fa-hashtag me-2"></i>Admin Sign In !..</h3>
+                                        <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>User Sign In !..</h3>
                                     </a>
 
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="username" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value)">
-                                    <label for="floatingInput">Admin Mobile No. <span class="text-danger">*</span></label>
-                                    <div  id="aa_container">
-                                        <p class="text-success fw-bold"  style="font-size:12px" id="aa"></p>
+                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value);startCountdown()" required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10">
+                                    <label for="floatingInput">User Mobile No. <span class="text-danger">*</span></label>
+                                    <div id="aa_container">
+                                        <p class="text-success fw-bold" style="font-size:12px" id="aa"></p>
                                     </div>
                                 </div>
-                                <script>
-    function otpsend(mobile) {
-        //  alert(mobile);
-        $.ajax({
-            type: 'POST',
-            url: 'ajax_otpsend.php',
-            data: {
-                mobile_no: mobile
-            },
-            success: function(data) {
-                $('#aa_container').show();
-            //     document.getElementById('aa_container').remove()
-             document.getElementById('aa').append(data);
-            }
-        });
-    }
-    // otpsend(mobile);
-</script>
                                 <div class="form-floating mb-4">
-                                    <input type="password" class="form-control" id="passkey" name="amdin_otp" placeholder="Password">
+                                    <input type="text" class="form-control" id="otp_passkey" name="user_otp" placeholder="Password" maxlength="6" required  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <label for="floatingPassword">OTP <span class="text-danger">*</span></label>
+                                    <div id="otp-time" class="d-flex align-items-center justify-content-between">
+                                        <span id="countdown"></span>
+                                        <a href="" id="resend" class="" style="display: none;" onclick="otpsend(this.value);">Resend otp</a>
+                                    </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                                        <label class="form-check-label" for="exampleCheck2">Check me out</label>
                                     </div>
                                     <a href="">Forgot Password</a>
                                 </div>
                                 <button type="submit" name="login_otp" value="Sign In" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-                                <p class="text-center fw-bold mb-0">Login With <a href="" id="usernamePasswordForm">Username / Password</a></p>
+                                <!-- <p class="text-center mb-0">Login With <a href="" id="usernamePasswordForm">Username / Password</a></p> -->
+                                <!-- <p class="text-center mb-0">Don't have an Account? <a href="signup.php">Sign Up</a></p> -->
                             </form>
-                            <!-- Login With OTP Close -->
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Sign In End -->
-
-
-        <script>
-            document.getElementById('switchToOTP').addEventListener('click', function(event) {
-                event.preventDefault();
-                const usernamePasswordForm = document.getElementById('usernamePasswordForm');
-                const otpForm = document.getElementById('otpForm');
-                const switchLink = document.getElementById('switchToOTP');
-
-                if (usernamePasswordForm.classList.contains('d-none')) {
-                    usernamePasswordForm.classList.remove('d-none');
-                    otpForm.classList.add('d-none');
-                    switchLink.textContent = 'Login with OTP';
-                } else {
-                    usernamePasswordForm.classList.add('d-none');
-                    otpForm.classList.remove('d-none');
-                    switchLink.textContent = 'Login with Username/Password';
-                }
-            });
-        </script>
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -230,12 +132,7 @@ if (isset($_POST['login'])) {
         <script src="lib/tempusdominus/js/moment.min.js"></script>
         <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
         <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-
-        <!-- Template Javascript -->
-        <script src="js/main.js"></script>
         <script src="js/custom.js"></script>
-
         <hr>
     </div>
 
@@ -243,3 +140,41 @@ if (isset($_POST['login'])) {
 </body>
 
 </html>
+<script>
+    function otpsend(mobile) {
+        //  alert(mobile);
+        $.ajax({
+            type: 'POST',
+            url: 'ajax_otpsend.php',
+            data: {
+                mobile_no: mobile
+            },
+            success: function(data) {
+                $('#aa_container').show();
+                //     document.getElementById('aa_container').remove()
+                document.getElementById('aa').append(data);
+            }
+        });
+    }
+    // otpsend(mobile);
+
+    function startCountdown() {
+            var countDownDate = new Date(Date.now() + 300000); // 300000 = 5 minutes in milliseconds
+
+            var x = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ";
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("countdown").innerHTML = "OTP expired";
+                    document.getElementById("resend").style.display = "block";
+                }
+            }, 1000);
+        }
+</script>
