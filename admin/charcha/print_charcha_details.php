@@ -1,10 +1,10 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "chikitsa";
+$tblname = "charcha";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name, y.yojna_name
+    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name,
     FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
@@ -12,7 +12,6 @@ if (isset($_GET['id'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    LEFT JOIN yojna_master y ON a.yojna_id = y.yojna_id
     WHERE a.status=3
     ORDER BY a.id DESC";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
@@ -28,20 +27,20 @@ if (isset($_GET['id'])) {
     $gram_name = $fetch['gram_name'];
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
-    $expectations_amount = $fetch['expectations_amount'];
+    $saral_aadesh_no = $fetch['saral_aadesh_no'];
     $application_date = $fetch['application_date'];
     $comment = $fetch['comment'];
     $file_upload = $fetch['file_upload'];
-    $anumodit_amount = $fetch['anumodit_amount'];
-    $aadesh_no = $fetch['aadesh_no'];
-    $anumodit_date = $fetch['anumodit_date'];
-    $view_comment = $fetch['view_comment'];
-    $sveekrt_amount = $fetch['sveekrt_amount'];
-    $sveekrt_no = $fetch['sveekrt_no'];
-    $yojna_name = $fetch['yojna_name'];
-    $sveekrt_date = $fetch['sveekrt_date'];
-    $sveekrt_comment = $fetch['sveekrt_comment'];
-    $anudan_prapt_add = $fetch['anudan_prapt_add'];
+    // $anumodit_amount = $fetch['anumodit_amount'];
+    // $aadesh_no = $fetch['aadesh_no'];
+    // $anumodit_date = $fetch['anumodit_date'];
+    // $view_comment = $fetch['view_comment'];
+    // $sveekrt_amount = $fetch['sveekrt_amount'];
+    // $sveekrt_no = $fetch['sveekrt_no'];
+    // $yojna_name = $fetch['yojna_name'];
+    // $sveekrt_date = $fetch['sveekrt_date'];
+    // $sveekrt_comment = $fetch['sveekrt_comment'];
+    // $anudan_prapt_add = $fetch['anudan_prapt_add'];
 } else {
     echo "<script>alert('Record Not Found');</script>";
 }

@@ -1,22 +1,23 @@
 <?php
 
 // get value from any condition //
-function getvalfield($con,$table,$field,$where)
+function getvalfield($con, $table, $field, $where)
 {
-	if($where == "")
-	$where =1;
-	
-	 $sql = "select $field from $table where $where";
-	
-//echo $sql."<br>";
-	 $getvalue =  mysqli_query($con,$sql);
-     $getval   =  mysqli_fetch_row($getvalue); 
+    if ($where == "")
+        $where = 1;
 
-	return $getval[0];
+    $sql = "select $field from $table where $where";
+
+    //echo $sql."<br>";
+    $getvalue =  mysqli_query($con, $sql);
+    $getval   =  mysqli_fetch_row($getvalue);
+
+    return $getval[0];
 }
 
 //get random otp 
-function generateOTP($length) {
+function generateOTP($length)
+{
     $digits = '0123456789';
     $otp = '';
     for ($i = 0; $i < $length; $i++) {
@@ -26,7 +27,8 @@ function generateOTP($length) {
 }
 
 //for send otp
-function sendOTP($phoneNumber, $otp) {
+function sendOTP($phoneNumber, $otp)
+{
     $apiKey = "xUNYy9lqpgK2V1vz";
     $senderId = "SBJSWL";
     $message = urlencode("Dear User, Your login OTP is $otp  .This OTP will expire in 5 minutes. SBJSWL www.shyambiharijaiswal.in");
@@ -56,4 +58,3 @@ function storeOTP($conn, $phoneNumber, $otp, $status)
     $stmt->execute();
     $stmt->close();
 }
-?>

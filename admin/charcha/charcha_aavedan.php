@@ -1,85 +1,104 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "charcha";
 $tblkey = "id";
-$pagename = "स्वीकृत आवेदन";
+$pagename = "चर्चा प्राप्त आवेदन";
+// $msg="";
 
 // Update Form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
-    $edit_id=$_POST['edit_id'];
-    // $name = $_POST['name'];
-    // $phone_number = $_POST['phone_number'];
-    // $designation = $_POST['designation'];
-    // $district_id = $_POST['district_id'];
-    // $vidhansabha_id = $_POST['vidhansabha_id'];
-    // $vikaskhand_id = $_POST['vikaskhand_id'];
-    // $sector_id = $_POST['sector_id'];
-    // $gram_panchayat_id = $_POST['gram_panchayat_id'];
-    // $gram_id = $_POST['gram_id'];
-    // $subject = $_POST['subject'];
-    // $reference = $_POST['reference'];
-    // $expectations_amount = $_POST['expectations_amount'];
-    // $application_date = $_POST['application_date'];
-    // $comment = $_POST['comment'];
-    // $existing_file = $_POST['existing_file'];
-    $anumodit_amount = $_POST['anumodit_amount'];
-    $aadesh_no = $_POST['aadesh_no'];
-    $anumodit_date = $_POST['anumodit_date'];
-    $view_comment = $_POST['view_comment'];
-    // $file_upload = $_FILES['file_upload']['name'];
-    
+    $name = $_POST['name'];
+    $phone_number = $_POST['phone_number'];
+    $designation = $_POST['designation'];
+    $district_id = $_POST['district_id'];
+    $vidhansabha_id = $_POST['vidhansabha_id'];
+    $vikaskhand_id = $_POST['vikaskhand_id'];
+    $sector_id = $_POST['sector_id'];
+    $gram_panchayat_id = $_POST['gram_panchayat_id'];
+    $gram_id = $_POST['gram_id'];
+    $subject = $_POST['subject'];
+    $reference = $_POST['reference'];
+    $saral_aadesh_no = $_POST['saral_aadesh_no'];
+    $application_date = $_POST['application_date'];
+    $comment = $_POST['comment'];
+    $file_upload = $_FILES['file_upload']['name'];
+    // echo 'vaibhav';die;
     if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
         $s_id = $_POST['edit_id'];
-        // echo 'vaibhav'.$edit_id;die;
 
+        // echo 'vaibhav'.$_POST['edit_id'];die;
+        // Check if a new file was uploaded
+        if (!empty($file_upload)) {
+            // Handle file upload logic
+            $target_dir = "uploads/swekshanudan/";
+            $target_file = $target_dir . basename($file_upload);
+
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
+                // File upload successful
+                $uploaded_file_path = $target_file;
+            } else {
+                // Handle error
+                $error_message = "Sorry, there was an error uploading your file.";
+            }
+        } else {
+            // No new file uploaded, use the existing file
+            $uploaded_file_path = $_POST['existing_file'];
+        }
 
         // Save the form data along with the file path to the database
         $update_query = "UPDATE $tblname SET 
-                        anumodit_amount = '$anumodit_amount',
-                        aadesh_no = '$aadesh_no',
-                        anumodit_date = '$anumodit_date',
-                        view_comment = '$view_comment'
-                        WHERE $tblkey = '$s_id'";
+                        name = '$name', 
+                        phone_number = '$phone_number', 
+                        designation = '$designation', 
+                        district_id = '$district_id', 
+                        vidhansabha_id = '$vidhansabha_id', 
+                        vikaskhand_id = '$vikaskhand_id', 
+                        sector_id = '$sector_id', 
+                        gram_panchayat_id = '$gram_panchayat_id', 
+                        gram_id = '$gram_id', 
+                        subject = '$subject', 
+                        reference = '$reference', 
+                        saral_aadesh_no = '$saral_aadesh_no', 
+                        application_date = '$application_date', 
+                        comment = '$comment', 
+                        file_upload = '$uploaded_file_path' 
+                    WHERE $tblkey = '$s_id'";
         // echo $update_query;
         // die;
 
         if (mysqli_query($conn, $update_query)) {
             $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Update Successfully</b></div>";
-            
         } else {
-            // $msg = "<div class='msg-container'><b class='alert alert-success msg';'>Error: " . mysqli_error($conn) ."</b></div>";
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
         }
     }
 }
 
-// If Presit For Print Data By Admin 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
-    die;
-    $presit_id = $_POST['presit_id'];
-    $ptr_sender = $_POST['ptr_sender'];
-    $presit_date = $_POST['presit_date'];
-    $anudan_prapt_add = $_POST['anudan_prapt_add'];
+// If Approve By Admin 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
+    $vid = $_POST['id'];
+    $view_comment = $_POST['view_comment'];
 
-    $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE $tblkey ='$presit_id'";
-    // echo $sql; die;
+    $sql = "UPDATE $tblname SET status='1',view_comment='$view_comment' WHERE $tblkey='$vid'";
+    //    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
-        echo "<script>window.open('print_presit__details.php?id=$presit_id','_blank')</script>";
-        
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
     } else {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Approved!! </b></div>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Error</b></div>";
     }
 }
 // Close Approve Admin
 
+// If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
-    $sql = "UPDATE $tblname SET status='4' WHERE $tblkey ='$id'";
+    $sql = "UPDATE $tblname SET status='4' WHERE $tblkey='$id'";
     if (mysqli_query($conn, $sql)) {
-        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapproved Successfully</b></div>";
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapprove Successfully</b></div>";
     } else {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Not Unapproved!!</b></div>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Error</b></div>";
     }
 }
 // Close For Reject By Admin
@@ -97,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
 
     // Start building the SQL query
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM swekshanudan a 
+    FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
     LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
@@ -142,14 +161,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=2
-    ORDER BY a.$tblkey  DESC";
+    WHERE a.status=0
+    ORDER BY a.$tblkey DESC";
 }
 
 $fetch = mysqli_query($conn, $sql);
 //  Close Search
 
 ?>
+
 <?php include('../includes/header.php') ?>
 <?php include('../includes/sidebar.php') ?>
 <?php include('../includes/navbar.php') ?>
@@ -159,36 +179,36 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-        <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-4 text-center mb-3">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
- 
-            <select name="district_id" id="districtSelect" class="form-select form-control bg-white">
-                    <?php
-                    // Fetch districts for dropdown
-                    $district_query = "SELECT * FROM district_master";
-                    $district_result = mysqli_query($conn, $district_query);
-                    ?>
-                    <option value="" selected>जिले का नाम चुनें</option>
-                    <?php
-                    while ($district_row = mysqli_fetch_assoc($district_result)) {
-                        echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
-                    }
-                    ?>
-                </select>
-                <label for="districtSelect">जिले का नाम चुनें </label>
 
-                </div>
+                        <select name="district_id" id="districtSelect" class="form-select form-control bg-white">
+                            <?php
+                            // Fetch districts for dropdown
+                            $district_query = "SELECT * FROM district_master";
+                            $district_result = mysqli_query($conn, $district_query);
+                            ?>
+                            <option value="" selected>जिले का नाम चुनें</option>
+                            <?php
+                            while ($district_row = mysqli_fetch_assoc($district_result)) {
+                                echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="districtSelect">जिले का नाम चुनें </label>
+
+                    </div>
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                    <option value="" selected>विधानसभा का नाम चुनें</option>
-                    <!-- Options for vidhansabha will go here -->
-                </select>
+                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
+                            <option value="" selected>विधानसभा का नाम चुनें</option>
+                            <!-- Options for vidhansabha will go here -->
+                        </select>
                         <label for="vidhansabha">विधानसभा का नाम चुनें </label>
                     </div>
                 </div>
@@ -196,11 +216,11 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" >
-                    <option value="" selected disabled>विकासखंड का नाम चुनें</option>
-                    <!-- Option Load By AJAX -->
+                        <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
+                            <option value="" selected disabled>विकासखंड का नाम चुनें</option>
+                            <!-- Option Load By AJAX -->
 
-                </select>
+                        </select>
                         <label for="vikaskhand">विकासखंड का नाम चुनें </label>
                     </div>
                 </div>
@@ -209,22 +229,22 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                    <option value="" selected>सेक्टर का नाम चुनें</option>
-                    <!-- Options for sectors will go here -->
-                </select>
-                        <label for="sector">सेक्टर का नाम चुनें  </label>
+                        <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
+                            <option value="" selected>सेक्टर का नाम चुनें</option>
+                            <!-- Options for sectors will go here -->
+                        </select>
+                        <label for="sector">सेक्टर का नाम चुनें </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                    <option value="" selected>ग्राम पंचायत का नाम चुनें</option>
-                    <!-- Options for panchayat will go here -->
-                </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें  </label>
+                        <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
+                            <option value="" selected>ग्राम पंचायत का नाम चुनें</option>
+                            <!-- Options for panchayat will go here -->
+                        </select>
+                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें </label>
                     </div>
                 </div>
             </div>
@@ -232,8 +252,8 @@ $fetch = mysqli_query($conn, $sql);
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select class="form-select" id="gramSelect" name="gram_id">
-                        <option value="" selected>ग्राम का नाम चुनें</option>
-                   <!-- by load ajax -->
+                            <option value="" selected>ग्राम का नाम चुनें</option>
+                            <!-- by load ajax -->
                         </select>
                         <label for="gram">ग्राम का नाम चुनें </label>
                     </div>
@@ -242,7 +262,7 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="आवेदक का फ़ोन नंबर"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                         <label for="mobile">आवेदक का फ़ोन नंबर </label>
                     </div>
 
@@ -251,7 +271,7 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" name="from_date"  class="form-control" id="from_date" placeholder="कब से " >
+                        <input type="date" name="from_date" class="form-control" id="from_date" placeholder="कब से ">
                         <label for="from_date">कब से</label>
                     </div>
                 </div>
@@ -259,7 +279,7 @@ $fetch = mysqli_query($conn, $sql);
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
+                        <?php
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
@@ -268,7 +288,7 @@ $fetch = mysqli_query($conn, $sql);
                     </div>
                 </div>
             </div>
-            
+
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
@@ -292,8 +312,9 @@ $fetch = mysqli_query($conn, $sql);
 <div class="container-fluid px-4">
     <div class="row">
         <div class="col-sm-12 col-lg-12">
-        <h6 class="mb-4 text-center mt-2 pt-3 "><?= $pagename; ?> सूची</h6>
-            <div class=" rounded" style="overflow-y: scroll;">     
+            <h6 class="mb-4 text-center mt-2 pt-3 "><?= $pagename; ?> सूची</h6>
+            <div class=" rounded" style="overflow-y: scroll;">
+
                 <table class="table table-striped border shadow">
                     <thead class=" head">
                         <tr class="text-center">
@@ -301,44 +322,42 @@ $fetch = mysqli_query($conn, $sql);
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>
                             <th scope="col">विषय</th>
-                            <th scope="col">आपेक्षित राशि</th>
+                            <th scope="col">सरल आदेश क्र.</th>
                             <th scope="col">आवेदन दिनांक</th>
                             <th scope="col">टिप्पणी</th>
                             <th scope="col">विधानसभा</th>
                             <th scope="col">जिला</th>
                             <th scope="col">Action</th>
+
                         </tr>
                     </thead>
                     <tbody>
-        <?php
-        $i = 1;
-        while ($row = mysqli_fetch_array($fetch)) {
-        ?>
-            <tr class=" text-center">
-                <th scope="row"><?= $i++ ?></th>
-                <td><?= $row['name'] ?></td>
-                <td><?= $row['phone_number'] ?></td>
-                <td><?= $row['subject'] ?></td>
-                <td><?= $row['expectations_amount'] ?></td>
-                <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
-                <td><?= $row['comment'] ?></td>
-                <td><?= $row['vidhansabha_name'] ?></td>
-                <td><?= $row['district_name'] ?></td>
-                <td class="action">
-                    <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
-                    &nbsp;
-                    &nbsp;
-                    <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
-                    &nbsp;
-                    <!-- &nbsp;
-                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                    &nbsp; -->
-                    &nbsp;
-                    <a class="text-danger " href="" onclick="confirmDelete(<?=$row['id']; ?>, '<?php echo $tblname; ?>', '<?=$tblkey?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
-                </td>
-            </tr>
-        <?php } ?>
-    </tbody>
+                        <?php
+                        $i = 1;
+                        while ($row = mysqli_fetch_array($fetch)) {
+                        ?>
+                            <tr class=" text-center">
+                                <th scope="row"><?= $i++ ?></th>
+                                <td><?= $row['name'] ?></td>
+                                <td><?= $row['phone_number'] ?></td>
+                                <td><?= $row['subject'] ?></td>
+                                <td><?= $row['saral_aadesh_no'] ?></td>
+                                <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
+                                <td><?= $row['comment'] ?></td>
+                                <td><?= $row['vidhansabha_name'] ?></td>
+                                <td><?= $row['district_name'] ?></td>
+                                <td class="action">
+                                    <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                                    &nbsp;
+                                    &nbsp;
+                                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                                    &nbsp;
+                                    &nbsp;
+                                    <a class="text-danger " href="#" onclick="confirmDelete(<?= $row['id']; ?>, '<?php echo $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -362,8 +381,9 @@ $fetch = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-<!-- The Presit For Print  Modal -->
-<div class="modal fade" id="myModal-presit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<!-- The Edit Modal -->
+<div class="modal fade" id="myModal-edit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -378,31 +398,14 @@ $fetch = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-<!-- The Edit Modal -->
-<div class="modal fade" id="myModal-edit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?> विवरण बदले </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- This will be replaced with the content from view.php -->
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- modal Scripts  -->
 <script>
- 
-    // function view(v_id){
     function view(v_id) {
         //  alert(v_id);
         $.ajax({
             type: 'POST',
-            url: 'sveekrt_view.php',
+            url: 'charcha_aavedan_view.php',
             data: {
                 id: v_id
             },
@@ -412,27 +415,12 @@ $fetch = mysqli_query($conn, $sql);
             }
         });
     }
-//   presit print ajax
-    function presit(p_id) {
-        //  alert(v_id);
-        $.ajax({
-            type: 'POST',
-            url: 'presit_print.php',
-            data: {
-                id: p_id
-            },
-            success: function(data) {
-                $('#myModal-presit').find('.modal-body').html(data);
-                $('#myModal-presit').modal('show');
-            }
-        });
-    }
 
     function edit(e_id) {
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'sveekrt_aavedan_edit.php',
+            url: 'charcha_aavedan_edit.php',
             data: {
                 edit_id: e_id
             },
@@ -442,12 +430,8 @@ $fetch = mysqli_query($conn, $sql);
             }
         });
     }
-
-    //   setTimeout(()=>{
-    //   document.getElementById('subs_msg1').innerHTML = "";
-    // },2000);
-
-    // }
 </script>
+<!-- Close Modal And Table View Scripts -->
+
 
 <?php include('../includes/footer.php'); ?>

@@ -86,9 +86,9 @@ $password=$_SESSION['password'];
                     <span class="d-none d-lg-inline-flex"><?=$username;?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                    <a href="#" class="dropdown-item">My Profile</a>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="../config/logout.php" class="dropdown-item">Log Out</a>
+                    <a href="#" class="dropdown-item"><i class="fa-regular fa-id-card"></i> My Profile</a>
+                    <a href="#" class="dropdown-item"><i class="fa-solid fa-gear"></i> Settings</a>
+                    <a href="../config/logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
                 </div>
             </div>
         </div>

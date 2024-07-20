@@ -51,14 +51,17 @@
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-envelope-open-text me-2"></i>आवेदन</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
-                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
-                     <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
-                     <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
-                     <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                     <a href="../aavedan/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
+                     <a href="../aavedan/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <a href="../aavedan/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="../aavedan/prastavit_aavedan.php" class="dropdown-item"><b>पुन्ह्प्राप्त आवेदन</b></a>
+                     <a href="../aavedan/presit_aavedan.php" class="dropdown-item"><b>पूर्ण आवेदन</b></a>
+                     <a href="../aavrdan/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
+             
+
+
                    <!-- For स्थानातरण -->
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-money-bill-transfer me-2"></i>स्थानातरण</a>
@@ -71,7 +74,7 @@
                      <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
-                   <!-- For स्थानातरण -->
+                   <!-- For protocol -->
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-file-shield me-2"></i>प्रोटोकॉल</a>
                  <div class="dropdown-menu bg-transparent border-0">
@@ -87,11 +90,11 @@
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-envelope-open me-2"></i>आमंत्रण</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
-                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
-                     <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
+                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया  आमंत्रण आवेदन जोड़ें </b></a>
+                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आमंत्रण आवेदन</b></a> 
+                     <!-- <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a> -->
                      <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <!-- <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a> -->
                      <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
@@ -99,24 +102,19 @@
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-comments me-2"></i>चर्चा</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
-                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
-                     <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
-                     <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
-                     <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                     <a href="../charcha/new_charcha.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
+                     <a href="../charcha/charcha_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <!-- <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a> -->
+                     <a href="../charcha/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <!-- <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
+                     <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a> -->
                  </div>
              </div>
                    <!-- रिपोर्ट-->
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-chart-column"></i> रिपोर्ट </a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
-                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
-                     <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
-                     <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
-                     <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                     <a href="../" class="dropdown-item"><b>रिपोर्ट जनरेट करें  </b></a>
                  </div>
              </div>
 <!-- मास्टर सेटिंग्स -->
@@ -132,21 +130,14 @@
                      <a href="../master/yojana_master.php" class="dropdown-item">योजना मास्टर</a>
                      <a href="../master/vibhag_master.php" class="dropdown-item">विभाग मास्टर</a>
                      <a href="../master/maananeey_master.php" class="dropdown-item">माननीय मास्टर</a>
+                     <a href="../master/nirmaan_type_master.php" class="dropdown-item">निर्माण प्रकार मास्टर</a>
                  </div>
              </div>
              <!-- सेटिंग्स -->
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>सेटिंग्स</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../master/district_master.php" class="dropdown-item">डिस्ट्रिक्ट मास्टर</a>
-                     <a href="../master/vidhansabha_master.php" class="dropdown-item">विधानसभा मास्टर</a>
-                     <a href="../master/vikaskhand_master.php" class="dropdown-item">विकासखंड मास्टर</a>
-                     <a href="../master/sector_master.php" class="dropdown-item">सेक्टर मास्टर</a>
-                     <a href="../master/gram_panchayat_master.php" class="dropdown-item">ग्राम पंचायत मास्टर</a>
-                     <a href="../master/gram_master.php" class="dropdown-item">ग्राम मास्टर</a>
-                     <a href="../master/yojana_master.php" class="dropdown-item">योजना मास्टर</a>
-                     <a href="../master/vibhag_master.php" class="dropdown-item">विभाग मास्टर</a>
-                     <a href="../master/maananeey_master.php" class="dropdown-item">माननीय मास्टर</a>
+                     <a href="../" class="dropdown-item">प्रोफाइल सेटिंग्स </a>
                  </div>
              </div>
              <!-- हेल्प -->

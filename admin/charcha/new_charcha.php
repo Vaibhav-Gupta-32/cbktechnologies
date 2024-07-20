@@ -1,9 +1,10 @@
-<?php include('../config/dbconnection.php') ?>
-<?php include('../config/session_check.php') ?>
 <?php
-$tblname = "chikitsa";
+include('../config/dbconnection.php'); // Adjust path as needed
+include('../config/session_check.php'); // Adjust path as needed
+
+$tblname = "charcha";
 $tblkey = "id";
-$pagename = "नया आवेदन भरे";
+$pagename = "नया चर्चा आवेदन भरे";
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -19,13 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $gram_id = mysqli_real_escape_string($conn, trim($_POST['gram_id']));
     $subject = mysqli_real_escape_string($conn, trim($_POST['subject']));
     $reference = mysqli_real_escape_string($conn, trim($_POST['reference']));
-    $expectations_amount = intval($_POST['expectations_amount']); // Ensure expectations_amount is an integer
+    $saral_aadesh_no = ($_POST['saral_aadesh_no']); // Ensure 
     $application_date = mysqli_real_escape_string($conn, trim($_POST['application_date']));
     $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
+    $file_upload = $_FILES['file_upload']['name']; //file upload
 
     // File upload handling
-    $target_dir = "uploads";
-    $file_upload = $_FILES['file_upload']['name'];
+    $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
     $uploadOk = 1;
     $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -57,9 +58,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             // File uploaded successfully, proceed with database insertion
             // Prepare SQL statement
             $sql = "INSERT INTO $tblname 
-                    (name, phone_number, designation, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, subject, reference, expectations_amount, application_date, file_upload, comment) 
+                    (name, phone_number, designation, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, subject, reference, saral_aadesh_no, application_date, file_upload, comment) 
                     VALUES 
-                    ('$name', '$phone_number', '$designation', $district_id, $vidhansabha_id, $vikaskhand_id, $sector_id, '$gram_panchayat_id', '$gram_id', '$subject', '$reference', $expectations_amount, '$application_date', '$file_upload', '$comment')";
+                    ('$name', '$phone_number', '$designation', $district_id, $vidhansabha_id, $vikaskhand_id, $sector_id, '$gram_panchayat_id', '$gram_id', '$subject', '$reference', $saral_aadesh_no, '$application_date', '$file_upload', '$comment')";
 
             // Execute SQL statement
             if ($conn->query($sql) === TRUE) {
@@ -90,13 +91,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         border: none;
     }
 </style>
-<!-- Start New Swekshanudan Form -->
+<!-- Start New charcha Form -->
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
     <?php if(isset($msg))echo $msg;?>
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
         <div class="row mt-5">
-            <div class="col-lg-6 col-md-12 col-sm-12 align-content-center">
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="aavedak" placeholder="आवेदक का नाम" required>
@@ -114,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </div>
             </div>
 
-            <div class="col-lg-6 text-center mb-3">
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
  
@@ -155,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" required>
                     <option selected>विकासखंड का नाम चुनें</option>
                     <!-- Option Load By AJAX -->
-
                 </select>
                         <label for="vikaskhand">विकासखंड का नाम चुनें <span class="text-danger">*</span> </label>
                     </div>
@@ -197,17 +197,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
-                    <div class="form-floating mb-3 " >
-                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                        <label for="file_upload" >फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
+                        <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
-                        <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
+                    <div class="form-floating mb-3 " >
+                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
+                        <label for="file_upload" >फाइल अपलोड करें <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -230,8 +230,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="saral_aadesh_no" placeholder="सरल आदेश क्र." required name="saral_aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="saral_aadesh_no">सरल आदेश क्र. <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -242,12 +242,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             // Set default current date
             $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
             ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date" readonly>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date">
                         <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
-            </div>
-        
+            </div>        
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -266,6 +265,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         </div>
     </div>
 </form>
-<!-- New Swekshanudan close -->
+<!-- New charcha  close -->
 
 <?php include('../includes/footer.php'); ?>
