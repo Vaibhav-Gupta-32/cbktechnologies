@@ -59,7 +59,16 @@
                      <a href="../aavrdan/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
-             
+              <!-- For चिकित्सा seva -->
+              <div class="nav-item dropdown">
+                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-medkit me-2"></i>चिकित्सा सेवा </a>
+                 <div class="dropdown-menu bg-transparent border-0">
+                     <a href="../chikitsa_seva/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
+                     <a href="../chikitsa_seva/chikitsa_seva_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <a href="../chikitsa_seva/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="../chikitsa_seva/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                 </div>
+             </div>
 
 
                    <!-- For स्थानातरण -->
@@ -90,12 +99,12 @@
                    <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-envelope-open me-2"></i>आमंत्रण</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया  आमंत्रण आवेदन जोड़ें </b></a>
-                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आमंत्रण आवेदन</b></a> 
+                     <a href="../aamantran/new_aamantran.php" class="dropdown-item"><b>नया  आमंत्रण आवेदन जोड़ें </b></a>
+                     <a href="../aamantran/aamantran_aavedan.php" class="dropdown-item"><b>प्राप्त आमंत्रण आवेदन</b></a> 
                      <!-- <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a> -->
-                     <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="../aamantran/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
                      <!-- <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a> -->
-                     <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                     <a href="../aamantran/asveekrt_aamantran.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
                    <!-- For चर्चा-->
