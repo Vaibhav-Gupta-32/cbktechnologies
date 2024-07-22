@@ -95,11 +95,11 @@ if (isset($_POST['login'])) {
                                     </a>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="@Admin">
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="@Admin" required>
                                     <label for="floatingInput">User Name <span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating mb-4">
-                                    <input type="password" class="form-control" id="passkey" name="password" placeholder="Password">
+                                    <input type="password" class="form-control" id="passkey" name="password" placeholder="Password" required>
                                     <label for="floatingPassword">Password <span class="text-danger">*</span></label>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -120,14 +120,14 @@ if (isset($_POST['login'])) {
                                     </a>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value); startCountdown()">
+                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value); startCountdown()" maxlength="10" required>
                                     <label for="floatingInput">Admin Mobile No. <span class="text-danger">*</span></label>
                                     <div id="aa_container">
                                         <p class="text-success fw-bold" style="font-size:12px" id="aa"></p>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-4">
-                                    <input type="text" class="form-control" name="amdin_otp" placeholder=" ">
+                                    <input type="text" class="form-control" name="amdin_otp" placeholder=" " maxlength="6" required>
                                     <label for="floatingPassword">OTP <span class="text-danger">*</span></label>
                                     <div id="otp-time" class="d-flex align-items-center justify-content-between">
                                         <span id="countdown"></span>
@@ -192,18 +192,28 @@ if (isset($_POST['login'])) {
         }
 
         function otpsend(mobile) {
-            var mobile = document.getElementById('mobile_no').value;
+    $.ajax({
+        type: 'POST',
+        url: 'ajax_otpsend.php',
+        data: {
+            mobile_no: mobile
+        },
+        success: function(data) {
+            $('#aa_container').show();
+            $('#aa').append(data.message);
 
-            $.ajax({
-                type: 'POST',
-                url: 'ajax_otpsend.php',
-                data: { mobile_no: mobile },
-                success: function(data) {
-                    $('#aa_container').show();
-                    document.getElementById('aa').append(data);
-                }
-            });
+            if (data.status === 'success') {
+                startCountdown(); // Call startCountdown if the OTP was sent successfully
+            } else {
+                console.error(data.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("An error occurred: " + error);
         }
+    });
+}
+otpsend();
     </script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

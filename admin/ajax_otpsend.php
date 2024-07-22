@@ -3,7 +3,6 @@
 header('Content-Type: application/json');
 
 $phoneNumber = $_REQUEST['mobile_no'];
-
 $response = [
     'status' => 'error',
     'message' => 'Unknown error'
@@ -11,14 +10,15 @@ $response = [
 
 if (!empty($phoneNumber) && isset($_REQUEST['mobile_no'])) {
     $count = getvalfield($conn, "adminlogin", "count(*)", "mobile_no='$phoneNumber'");
-
+    
     if (isset($count) && $count > 0) {
         $length = 6;
         $otp = generateOTP($length);
         $otpResponse = sendOTP($phoneNumber, $otp);
-
+        
         if ($otpResponse) {
             if (is_object($otpResponse)) {
+                echo $phoneNumber;die;
                 if (isset($otpResponse->status) && $otpResponse->status == 'success') {
                     storeOTP($conn, $phoneNumber, $otp, 1);
                     $response['status'] = 'success';
