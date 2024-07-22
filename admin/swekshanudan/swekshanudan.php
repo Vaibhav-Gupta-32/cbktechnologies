@@ -242,7 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             // Set default current date
             $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
             ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date" readonly>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date">
                         <label for="application_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
