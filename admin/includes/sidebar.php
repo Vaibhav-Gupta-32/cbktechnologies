@@ -88,8 +88,8 @@
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-file-shield me-2"></i>प्रोटोकॉल</a>
                  <div class="dropdown-menu bg-transparent border-0">
                      <a href="../protocol/new_aavedan.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
-                     <!-- <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
-                     <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
+                     <a href="../protocol/aavedan_list.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a> 
+                     <!-- <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
                      <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
                      <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
                      <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a> -->
