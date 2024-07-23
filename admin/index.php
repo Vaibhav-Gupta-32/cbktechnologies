@@ -44,9 +44,6 @@ if (isset($_POST['login'])) {
             $_SESSION['password'] = $password;
 
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>Admin Login Successfully!..</b></div>";
-            // echo $msg; // Display the message before redirection
-
-            // Perform redirection
             echo "<script>
                 setTimeout(function() {
                     window.location.href = 'dash/';
