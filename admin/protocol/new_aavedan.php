@@ -35,37 +35,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $days = mysqli_real_escape_string($conn, trim($_POST['days']));
     }
 
-    if (empty($_POST['entry_time'])) {
-        $errors[] = 'प्रवेश का समय आवश्यक है';
-    } else {
-        $entry_time = mysqli_real_escape_string($conn, trim($_POST['entry_time']));
-    }
-
-    if (empty($_POST['exit_time'])) {
-        $errors[] = 'बाहर निकलने का समय आवश्यक है';
-    } else {
-        $exit_time = mysqli_real_escape_string($conn, trim($_POST['exit_time']));
-    }
-
-    if (empty($_POST['madhyam'])) {
-        $errors[] = 'माध्यम आवश्यक है';
-    } else {
-        $madhyam = mysqli_real_escape_string($conn, trim($_POST['madhyam']));
-    }
-
     if (empty($_POST['district_id'])) {
         $errors[] = 'जिला आईडी आवश्यक है';
     } else {
         $district_id = mysqli_real_escape_string($conn, trim($_POST['district_id']));
     }
-    if (empty($_POST['details'])) {
-        $errors[] = 'विवरण आवश्यक है';
-    } else {
-        $details = mysqli_real_escape_string($conn, trim($_POST['details']));
-    }
+    // =======================
+      // Collect multiple entries
+      $entry_times = isset($_POST['entry_time']) ? $_POST['entry_time'] : [];
+      $exit_times = isset($_POST['exit_time']) ? $_POST['exit_time'] : [];
+      $madhyams = isset($_POST['madhyam']) ? $_POST['madhyam'] : [];
+      $details_arr = isset($_POST['details']) ? $_POST['details'] : [];
+  
+      if (empty($entry_times) || empty($exit_times) || empty($madhyams) || empty($details_arr)) {
+          $errors[] = 'सभी फ़ील्ड्स आवश्यक हैं';
+      } else {
+          foreach ($entry_times as $entry_time) {
+              if (empty($entry_time)) {
+                  $errors[] = 'प्रवेश का समय आवश्यक है';
+                  break;
+              }
+          }
+          
+          foreach ($exit_times as $exit_time) {
+              if (empty($exit_time)) {
+                  $errors[] = 'बाहर निकलने का समय आवश्यक है';
+                  break;
+              }
+          }
+          foreach ($madhyams as $madhyam) {
+              if (empty($madhyam)) {
+                  $errors[] = 'माध्यम आवश्यक है';
+                  break;
+              }
+          }
+          foreach ($details_arr as $detail) {
+              if (empty($detail)) {
+                  $errors[] = 'विवरण आवश्यक है';
+                  break;
+              }
+          }
+      }
+    // =======================
+
 
     if (empty($errors)) {
-        $sql = "INSERT INTO $tblname (kramank_no, protocol_date, travel_date, days, entry_time, exit_time, madhyam, district_id, details, create_date) VALUES ('$kramank_no', '$protocol_date', '$travel_date', '$days', '$entry_time', '$exit_time', '$madhyam', '$district_id', '$details', CURRENT_TIMESTAMP)";
+        $entry_time_json = json_encode($entry_times, JSON_UNESCAPED_UNICODE);
+        $exit_time_json = json_encode($exit_times, JSON_UNESCAPED_UNICODE);
+        $madhyam_json = json_encode($madhyams, JSON_UNESCAPED_UNICODE);
+        $details_json = json_encode($details_arr, JSON_UNESCAPED_UNICODE);
+        
+        $sql = "INSERT INTO $tblname (kramank_no, protocol_date, travel_date, days, entry_time, exit_time, madhyam, district_id, details, create_date) VALUES ('$kramank_no', '$protocol_date', '$travel_date', '$days', '$entry_time_json', '$exit_time_json', '$madhyam_json', '$district_id', '$details_json', CURRENT_TIMESTAMP)";
         // echo $sql;die;
         if (mysqli_query($conn, $sql)) {
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>New Record Created Successfully.</b></div>";
@@ -97,6 +117,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         background-color: white;
         /* change the background color to light gray */
         border: none;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .shadow {
+        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px; */
+    }
+
+    .remove-btn {
+        margin-top: 30px;
     }
 </style>
 <!-- Start New Swekshanudan Form -->
@@ -147,23 +182,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="time" class="form-control" id="entry_time" placeholder=" " required name="entry_time">
-                        <label for="entry_time">आगमन<span class="text-danger">*</span> : </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="time" class="form-control" id="exit_time" placeholder=" " required name="exit_time">
-                        <label for="exit_time">प्रस्थान<span class="text-danger">*</span> :</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center mb-3">
+
+            <div class="col-lg-6 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
 
@@ -186,21 +206,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="madhyam" placeholder="माध्यम" required name="madhyam">
-                        <label for="madhyam">माध्यम<span class="text-danger">*</span> : </label>
+            <div id="formContainer">
+                <div class="col-lg-6">
+                    <div class="form-group shadow">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="madhyam" placeholder="माध्यम" required name="madhyam">
+                            <label for="madhyam">माध्यम<span class="text-danger">*</span> : </label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
-                        <label for="comment">विवरण<span class="text-danger">*</span> : </label>
+                <div class="col-lg-6">
+                    <div class="form-group shadow">
+                        <div class="form-floating mb-3">
+                            <input type="time" class="form-control" id="entry_time" placeholder=" " required name="entry_time">
+                            <label for="entry_time">आगमन<span class="text-danger">*</span> : </label>
+                        </div>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <div class="form-group shadow">
+                        <div class="form-floating mb-3">
+                            <input type="time" class="form-control" id="exit_time" placeholder=" " required name="exit_time">
+                            <label for="exit_time">प्रस्थान<span class="text-danger">*</span> :</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group shadow">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
+                            <label for="comment">विवरण<span class="text-danger">*</span> : </label>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="addMore">Add More</button>
             </div>
             <div class="col-lg-12 text-center">
                 <div class="form-group">
@@ -210,6 +249,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         </div>
     </div>
 </form>
-<!-- New Swekshanudan close -->
 
+<script>
+    document.getElementById('addMore').addEventListener('click', function() {
+        let formContainer = document.getElementById('formContainer');
+        let newFields = document.createElement('div');
+        newFields.className = 'row';
+
+        newFields.innerHTML = `
+        <div class="col-lg-6">
+            <div class="form-group shadow">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" placeholder="माध्यम" required name="madhyam">
+                    <label>माध्यम<span class="text-danger">*</span> : </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group shadow">
+                <div class="form-floating mb-3">
+                    <input type="time" class="form-control" placeholder=" " required name="entry_time">
+                    <label>आगमन<span class="text-danger">*</span> : </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group shadow">
+                <div class="form-floating mb-3">
+                    <input type="time" class="form-control" placeholder=" " required name="exit_time">
+                    <label>प्रस्थान<span class="text-danger">*</span> :</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="form-group shadow">
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
+                    <label>विवरण<span class="text-danger">*</span> : </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 text-end">
+            <button type="button" class="btn btn-danger remove-btn">Remove</button>
+        </div>
+    `;
+
+        formContainer.appendChild(newFields);
+
+        newFields.querySelector('.remove-btn').addEventListener('click', function() {
+            formContainer.removeChild(newFields);
+        });
+    });
+</script>
 <?php include('../includes/footer.php'); ?>

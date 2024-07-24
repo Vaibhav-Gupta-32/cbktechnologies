@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     $sql .= " ORDER BY id DESC";
     // echo $sql;die;
 } else {
-    $sql = "SELECT p.*, d.district_name FROM protocol_details p INNER JOIN district_master d ON p.district_id = d.district_id WHERE status=1";
+    $sql = "SELECT p.*, d.district_name FROM protocol_details p INNER JOIN district_master d ON p.district_id = d.district_id WHERE status=2";
 }
 
 // $fetch=mysqli_query($conn,"select * from protocol_details where 1");
@@ -212,10 +212,8 @@ $fetch = mysqli_query($conn, $sql);
                                 <td><?= $row['details'] ?></td>
                                 <td><?= date('d-m-Y', strtotime($row['create_date'])) ?></td>
                                 <td class="action">
-                                    <a href="#" onclick="print(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
+                                    <a href="print_pdf.php?id=<?=$row['id'];?>" target='_blank' ><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
                                     &nbsp;
-                                    &nbsp;
-                                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                                     &nbsp;
                                     <a class="text-danger " href="" onclick="confirmDelete(<?= $row['id']; ?>, '<?php echo $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                                 </td>
@@ -228,69 +226,4 @@ $fetch = mysqli_query($conn, $sql);
     </div>
 </div>
 
-<!-- The Edit Modal -->
-<div class="modal fade" id="myModal-edit" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- This will be replaced with the content from view.php -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- The Presit For Print  Modal -->
-<div class="modal fade" id="myModal-protocol" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel"><?= $pagename; ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- This will be replaced with the content from view.php -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function edit(e_id) {
-        // alert('dsa');
-        $.ajax({
-            type: 'POST',
-            url: 'aavedan_edit.php',
-            data: {
-                edit_id: e_id
-            },
-            success: function(data) {
-                $('#myModal-edit').find('.modal-body').html(data);
-                $('#myModal-edit').modal('show');
-            }
-        });
-    }
-
-    function print(p_id) {
-        //  alert(v_id);
-        $.ajax({
-            type: 'POST',
-            url: 'protocol_print.php',
-            data: {
-                id: p_id
-            },
-            success: function(data) {
-                $('#myModal-protocol').find('.modal-body').html(data);
-                $('#myModal-protocol').modal('show');
-            }
-        });
-    }
-</script>
 <?php include('../includes/footer.php'); ?>

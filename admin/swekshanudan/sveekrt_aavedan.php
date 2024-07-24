@@ -324,7 +324,7 @@ $fetch = mysqli_query($conn, $sql);
                 <td><?= $row['district_name'] ?></td>
                 <td class="action">
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
-                    &nbsp;
+                    <!-- &nbsp; -->
                     &nbsp;
                     <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
                     &nbsp;
