@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "chikitsa_seva";
 $tblkey = "id";
 $pagename = "विवरण बदले ";
 
@@ -35,6 +35,7 @@ if (isset($_REQUEST['edit_id'])) {
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
     $expectations_amount = $fetch['expectations_amount'];
+    $expectations_hospital_id = $fetch['expectations_hospital_id'];
     $application_date = $fetch['application_date'];
     $comment = $fetch['comment'];
     $file_upload = $fetch['file_upload'];
@@ -60,7 +61,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="aavedak" value="<?= $name ?>" placeholder="आवेदक का नाम" required>
-                        <input type="hidden"  name="edit_id" id="id" value="<?=$id ?>">
+                        <input type="hidden" name="edit_id" id="id" value="<?= $id ?>">
                         <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
                     </div>
 
@@ -209,7 +210,7 @@ if (isset($_REQUEST['edit_id'])) {
                         <input type="file" class="form-control" id="file_upload" name="file_upload">
                         <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                     <input type="hidden" name="existing_file" value="<?= $file_upload ?>">
@@ -243,8 +244,24 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?= $expectations_amount ?>">
-                        <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
+                        <select name="expectations_hospital_id" id="expectations_hospital_id" class="form-select form-control bg-white" required>
+                            <?php
+                            // Fetch districts for dropdown
+                            $hospital_query = "SELECT * FROM hospital_master";
+                            $hospital_result = mysqli_query($conn, $hospital_query);
+                            ?>
+ 
+                            <option value="" selected>आपेक्षित हॉस्पिटल चुने</option>
+                            <?php
+                            while ($hospital_row = mysqli_fetch_assoc($hospital_result)) {
+                                $selected = ($hospital_row['id'] == $expectations_hospital_id) ? 'selected' : '';
+                                echo "<option value='" . $hospital_row['id'] . "' $selected>" . $hospital_row['name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <!-- <script>document.getElementById('expectations_hospital_id').value="<?php echo $expectations_hospital_id; ?>";</script> -->
+                        <label for="application_date">आपेक्षित हॉस्पिटल चुने <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -272,7 +289,7 @@ if (isset($_REQUEST['edit_id'])) {
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?=$id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
+                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?= $id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">

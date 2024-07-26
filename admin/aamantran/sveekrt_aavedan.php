@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
 
     $sql .= " ORDER BY id DESC";
 } else {
-    $sql = "SELECT * FROM $tblname WHERE status=0 ORDER BY id DESC";
+    $sql = "SELECT * FROM $tblname WHERE status=1 ORDER BY id DESC";
 }
 
 
@@ -134,7 +134,7 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-            
+
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -159,7 +159,7 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='swekshanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
+                <a name="Add_New" onclick="location.href='new_aamantran.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
@@ -188,11 +188,13 @@ $fetch = mysqli_query($conn, $sql);
                         <tr class="text-center">
                             <th scope="col">क्रमांक</th>
                             <th scope="col">कार्यक्रम का नाम</th>
-                            <th scope="col">कार्यक्रम कब से </th>
-                            <th scope="col">कार्यक्रम कब तक </th>
-                            <th scope="col">कार्यक्रम का समय</th>
-                            <th scope="col">कार्यक्रम का स्थान</th>
+                            <th scope="col">कब से </th>
+                            <th scope="col">कब तक </th>
+                            <th scope="col">समय</th>
+                            <th scope="col">स्थान</th>
                             <th scope="col">प्रेषक/द्वारा</th>
+                            <th scope="col">टिपणी</th>
+                            <th scope="col">स्वीक्रत टिपणी</th>
                             <th scope="col">Action</th>
                         </tr>
 
@@ -208,23 +210,25 @@ $fetch = mysqli_query($conn, $sql);
                                 <td><?= date("d-m-Y", strtotime($row['from_date'])) ?></td>
                                 <td><?= date("d-m-Y", strtotime($row['to_date'])) ?></td>
                                 <td><?php
-    $time = $row['karykram_time'];
-    $dateTime = new DateTime($time);
-    echo $dateTime->format('g:i A'); // Formats to '3:50 PM'
-    ?>
-</td>
+                                    $time = $row['karykram_time'];
+                                    $dateTime = new DateTime($time);
+                                    echo $dateTime->format('g:i A'); // Formats to '3:50 PM'
+                                    ?>
+                                </td>
                                 <td><?= $row['sthan'] ?></td>
                                 <td><?= $row['preshak'] ?></td>
+                                <td><?= $row['comment'] ?></td>
+                                <td><?= $row['view_comment'] ?></td>
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                                     &nbsp;
-                                    &nbsp;
-                                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                                    &nbsp;
-                                    &nbsp;
+                                    <!-- &nbsp; -->
+                                    <!-- <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                                    &nbsp; -->
+                                    <!-- &nbsp; -->
                                     <a href="#" onclick="window.open('print_sveekrit_details.php?id=<?= $row['id'] ?>','_blank')"><i class="fas fa-solid fa-print" title="Print-Presit"></i></a>
-                    &nbsp;
-                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
                                     <!-- <a class="text-danger " href="#" onclick="confirmDelete(<?= $row['id']; ?>, '<?php echo $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a> -->
                                 </td>
                             </tr>
@@ -292,7 +296,7 @@ $fetch = mysqli_query($conn, $sql);
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'aamantran_aavedan_edit.php',
+            url: 'sveekrt_aavedan_edit.php',
             data: {
                 edit_id: e_id
             },

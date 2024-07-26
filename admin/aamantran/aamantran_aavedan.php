@@ -26,11 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
             // Handle file upload logic
             $target_dir = "uploads/";
             $target_file = $target_dir . basename($file_upload);
+            $fileName = basename($file_upload);
 
             // Move the uploaded file to the target directory
             if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
                 // File upload successful
-                $uploaded_file_path = $target_file;
+                $uploaded_file_path = $fileName;
             } else {
                 // Handle error
                 $error_message = "Sorry, there was an error uploading your file.";
@@ -136,7 +137,7 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-            
+
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -161,7 +162,7 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='swekshanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
+                <a name="Add_New" onclick="location.href='new_aamantran.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
@@ -195,6 +196,7 @@ $fetch = mysqli_query($conn, $sql);
                             <th scope="col">कार्यक्रम का समय</th>
                             <th scope="col">कार्यक्रम का स्थान</th>
                             <th scope="col">प्रेषक/द्वारा</th>
+                            <th scope="col">टिपणी</th>
                             <th scope="col">Action</th>
                         </tr>
 
@@ -210,19 +212,20 @@ $fetch = mysqli_query($conn, $sql);
                                 <td><?= date("d-m-Y", strtotime($row['from_date'])) ?></td>
                                 <td><?= date("d-m-Y", strtotime($row['to_date'])) ?></td>
                                 <td><?php
-    $time = $row['karykram_time'];
-    $dateTime = new DateTime($time);
-    echo $dateTime->format('g:i A'); // Formats to '3:50 PM'
-    ?>
-</td>
+                                    $time = $row['karykram_time'];
+                                    $dateTime = new DateTime($time);
+                                    echo $dateTime->format('g:i A'); // Formats to '3:50 PM'
+                                    ?>
+                                </td>
                                 <td><?= $row['sthan'] ?></td>
                                 <td><?= $row['preshak'] ?></td>
+                                <td><?= $row['comment'] ?></td>
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
-                                    &nbsp;
+                                    <!-- &nbsp; -->
                                     &nbsp;
                                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                                    &nbsp;
+                                    <!-- &nbsp; -->
                                     &nbsp;
                                     <a class="text-danger " href="#" onclick="confirmDelete(<?= $row['id']; ?>, '<?php echo $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                                 </td>
@@ -288,7 +291,7 @@ $fetch = mysqli_query($conn, $sql);
     }
 
     function edit(e_id) {
-        alert('dsa');
+        // alert('dsa');
         $.ajax({
             type: 'POST',
             url: 'aamantran_aavedan_edit.php',

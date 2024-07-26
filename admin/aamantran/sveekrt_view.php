@@ -14,7 +14,7 @@ if (isset($_REQUEST['id'])) {
 
     // Fetch Data for the Given ID
     if ($id) {
-        $sql = "SELECT * FROM $tblname WHERE $tblkey = '$id' AND status = 0";
+        $sql = "SELECT * FROM $tblname WHERE $tblkey = '$id' AND status = 1";
         $result = mysqli_query($conn, $sql);
         if ($result && mysqli_num_rows($result) > 0) {
             $fetch = mysqli_fetch_assoc($result);
@@ -27,6 +27,7 @@ if (isset($_REQUEST['id'])) {
             $karykram_time = $fetch['karykram_time'];
             $aamantran_date = $fetch['aamantran_date'];
             $comment = $fetch['comment'];
+            $view_comment = $fetch['view_comment'];
             $file_upload = $fetch['file_upload'];
             $preshak = $fetch['preshak'];
         }
@@ -148,11 +149,19 @@ if (isset($_REQUEST['id'])) {
                 </div>
             </div>  
        
-            <div class="col-lg-12">
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height:62px;" name="comment" readonly><?= $comment ?></textarea>
                         <label for="comment">टिप्पणी  </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height:62px;" name="comment" readonly><?= $view_comment ?></textarea>
+                        <label for="comment">स्वीक्र्ट टिप्पणी  </label>
                     </div>
                 </div>
             </div>

@@ -51,6 +51,7 @@ $fetch = mysqli_query($conn, $sql);
                         $i = 1;
                         while ($row = mysqli_fetch_array($fetch)) {
                             $district= $row['district_name'] ;
+                            $cpp_name= $row['cpp_name'] ;
                         ?>
                             <tr class=" text-center">
                                 <!-- <th scope="row"><?= $i++ ?></th> -->
@@ -76,7 +77,7 @@ $fetch = mysqli_query($conn, $sql);
                 </p>
                 <div class="d-flex flex-column justify-content-end">
                     <p class="text-end">(मतम)</p>
-                    <p class="text-end">जजह</p>
+                    <p class="text-end"><?=$cpp_name?></p>
                 </div>
                 <p class="text-left">प्रतिलिपि :</p>
                 <div>
@@ -94,7 +95,7 @@ $fetch = mysqli_query($conn, $sql);
                     <p>12- पुलिस नियंत्रण कक्ष, जिला- जशपुर/ कोरिया / मनेंद्रगढ़ - चिरमिरी - भरतपुर ।</p>
                     <div class="d-flex flex-column justify-content-end">
                         <p class="text-end">(मतम)</p>
-                        <p class="text-end">जजह</p>
+                        <p class="text-end"><?=$cpp_name?></p>
                     </div>
                 </div>
             </div>

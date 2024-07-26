@@ -57,3 +57,17 @@ function storeOTP($conn, $phoneNumber, $otp, $status)
     $stmt->execute();
     $stmt->close();
 }
+
+function generateEnquiryNumber($conn, $tblname, $prefix) {
+    // Get the count of existing entries in the table
+    $query = "SELECT COUNT(*) as count FROM $tblname";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    $count = $row['count'];
+  
+    // Generate the enquiry number
+    $enquiryNumber = $prefix . sprintf('%003d', $count + 1);
+  
+    return $enquiryNumber;
+    // print_r($enquiryNumber);
+  }

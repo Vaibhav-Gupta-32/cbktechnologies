@@ -123,12 +123,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         margin-bottom: 15px;
     }
 
-    .shadow {
+    /* .shadow { */
         /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 15px; */
-    }
+    /* } */
 
     .remove-btn {
         margin-top: 30px;

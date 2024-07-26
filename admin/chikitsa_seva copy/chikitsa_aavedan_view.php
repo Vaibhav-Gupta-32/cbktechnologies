@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "chikitsa";
+$tblname = "chikitsa_seva";
 $tblkey = "id";
 $pagename = "विवरण ";
 // For Showing data On View If Admin View  
@@ -12,7 +12,7 @@ if (isset($_REQUEST['id']))
 // View Id Recived
 if ($id) {
     // var_dump($_POST);
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    $sql = "SELECT a.*, h.name as 'hospital_name', d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
     FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
@@ -20,7 +20,8 @@ if ($id) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=0 and $tblkey=$id";
+    LEFT JOIN hospital_master h ON h.id = a.expectations_hospital_id
+    WHERE a.status=0 and a.$tblkey=$id";
     // echo $sql;
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
     $name = $fetch['name'];
@@ -41,7 +42,8 @@ if ($id) {
     $gram_name = $fetch['gram_name'];
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
-    $expectations_amount = $fetch['expectations_amount'];
+    // $expectations_amount = $fetch['expectations_amount'];
+    echo 'dfas'.$hospital_name = $fetch['hospital_name'];
     $application_date = $fetch['application_date'];
     $file_upload = $fetch['file_upload'];
     $comment = $fetch['comment'];
@@ -90,19 +92,9 @@ if ($id) {
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="name" value="<?=$inquiry_no?>" readonly>
-                        <label for="name">इन्क्वायरी क्रमांक</label>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="name" value="<?=$name?>" readonly>
                         <label for="name">आवेदक का नाम </label>
                     </div>
-
                 </div>
             </div>
             <div class="col-lg-4">
@@ -205,8 +197,8 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?= $expectations_amount ?>" readonly>
-                        <label for="expectations_amount">आपेक्षित राशि </label>
+                        <input type="text" class="form-control" id="expectations_hospital_id" name="expectations_hospital_id" value="<?= $hospital_name ?>" readonly>
+                        <label for="expectations_hospital_id">आपेक्षित हॉस्पिटल का नाम  </label>
                     </div>
                 </div>
             </div>
@@ -218,7 +210,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <textarea type="text" class="form-control" id="comment" style="height: 60px;" name="comment" value="" readonly><?= $comment ?></textarea>
@@ -229,8 +221,21 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
+                    <select name="anumodit_hospital_id" id="" class="form-select form-control bg-white" required>
+                            <?php
+                        // Fetch districts for dropdown
+                            $hospital_query = "SELECT * FROM hospital_master";
+                            $hospital_result = mysqli_query($conn, $hospital_query);
+                            ?>
+
+                            <option selected>आपेक्षित हॉस्पिटल चुने</option>
+                            <?php
+                            while ($hospital_row = mysqli_fetch_assoc($hospital_result)) {
+                                echo "<option value='" . $hospital_row['id'] . "'>" . $hospital_row['name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="anumodit_hospital_id">अनुमोदित हॉस्पिटल चुने <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>

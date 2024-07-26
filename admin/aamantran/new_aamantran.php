@@ -36,21 +36,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $uploadOk = 0;
     }
     // echo $target_file.'---'.$uploadOk;die;
-    
+
     // Check file size (500 KB limit)
     if ($_FILES["file_upload"]["size"] > 500000) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file is too large (limit is 500 KB).</b></div>";
         echo "<script>alert('Sorry, your file is too large (limit is 500 KB).');</script>";
         $uploadOk = 0;
     }
-    
+
     // Allow certain file formats (JPG, PNG, PDF)
     if ($fileType != "jpg" && $fileType != "png" && $fileType != "pdf") {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, only JPG, PNG, and PDF files are allowed.</b></div>";
         echo "<script>alert('Sorry, only JPG, PNG, and PDF files are allowed.');</script>";
         $uploadOk = 0;
     }
-    
+
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file was not uploaded.</b></div>";
@@ -60,24 +60,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             // File uploaded successfully, proceed with database insertion
             // Prepare SQL statement
 
-    // Insert data into the invitation_form table
-    $sql = "INSERT INTO $tblname (name, karykram, sthan, from_date, to_date, file_upload, aamantran_date, comment,karykram_time)
-            VALUES ('$name', '$karykram', '$sthan', '$from_date', '$to_date', '$file_upload', '$aamantran_date', '$comment','$karykram_time')";
+            // Insert data into the invitation_form table
+            $sql = "INSERT INTO $tblname (name, karykram, sthan, from_date, to_date, file_upload, aamantran_date, comment,karykram_time,preshak)
+            VALUES ('$name', '$karykram', '$sthan', '$from_date', '$to_date', '$file_upload', '$aamantran_date', '$comment','$karykram_time','$preshak')";
             // Execute SQL statement
             // echo $sql;die;
-        if ($conn->query($sql) === TRUE) {
+            if (mysqli_query($conn, $sql)) {
                 $msg = "<div class='msg-container'><b class='alert alert-success msg'>New Record Created Successfully.</b></div>";
             } else {
                 $msg = "<div class='msg-container'><b class='alert alert-danger msg'>New Record Created Unsuccessfully!!</b></div>";
             }
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, there was an error uploading your file.</b></div>";
-            
         }
-
-
     }
-
 }
 ?>
 
@@ -98,7 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 <!-- Start New charcha Form -->
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
-    <?php if(isset($msg))echo $msg;?>
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
         <div class="row mt-5">
             <div class="col-lg-6">
@@ -118,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-              <div class="col-lg-6">
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="sthan" placeholder="स्थान का नाम" required name="sthan">
@@ -134,15 +129,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     </div>
 
                 </div>
-            </div>     
+            </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
+                        <?php
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" name="from_date"  value="<?= $currentDate ?>" min="<?= $currentDate ?>" class="form-control" id="from_date" placeholder="कब से ">
+                        <input type="date" name="from_date" value="<?= $currentDate ?>" min="<?= $currentDate ?>" class="form-control" id="from_date" placeholder="कब से ">
                         <label for="from_date">दिनांक (कब से)</label>
                     </div>
                 </div>
@@ -157,39 +152,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
-                    <div class="form-floating mb-3 " >
+                    <div class="form-floating mb-3 ">
                         <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                        <label for="file_upload" >फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                        <label for="file_upload">फाइल अपलोड करें <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
-           
+
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
-            // Set default current date
-            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-            ?>
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
                         <input type="date" class="form-control" id="aamantran_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="aamantran_date" readonly>
                         <label for="aamantran_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
-            </div>  
-            
+            </div>
+
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
-            // Set default current date
-            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-            ?>
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
                         <input type="time" class="form-control" id="karykram_time" value="<?= $currentDate ?>" placeholder="कार्यक्रम समय" required name="karykram_time">
                         <label for="karykram_time">कार्यक्रम समय <span class="text-danger">*</span> </label>
                     </div>
                 </div>
-            </div>  
-       
+            </div>
+
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">

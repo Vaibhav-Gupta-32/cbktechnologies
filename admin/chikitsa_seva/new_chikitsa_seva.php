@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "chikitsa";
+$tblname = "chikitsa_seva";
 $tblkey = "id";
 $pagename = "नया आवेदन भरे";
 $prefix = 'CKS';
@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $gram_id = mysqli_real_escape_string($conn, trim($_POST['gram_id']));
     $subject = mysqli_real_escape_string($conn, trim($_POST['subject']));
     $reference = mysqli_real_escape_string($conn, trim($_POST['reference']));
-    $expectations_amount = intval($_POST['expectations_amount']); // Ensure expectations_amount is an integer
+    // $expectations_amount = intval($_POST['expectations_amount']); // Ensure expectations_amount is an integer
+    $expectations_hospital_id = intval($_POST['expectations_hospital_id']); // Ensure expectations_hospital_id is an integer
     $application_date = mysqli_real_escape_string($conn, trim($_POST['application_date']));
     $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
 
@@ -64,9 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             // Prepare SQL statement
             
             $sql = "INSERT INTO $tblname 
-                    (name, phone_number, designation, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, subject, reference, expectations_amount, application_date, file_upload, comment) 
+                    (name, phone_number, designation, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, subject, reference, expectations_hospital_id, application_date, file_upload, comment) 
                     VALUES 
-                    ('$name', '$phone_number', '$designation', $district_id, $vidhansabha_id, $vikaskhand_id, $sector_id, '$gram_panchayat_id', '$gram_id', '$subject', '$reference', $expectations_amount, '$application_date', '$file_upload', '$comment')";
+                    ('$name', '$phone_number', '$designation', '$district_id', '$vidhansabha_id', '$vikaskhand_id', '$sector_id', '$gram_panchayat_id', '$gram_id', '$subject', '$reference', '$expectations_hospital_id', '$application_date', '$file_upload', '$comment')";
                     // echo $sql;
                     // die;
             // Execute SQL statement
@@ -96,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         border: none;
     }
 </style>
-<!-- Start New Swekshanudan Form -->
+<!-- Start New Chikitsa Seva Form -->
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
@@ -232,11 +233,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                         <label for="expectations_amount">आपेक्षित राशि <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div> -->
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="expectations_hospital_id" id="" class="form-select form-control bg-white" required>
+                            <?php
+                        // Fetch districts for dropdown
+                            $hospital_query = "SELECT * FROM hospital_master";
+                            $hospital_result = mysqli_query($conn, $hospital_query);
+                            ?>
+
+                            <option selected>आपेक्षित हॉस्पिटल चुने</option>
+                            <?php
+                            while ($hospital_row = mysqli_fetch_assoc($hospital_result)) {
+                                echo "<option value='" . $hospital_row['id'] . "'>" . $hospital_row['name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="expectations_hospital_id">आपेक्षित हॉस्पिटल चुने <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -271,6 +293,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         </div>
     </div>
 </form>
-<!-- New Swekshanudan close -->
+<!-- New Chikitsa Seva close -->
 
 <?php include('../includes/footer.php'); ?>

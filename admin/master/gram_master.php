@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $gram_panchayat_id = mysqli_real_escape_string($conn, $gram_panchayat_id);
 
         if (isset($_POST['gram_id']) && !empty($_POST['gram_id'])) {
-            // echo 'vaibhav';die;
+            // echo 'vaibhav' . $_POST['gram_id'];
+            // die;
             // Update existing record
             $gram_id = $_POST['gram_id'];
             $update_query = "UPDATE $tblname SET gram_name='$gram_name', gram_panchayat_id='$gram_panchayat_id',sector_id='$sector_id',vikaskhand_id='$vikaskhand_id', vidhansabha_id='$vidhansabha_id', district_id='$district_id' WHERE $tblkey='$gram_id'";
@@ -34,15 +35,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Insert new record
             // Check if sector_id already exists for the selected district and vidhansabha
-            $check_query = "SELECT * FROM $tblname WHERE gram_panchayat_id='$gram_panchayat_id', sector_id = '$sector_id' AND vikaskhand_id='$vikaskhand_id' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id'";
+            $check_query = "SELECT * FROM $tblname WHERE gram_panchayat_id='$gram_panchayat_id' AND sector_id = '$sector_id' AND vikaskhand_id='$vikaskhand_id' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id'";
+            // echo $check_query;die;
             $check_result = mysqli_query($conn, $check_query);
 
             if (mysqli_num_rows($check_result) > 0) {
                 // Vikaskhand name already exists
-                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Gram already Exists!!</b></div>";
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Gram Already Exists!!</b></div>";
             } else {
                 // Vikaskhand name does not exist, proceed with insertion
-                $insert_query = "INSERT INTO $tblname (gram_name, gram_panchayat_id, sector_id,vikaskhand_id, vidhansabha_id, district_id) VALUES ('$gram_name', '$gram_panchayat_id', '$sector_id','$vikaskhand_id' '$vidhansabha_id', '$district_id')";
+                $insert_query = "INSERT INTO $tblname (gram_name, gram_panchayat_id, sector_id,vikaskhand_id, vidhansabha_id, district_id) VALUES ('$gram_name', '$gram_panchayat_id', '$sector_id','$vikaskhand_id', '$vidhansabha_id', '$district_id')";
                 if (mysqli_query($conn, $insert_query)) {
                     $msg = "<div class='msg-container'><b class='alert alert-success msg'>Gram Added Successfully</b></div>";
                 } else {
@@ -162,7 +164,9 @@ if (isset($_GET['edit_id'])) {
 
             <div class="col-lg-6 text-center mb-3">
                 <input type="text" name="gram_name" class="form-control border-success" placeholder="ग्राम का नाम" required value="<?= $gram_name ?>">
-                <input type="hidden" name="gram_id" value="<?= $gram_id ?>">
+                <?php if (isset($_GET['edit_id'])) { ?>
+                    <input type="hidden" name="gram_id" value="<?= $gram_id ?>">
+                <?php } ?>
             </div>
 
             <div class="col-lg-6 text-center mb-3">

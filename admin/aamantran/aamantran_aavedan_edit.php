@@ -3,18 +3,18 @@
 <?php
 $tblname = "aamantran";
 $tblkey = "id";
-$pagename = "विवरण ";
+$pagename = "विवरण बदले ";
 // For Showing data On View If Admin View  
-if (isset($_REQUEST['id']))
-    $id = $_REQUEST['id'];
+if (isset($_REQUEST['edit_id']))
+    $edit_id = $_REQUEST['edit_id'];
 // View Id Recived
 // For Showing Data on View
-if (isset($_REQUEST['id'])) {
-   echo $id = $_REQUEST['id'];
+if (isset($_REQUEST['edit_id'])) {
+    $edit_id = $_REQUEST['edit_id'];
 
-    // Fetch Data for the Given ID
-    if ($id) {
-        $sql = "SELECT * FROM $tblname WHERE $tblkey = '$id' AND status = 0";
+    // Fetch Data for the Given edit_id
+    if ($edit_id) {
+        $sql = "SELECT * FROM $tblname WHERE $tblkey = '$edit_id' AND status = 0";
         $result = mysqli_query($conn, $sql);
         if ($result && mysqli_num_rows($result) > 0) {
             $fetch = mysqli_fetch_assoc($result);
@@ -32,12 +32,7 @@ if (isset($_REQUEST['id'])) {
         }
     }
 }
-// Close For Buinding Db To form Data 
 
-
-// Close For Approve By Admin
-
-// If Delete By Admin
 ?>
 
 <!-- Start New Swekshanudan Form -->
@@ -54,12 +49,12 @@ if (isset($_REQUEST['id'])) {
 <!-- Start New charcha Form -->
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
-    <?php if(isset($msg))echo $msg;?>
+        <?php if (isset($msg)) echo $msg; ?>
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
         <div class="row mt-5">
+            <input type="hidden" class="form-control" name="edit_id" value="<?= $id ?>" id="name" placeholder="नाम" required>
             <div class="col-lg-6">
                 <div class="form-group shadow">
-                   <?php  echo $name;?>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" value="<?= $name ?>" id="name" placeholder="नाम" required>
                         <label for="name">नाम <span class="text-danger">*</span> </label>
@@ -70,12 +65,12 @@ if (isset($_REQUEST['id'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" maxlength="10" name="karykram" value="<?= $karykram ?>" id="karykram" placeholder="कार्यक्रम" required>
+                        <input type="text" class="form-control" name="karykram" value="<?= $karykram ?>" id="karykram" placeholder="कार्यक्रम" required>
                         <label for="karykram">कार्यक्रम<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
-              <div class="col-lg-6">
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="sthan" value="<?= $sthan ?>" placeholder="स्थान का नाम" required name="sthan">
@@ -86,20 +81,20 @@ if (isset($_REQUEST['id'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="preshak" id="preshak" value="<?= $preshak?>" placeholder="प्रेषक का नाम" required>
+                        <input type="text" class="form-control" name="preshak" id="preshak" value="<?= $preshak ?>" placeholder="प्रेषक का नाम" required>
                         <label for="preshak">प्रेषक का नाम <span class="text-danger">*</span> </label>
                     </div>
 
                 </div>
-            </div>     
+            </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
+                        <?php
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" name="from_date"  value="<?= $from_date ?>" min="<?= $currentDate ?>" class="form-control" id="from_date" placeholder="कब से ">
+                        <input type="date" name="from_date" value="<?= $from_date ?>" min="<?= $currentDate ?>" class="form-control" id="from_date" placeholder="कब से ">
                         <label for="from_date">दिनांक (कब से)</label>
                     </div>
                 </div>
@@ -107,57 +102,60 @@ if (isset($_REQUEST['id'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" name="to_date" class="form-control"  value="<?= $to_date ?>" id="to_date" placeholder="कब तक ">
+                        <input type="date" name="to_date" class="form-control" value="<?= $to_date ?>" id="to_date" placeholder="कब तक ">
                         <label for="to_date">दिनांक (कब तक)</label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
-                    <div class="form-floating mb-3 " >
-                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                        <label for="file_upload" >फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    <div class="form-floating mb-3 input-group">
+                        <input type="file" class="form-control" id="file_upload" name="file_upload" required>
+                        <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
+                        <span class="input-group-text bg-">
+                            <a href="uploads/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
+                        </span>
                     </div>
+                    <input type="hidden" name="existing_file" value="<?= $file_upload ?>">
                 </div>
             </div>
-           
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
-            // Set default current date
-            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-            ?>
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
                         <input type="date" class="form-control" id="aamantran_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="aamantran_date" readonly>
                         <label for="aamantran_date">आवेदन दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
-            </div>  
-            
+            </div>
+
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
-            // Set default current date
-            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-            ?>
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
                         <input type="time" class="form-control" id="karykram_time" value="<?= $karykram_time ?>" placeholder="कार्यक्रम समय" required name="karykram_time">
                         <label for="karykram_time">कार्यक्रम समय <span class="text-danger">*</span> </label>
                     </div>
                 </div>
-            </div>  
-       
+            </div>
+
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"></textarea>
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"><?= $comment ?></textarea>
                         <label for="comment">टिप्पणी <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-12 text-center">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Update</b></button>
+                    <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
                 </div>
             </div>
 

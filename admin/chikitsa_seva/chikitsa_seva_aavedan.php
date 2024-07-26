@@ -1,7 +1,7 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "chikitsa";
+$tblname = "chikitsa_seva";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
 // $msg="";
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
     $gram_id = $_POST['gram_id'];
     $subject = $_POST['subject'];
     $reference = $_POST['reference'];
-    $expectations_amount = $_POST['expectations_amount'];
+    $expectations_hospital_id = $_POST['expectations_hospital_id'];
     $application_date = $_POST['application_date'];
     $comment = $_POST['comment'];
     $file_upload = $_FILES['file_upload']['name'];
@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
         // Check if a new file was uploaded
         if (!empty($file_upload)) {
             // Handle file upload logic
-            $target_dir = "uploads/swekshanudan/";
+            $target_dir = "uploads/";
             $target_file = $target_dir . basename($file_upload);
 
             // Move the uploaded file to the target directory
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
                         gram_id = '$gram_id', 
                         subject = '$subject', 
                         reference = '$reference', 
-                        expectations_amount = '$expectations_amount', 
+                        expectations_hospital_id = '$expectations_hospital_id', 
                         application_date = '$application_date', 
                         comment = '$comment', 
                         file_upload = '$uploaded_file_path' 
@@ -79,12 +79,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
-    $anumodit_amount = $_POST['anumodit_amount'];
+    // $anumodit_amount = $_POST['anumodit_amount'];
     $aadesh_no = $_POST['aadesh_no'];
     $anumodit_date = $_POST['anumodit_date'];
     $view_comment = $_POST['view_comment'];
+    $anumodit_hospital_id = $_POST['anumodit_hospital_id'];
 
-    $sql = "UPDATE $tblname SET status='1',anumodit_amount='$anumodit_amount',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE $tblkey='$vid'";
+    $sql = "UPDATE $tblname SET status='1', anumodit_hospital_id='$anumodit_hospital_id',aadesh_no='$aadesh_no',anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE $tblkey='$vid'";
     //    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
 // If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
     $id = $_REQUEST['id'];
-    $sql = "UPDATE $tblname SET status='4' WHERE $tblkey='$id'";
+    $sql = "UPDATE $tblname SET status='2' WHERE $tblkey='$id'";
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapprove Successfully</b></div>";
     } else {
@@ -156,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     $sql .= " ORDER BY id DESC";
     // echo $sql;die;
 } else {
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    $sql = "SELECT a.*,h.name as 'hospital_name', d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
     FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
@@ -164,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+    LEFT JOIN hospital_master h ON h.id = a.expectations_hospital_id
     WHERE a.status=0
     ORDER BY a.$tblkey DESC";
 }
@@ -295,7 +297,7 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='swekshanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
+                <a name="Add_New" onclick="location.href='new_chikitsa_seva.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
@@ -322,11 +324,11 @@ $fetch = mysqli_query($conn, $sql);
                     <thead class=" head">
                         <tr class="text-center">
                             <th scope="col">क्रमांक</th>
-                            <th scope="col">इन्क्वायरी क्रमांक</th>
+                            <!-- <th scope="col">इन्क्वायरी क्रमांक</th> -->
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>
                             <th scope="col">विषय</th>
-                            <th scope="col">आपेक्षित राशि</th>
+                            <th scope="col">आपेक्षित हॉस्पिटल</th>
                             <th scope="col">आवेदन दिनांक</th>
                             <th scope="col">टिप्पणी</th>
                             <th scope="col">विधानसभा</th>
@@ -342,11 +344,11 @@ $fetch = mysqli_query($conn, $sql);
                         ?>
                             <tr class=" text-center">
                                 <th scope="row"><?= $i++ ?></th>
-                                <td><?= $row['inquiry_no'] ?></td>
+                                <!-- <td><?= $row['inquiry_no'] ?></td> -->
                                 <td><?= $row['name'] ?></td>
                                 <td><?= $row['phone_number'] ?></td>
                                 <td><?= $row['subject'] ?></td>
-                                <td><?= $row['expectations_amount'] ?></td>
+                                <td><?= $row['hospital_name'] ?></td>
                                 <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
                                 <td><?= $row['comment'] ?></td>
                                 <td><?= $row['vidhansabha_name'] ?></td>

@@ -58,20 +58,20 @@ if (isset($_REQUEST['id'])) {
         <hr class="text-danger p-2 rounded">
         <div class="row">
             <!--For ID-->
-            <input type="hidden"  name="id" id="id" value="<?=$id ?>" readonly>
+            <input type="hidden" name="id" id="id" value="<?= $id ?>" readonly>
             <!-- ID -->
-            <!-- <div class="col-lg-6">
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="name" value="<?= $name ?>" placeholder="नाम" readonly>
                         <label for="name">नाम </label>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control"  name="karykram" value="<?= $karykram ?>" id="karykram" placeholder="कार्यक्रम का नाम " readonly>
+                        <input type="text" class="form-control" name="karykram" value="<?= $karykram ?>" id="karykram" placeholder="कार्यक्रम का नाम " readonly>
                         <label for="karykram">कार्यक्रम का नाम </label>
                     </div>
                 </div>
@@ -84,11 +84,11 @@ if (isset($_REQUEST['id'])) {
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
+                        <?php
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
@@ -100,7 +100,7 @@ if (isset($_REQUEST['id'])) {
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    
+
                         <input type="date" name="to_date" class="form-control" value="<?= $to_date ?>" id="to_date" placeholder="कब तक " readonly>
                         <label for="to_date">दिनांक (कब तक)</label>
                     </div>
@@ -113,16 +113,16 @@ if (isset($_REQUEST['id'])) {
                         <label for="karykram_time">कार्यक्रम समय </label>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" value="<?= $preshak ?>" name="preshak" id="preshak" placeholder="प्रेषक का नाम"  readonly>
+                        <input type="text" class="form-control" value="<?= $preshak ?>" name="preshak" id="preshak" placeholder="प्रेषक का नाम" readonly>
                         <label for="preshak">प्रेषक का नाम </label>
                     </div>
 
                 </div>
-            </div>   
+            </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 input-group">
@@ -134,25 +134,25 @@ if (isset($_REQUEST['id'])) {
                     </div>
                 </div>
             </div>
-           
+
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                    <?php
-            // Set default current date
-            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-            ?>
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
                         <input type="date" class="form-control" id="aamantran_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" readonly name="aamantran_date">
-                        <label for="aamantran_date">आवेदन दिनांक  </label>
+                        <label for="aamantran_date">आवेदन दिनांक </label>
                     </div>
                 </div>
-            </div>  
-       
-            <div class="col-lg-12">
+            </div>
+
+            <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height:62px;" name="comment" readonly><?= $comment ?></textarea>
-                        <label for="comment">टिप्पणी  </label>
+                        <label for="comment">टिप्पणी </label>
                     </div>
                 </div>
             </div>

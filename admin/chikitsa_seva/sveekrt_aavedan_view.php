@@ -1,18 +1,15 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "chikitsa";
+$tblname = "chikitsa_seva";
 $tblkey = "id";
-$pagename = "विवरण ";
+$pagename = "विवरण";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
-  $id = $_REQUEST['id'];
-
-  $name="";
+$id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
-    // var_dump($_POST);
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    $sql = "SELECT a.*,h.name as 'hospital_name', d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name
     FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
@@ -20,51 +17,39 @@ if ($id) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=0 and $tblkey=$id";
+    LEFT JOIN hospital_master h ON a.anumodit_hospital_id = h.id
+    WHERE a.status=1 and a.$tblkey=$id
+    ORDER BY a.$tblkey DESC";
     // echo $sql;
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
+    $id = $fetch['id'];
     $name = $fetch['name'];
-    $inquiry_no = $fetch['inquiry_no'];
     $phone_number = $fetch['phone_number'];
     $designation = $fetch['designation'];
-    $district_id = $fetch['district_id'];
     $district_name = $fetch['district_name'];
-    $vidhansabha_id = $fetch['vidhansabha_id'];
     $vidhansabha_name = $fetch['vidhansabha_name'];
-    $vikaskhand_id = $fetch['vikaskhand_id'];
     $vikaskhand_name = $fetch['vikaskhand_name'];
-    $sector_id = $fetch['sector_id'];
     $sector_name = $fetch['sector_name'];
-    $gram_panchayat_id = $fetch['gram_panchayat_id'];
     $gram_panchayat_name = $fetch['gram_panchayat_name'];
-    $gram_id = $fetch['gram_id'];
     $gram_name = $fetch['gram_name'];
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
     $expectations_amount = $fetch['expectations_amount'];
+    $anumodit_hospital_name = $fetch['hospital_name'];
     $application_date = $fetch['application_date'];
-    $file_upload = $fetch['file_upload'];
     $comment = $fetch['comment'];
-    $status = $fetch['status'];
+    $file_upload = $fetch['file_upload'];
     $anumodit_amount = $fetch['anumodit_amount'];
     $aadesh_no = $fetch['aadesh_no'];
     $anumodit_date = $fetch['anumodit_date'];
     $view_comment = $fetch['view_comment'];
     $sveekrt_amount = $fetch['sveekrt_amount'];
     $sveekrt_no = $fetch['sveekrt_no'];
-    $sveekrt_comment = $fetch['sveekrt_comment'];
     $sveekrt_date = $fetch['sveekrt_date'];
-    $yojna_id = $fetch['yojna_id'];
-    $ptr_sender = $fetch['ptr_sender'];
-    $presit_date = $fetch['presit_date'];
-    $anudan_prapt_add = $fetch['anudan_prapt_add'];
+    $sveekrt_comment = $fetch['sveekrt_comment'];
 }
 // Close For Buinding Db To form Data 
 
-
-// Close For Approve By Admin
-
-// If Delete By Admin
 ?>
 
 <!-- Start New Swekshanudan Form -->
@@ -85,21 +70,12 @@ if ($id) {
         <hr class="text-danger p-2 rounded">
         <div class="row">
             <!--For ID-->
-            <input type="hidden"  name="id" id="id" value="<?=$id ?>">
+            <input type="hidden"  name="vid" id="vid" value="<?=$id ?>">
             <!-- ID -->
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="name" value="<?=$inquiry_no?>" readonly>
-                        <label for="name">इन्क्वायरी क्रमांक</label>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="name" value="<?=$name?>" readonly>
+                        <input type="text" class="form-control" name="name" id="name" value="<?= $name ?>" readonly>
                         <label for="name">आवेदक का नाम </label>
                     </div>
 
@@ -123,7 +99,6 @@ if ($id) {
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-4 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -201,15 +176,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <!--  -->
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?= $expectations_amount ?>" readonly>
-                        <label for="expectations_amount">आपेक्षित राशि </label>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -218,7 +185,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <textarea type="text" class="form-control" id="comment" style="height: 60px;" name="comment" value="" readonly><?= $comment ?></textarea>
@@ -229,52 +196,36 @@ if ($id) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="anumodit_hospital_name" placeholder="अनुमोदित राशि" readonly value="<?= $anumodit_hospital_name?>" name="anumodit_hospital_name" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="anumodit_hospital_name">अनुमोदित हॉस्पिटल </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="aadesh_no">आदेश क्रमांक <span class="text-danger">*</span> </label>
+                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" readonly value="<?= $aadesh_no?>" name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="aadesh_no">आदेश क्रमांक  </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <?php
-                        // Set default current date
-                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                        ?>
-                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date" readonly>
-                        <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="anumodit_date"value="<?= $anumodit_date?>" placeholder="अनुमोदित दिनांक" readonly name="anumodit_date">
+                        <label for="anumodit_date">अनुमोदित दिनांक </label>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="view_comment" style="height: 110px;" name="view_comment" required></textarea>
-                        <label for="view_comment">टिप्पणी <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="view_comment" style="height: 60px;" name="view_comment" readonly><?= $view_comment?></textarea>
+                        <label for="view_comment">अनुमोदित टिप्पणी </label>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 text-center mb-3">
-                <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center mb-3">
-                <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
-                </div>
-            </div>
-
-            <!--  -->
         </div>
     </div>
 </form>

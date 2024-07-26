@@ -1,23 +1,26 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "aamantran";
+$tblname = "chikitsa_seva";
 $tblkey = "id";
-$pagename = "आमंत्रण";
+$pagename = "चिकित्सा";
 $currentDate = date('Y-m-d');
-$maananeey_info=getvalfield($conn,'maananeey_master','maananeey_info','1');
+$maananeey_info = getvalfield($conn, 'maananeey_master', 'maananeey_info', '1');
 if (isset($_REQUEST['id']))
-    $aamantran_id = $_REQUEST['id'];
-$sql = "SELECT * FROM $tblname WHERE $tblkey='$aamantran_id'";
-
+    $id = $_REQUEST['id'];
+$sql = "SELECT c.*, d.district_name FROM $tblname c 
+INNER JOIN district_master d ON c.district_id = d.district_id
+left join hospital_master h ON c.anumodit_hospital_id = h.id
+WHERE status=1 and c.$tblkey='$id'";
+// echo $sql;
 // $fetch=mysqli_query($conn,"select * from protocol_details where 1");
 $fetch = mysqli_query($conn, $sql);
 ?>
 <!-- Staring page -->
 <?php include('../includes/header.php') ?>
 <style>
-    p{
-        margin-bottom:0%;
+    p {
+        margin-bottom: 0%;
     }
 </style>
 <!-- Table Start -->
@@ -25,22 +28,21 @@ $fetch = mysqli_query($conn, $sql);
     <div class="row">
         <div class="col-sm-12 col-lg-12">
             <h3 class="mb-4 text-center mt-2 pt-3 "><?= $pagename; ?> स्वीकृति</h3>
-            <p class="text-center">माननीय <?=$maananeey_info;?>, छत्तीसगढ़ शासन का दौरा कार्यक्रम</p>
+            <p class="text-center">माननीय <?= $maananeey_info; ?>, छत्तीसगढ़ शासन का दौरा कार्यक्रम</p>
             <div class=" rounded" style="overflow-y: scroll;">
 
                 <table class="table table-striped border shadow">
                     <thead class=" head">
                         <tr class="text-center">
                         <th scope="col">क्रमांक</th>
-                            <th scope="col">कार्यक्रम का नाम</th>
-                            <th scope="col">कब से </th>
-                            <th scope="col">कब तक </th>
-                            <th scope="col">समय</th>
-                            <th scope="col">स्थान</th>
-                            <!-- <th scope="col">प्रेषक/द्वारा</th> -->
-                            <!-- <th scope="col">टिपणी</th>
-                            <th scope="col">स्वीक्रत टिपणी</th> -->
-                            <!-- <th scope="col">Action</th> -->
+                            <th scope="col">आवेदक का नाम</th>
+                            <th scope="col">मोबाइल नंबर</th>
+                            <th scope="col">विषय</th>
+                            <th scope="col">आमोदित हॉस्पिटल </th>
+                            <th scope="col">आमोदित टिप्पणी</th>
+                            <th scope="col">आमोदित आवेदन दिनांक</th>
+                            <th scope="col">विधानसभा</th>
+                            <th scope="col">जिला</th>
 
 
                         </tr>
@@ -49,38 +51,32 @@ $fetch = mysqli_query($conn, $sql);
                         <?php
                         $i = 1;
                         while ($row = mysqli_fetch_array($fetch)) {
-                           $preshak= $row['preshak'];
+                            $district = $row['district_name'];
+                            // $cpp_name = $row['cpp_name'];
                         ?>
                             <tr class=" text-center">
-                                <td><?= $i++ ?></td>
-                                <td><?= $row['karykram'] ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['from_date'])) ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['to_date'])) ?></td>
-                                <td><?php
-                                    $time = $row['karykram_time'];
-                                    $dateTime = new DateTime($time);
-                                    echo $dateTime->format('g:i A'); // Formats to '3:50 PM'
-                                    ?>
-                                </td>
-                                <td><?= $row['sthan'] ?></td>
-                                <!-- <td><?= $row['preshak'] ?></td> -->
-                                <!-- <td><?= $row['comment'] ?></td>
-                                <td><?= $row['view_comment'] ?></td> -->
+                                <th scope="row"><?= $i++ ?></th>
+                                <td><?= $row['name'] ?></td>
+                                <td><?= $row['phone_number'] ?></td>
+                                <td><?= $row['subject'] ?></td>
+                                <td><?= $row['hospital_name'] ?></td>
+                                <td><?= $row['view_comment'] ?></td>
+                                <td><?= date("d-m-Y", strtotime($row['anumodit_date'])) ?></td>
+                                <td><?= $row['vidhansabha_name'] ?></td>
+                                <td><?= $row['district_name'] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
-                <!-- <p class="text-center">रात्रि विश्राम <?= $district;?> निवास स्थान में।</p> -->
-                 <br>
-                 <br>
+                <p class="text-center">रात्रि विश्राम <?= $district; ?> निवास स्थान में।</p>
                 <p class="text-left">टीप :</p>
                 <p class="text-left">1- माननीय मंत्री जी की सुरक्षा श्रेणी "Z" है।
-                    </p>
+                </p>
                 <p class="text-left">2- माननीय मंत्री जी का ब्लडगुप "AB Positive" रिपीट " AB Positive" है।
                 </p>
                 <div class="d-flex flex-column justify-content-end">
                     <p class="text-end">(मतम)</p>
-                    <p class="text-end"><?=$preshak?></p>
+                    <p class="text-end"><?= $cpp_name ?></p>
                 </div>
                 <p class="text-left">प्रतिलिपि :</p>
                 <div>
@@ -98,7 +94,7 @@ $fetch = mysqli_query($conn, $sql);
                     <p>12- पुलिस नियंत्रण कक्ष, जिला- जशपुर/ कोरिया / मनेंद्रगढ़ - चिरमिरी - भरतपुर ।</p>
                     <div class="d-flex flex-column justify-content-end">
                         <p class="text-end">(मतम)</p>
-                        <p class="text-end"><?=$preshak?></p>
+                        <p class="text-end"><?= $cpp_name ?></p>
                     </div>
                 </div>
             </div>
