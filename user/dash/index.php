@@ -6,11 +6,13 @@
 <?php include('../includes/navbar.php') ?>
 
 <?php
+$mobile=$_SESSION['username'] ;
 $prapth_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=0');
 $prastavit_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=1');
 $sveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=2');
 $sveekrt_presit_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=3');
 $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
+$swekshanudan_status=getvalfield($conn,'swekshanudan','status',"phone_number='$mobile'");
 ?>
 <style>
     a{
@@ -18,231 +20,179 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
         color: grey;
     }
 </style>
-    <!-- Sale & Revenue Start -->
- <div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
-        <h3 class="mb-0 text-center fw-bold text-primary">स्वेच्छानुदान</h3>
-        <hr class=" p-1 text-primary">
-            <div class="col-sm-6 col-xl-4">
-                <a href="../swekshanudan/swekshanudan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-plus fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">नया आवेदन जोड़े</p>
-                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="../swekshanudan/aavedak.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-list fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">प्राप्त आवेदन </p>
-                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../swekshanudan/prastavit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-list-check fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">प्रस्तावित आवेदन</p>
-                        <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../swekshanudan/sveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-check-to-slot fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">स्वीकृत आवेदन</p>
-                        <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../swekshanudan/presit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-file-signature fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">स्वीकृत ( प्रेषित )</p>
-                        <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4 ">
-            <a href="../swekshanudan/asveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-file-circle-xmark fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">अस्वीकृत आवेदन</p>
-                        <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-        </div>
-</div>
-        <!-- 2 -->
-<div class="container-fluid mt-4 pt-4 px-4">
-    <div class="row g-4 ">
-        <h3 class="mb-0 text-center fw-bold text-primary">निर्माण</h3>
-        <hr class=" p-1 text-primary">
-            <div class="col-sm-6 col-xl-4">
-                <a href="../nirmaan/new_nirmaan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-plus fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">नया आवेदन जोड़े</p>
-                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="../nirmaan/nirmaan_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-list fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">प्राप्त आवेदन </p>
-                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../nirmaan/prastavit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-list-check fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">प्रस्तावित आवेदन</p>
-                        <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../nirmaan/sveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-check-to-slot fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">स्वीकृत आवेदन</p>
-                        <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../nirmaan/presit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-file-signature fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">स्वीकृत ( प्रेषित )</p>
-                        <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4 ">
-            <a href="../nirmaan/asveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-file-circle-xmark fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">अस्वीकृत आवेदन</p>
-                        <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-        </div>
-</div>
 
-<!--  3-->
-<div class="container-fluid mt-4 pt-4 px-4">
-    <div class="row g-4 ">
-        <h3 class="mb-0 text-center fw-bold text-primary">चिकित्सा अनुदान</h3>
-        <hr class=" p-1 text-primary">
-            <div class="col-sm-6 col-xl-4">
-                <a href="../chikitsa/new_chikitsa.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-plus fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">नया आवेदन जोड़े</p>
-                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-                <a href="../chikitsa/chikitsa_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-list fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">प्राप्त आवेदन </p>
-                        <h6 class="mb-0"><?=$prapth_aavedan?></h6>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../chikitsa/prastavit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-list-check fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">प्रस्तावित आवेदन</p>
-                        <h6 class="mb-0"><?=$prastavit_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../chikitsa/sveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-check-to-slot fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">स्वीकृत आवेदन</p>
-                        <h6 class="mb-0"><?=$sveekrt_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-            <a href="../chikitsa/presit_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-file-signature fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">स्वीकृत ( प्रेषित )</p>
-                        <h6 class="mb-0"><?=$sveekrt_presit_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
-            <div class="col-sm-6 col-xl-4 ">
-            <a href="../chikitsa/asveekrt_aavedan.php">
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 border border-primary">
-                    <i class="fa-solid fa-file-circle-xmark fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">अस्वीकृत आवेदन</p>
-                        <h6 class="mb-0"><?=$asveekrt_aavedan?></h6>
-                    </div>
-                </div>
-            </a>
-            </div>
+<!-- ============================================= -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card border-primary mb-3">
+        <div class="card-body text-primary">
+          <h5 class="card-title">नया आवेदन</h5>
+          <p class="card-text">Submit a new application</p>
+          <a href="../swekshanudan/swekshanudan.php" class="btn btn-primary">Submit</a>
         </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-secondary mb-3">
+        <div class="card-body text-secondary">
+          <h5 class="card-title">प्राप्त आवेदन</h5>
+          <p class="card-text">View received applications</p>
+          <a href="../swekshanudan/aavedak.php" class="btn btn-secondary">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-warning mb-3">
+        <div class="card-body text-warning">
+          <h5 class="card-title">प्रस्तावित आवेदन</h5>
+          <p class="card-text">View proposed applications</p>
+          <a href="../swekshanudan/prastavit_aavedan.php" class="btn btn-warning">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-success mb-3">
+        <div class="card-body text-success">
+          <h5 class="card-title">स्वीकृत आवेदन</h5>
+          <p class="card-text">View approved applications</p>
+          <a href="../swekshanudan/sveekrt_aavedan.php" class="btn btn-success">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-info mb-3">
+        <div class="card-body text-info">
+          <h5 class="card-title">स्वीकृत आवेदन (प्रेषित)</h5>
+          <p class="card-text">View approved and sent applications</p>
+          <a href="../swekshanudan/presit_aavedan.php" class="btn btn-info">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-danger mb-3">
+        <div class="card-body text-danger">
+          <h5 class="card-title">अस्वीकृत आवेदन</h5>
+          <p class="card-text">View rejected applications</p>
+          <a href="../swekshanudan/asveekrt_aavedan.php" class="btn btn-danger">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-      
-    <!-- Sale & Revenue End -->
+<!-- ===================Progress Bar Start========================== -->
+
+<div class="container-fluid pt-4 px-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
+    </div>
+  </div>
+  <div class="row">
+    <h6>स्वेच्छानुदान का स्टेटस</h6>
+    <div class="col-md-12">
+      <div class="progress">
+        <!-- <?php //if($swekshanudan_status==0){?>
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">नया आवेदन</div> -->
+          <?php if($swekshanudan_status==0){?>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्राप्त आवेदन</div>
+            <?php }else if($swekshanudan_status==1){?>
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्राप्त आवेदन</div>
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्रस्तावित आवेदन</div>
+              <?php }else if($swekshanudan_status==2){?>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्राप्त आवेदन</div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्रस्तावित आवेदन</div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">स्वीकृत आवेदन</div>
+                <?php }else if($swekshanudan_status==3){?>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्राप्त आवेदन</div>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्रस्तावित आवेदन</div>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">स्वीकृत आवेदन</div>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">स्वीकृत आवेदन (प्रेषित)</div>
+                  <?php }else if($swekshanudan_status==4  ){?>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्राप्त आवेदन</div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">प्रस्तावित आवेदन</div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">स्वीकृत आवेदन</div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">स्वीकृत आवेदन (प्रेषित)</div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">अस्वीकृत आवेदन</div>
+                    <?php } ?>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- =====================Progress Bar End======================== -->
+
+<!-- ===================Timeline Start========================== -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="timeline">
+        <li>
+          <div class="timeline-badge primary"><i class="fas fa-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">नया आवेदन</h4>
+            </div>
+            <div class="timeline-body">
+              <p>Submit a new application</p>
+              <a href="../swekshanudan/swekshanudan.php" class="btn btn-primary">Submit</a>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="timeline-badge secondary"><i class="fas fa-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">प्राप्त आवेदन</h4>
+            </div>
+            <div class="timeline-body">
+              <p>View received applications</p>
+              <a href="../swekshanudan/aavedak.php" class="btn btn-secondary">View</a>
+            </div>
+          </div>
+        </li>
+        <!-- Add more list items for each status -->
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- ===================Timeline End========================== -->
+
+<!-- ===================Timeline End========================== -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              नया आवेदन
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+             
+<!-- ===================Timeline End========================== -->
+
+
+
 
     <!-- Status Code Start -->
-     <div class="container-fluid pt-4 px-4">
+    <!-- <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">
             <h3 class="mb-0 text-center fw-bold text-primary">Status Code</h3>
             <hr class=" p-1 m-1 text-primary">
@@ -254,230 +204,9 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
                     4 = अस्वीकृत आवेदन 
                </div>
         </div>
-     </div>
+     </div> -->
     <!-- Status Code End -->
-
-    <!-- Sales Chart Start -->
-    <!-- <div class="container-fluid pt-4 px-4">
-        <div class="row g-4">
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Worldwide Sales</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <canvas id="worldwide-sales"></canvas>
-                </div>
-            </div>
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Salse & Revenue</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <canvas id="salse-revenue"></canvas>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- Sales Chart End -->
-
-
-    <!-- Recent Sales Start -->
-    <!-- <div class="container-fluid pt-4 px-4">
-        <div class="bg-light text-center rounded p-4">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <h6 class="mb-0">Recent Salse</h6>
-                <a href="">Show All</a>
-            </div>
-            <div class="table-responsive">
-                <table class="table text-start align-middle table-bordered table-hover mb-0">
-                    <thead>
-                        <tr class="text-dark">
-                            <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Invoice</th>
-                            <th scope="col">Customer</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> -->
-    <!-- Recent Sales End -->
-
-
-    <!-- Widgets Start -->
-    <!-- <div class="container-fluid pt-4 px-4">
-        <div class="row g-4">
-            <div class="col-sm-12 col-md-6 col-xl-4">
-                <div class="h-100 bg-light rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <h6 class="mb-0">Messages</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-3">
-                        <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-0">Jhon Doe</h6>
-                                <small>15 minutes ago</small>
-                            </div>
-                            <span>Short message goes here...</span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-3">
-                        <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-0">Jhon Doe</h6>
-                                <small>15 minutes ago</small>
-                            </div>
-                            <span>Short message goes here...</span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-3">
-                        <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-0">Jhon Doe</h6>
-                                <small>15 minutes ago</small>
-                            </div>
-                            <span>Short message goes here...</span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center pt-3">
-                        <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-0">Jhon Doe</h6>
-                                <small>15 minutes ago</small>
-                            </div>
-                            <span>Short message goes here...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-6 col-xl-4">
-                <div class="h-100 bg-light rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Calender</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div id="calender"></div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-6 col-xl-4">
-                <div class="h-100 bg-light rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">To Do List</h6>
-                        <a href="">Show All</a>
-                    </div>
-                    <div class="d-flex mb-2">
-                        <input class="form-control bg-transparent" type="text" placeholder="Enter task">
-                        <button type="button" class="btn btn-primary ms-2">Add</button>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-2">
-                        <input class="form-check-input m-0" type="checkbox">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <span>Short task goes here...</span>
-                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-2">
-                        <input class="form-check-input m-0" type="checkbox">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <span>Short task goes here...</span>
-                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-2">
-                        <input class="form-check-input m-0" type="checkbox" checked>
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <span><del>Short task goes here...</del></span>
-                                <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center border-bottom py-2">
-                        <input class="form-check-input m-0" type="checkbox">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <span>Short task goes here...</span>
-                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center pt-2">
-                        <input class="form-check-input m-0" type="checkbox">
-                        <div class="w-100 ms-3">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <span>Short task goes here...</span>
-                                <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- Widgets End -->
-
+      
 
 
 

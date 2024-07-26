@@ -322,7 +322,7 @@ $fetch = mysqli_query($conn, $sql);
                     <thead class=" head">
                         <tr class="text-center">
                             <th scope="col">क्रमांक</th>
-                            <th scope="col">इन्क्वायरी क्रमांक</th>
+                            <!-- <th scope="col">इन्क्वायरी क्रमांक</th> -->
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>
                             <th scope="col">विषय</th>
@@ -342,7 +342,7 @@ $fetch = mysqli_query($conn, $sql);
                         ?>
                             <tr class=" text-center">
                                 <th scope="row"><?= $i++ ?></th>
-                                <td><?= $row['inquiry_no'] ?></td>
+                                <!-- <td><?= $row['inquiry_no'] ?></td> -->
                                 <td><?= $row['name'] ?></td>
                                 <td><?= $row['phone_number'] ?></td>
                                 <td><?= $row['subject'] ?></td>

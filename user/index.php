@@ -150,12 +150,12 @@ function otpsend(mobile) {
         },
         success: function(data) {
             $('#aa_container').show();
-            $('#aa').append(data.message);
+            $('#aa').append(data);
 
-            if (data.status === 'success') {
+            if (data.status === success) {
                 startCountdown(); // Call startCountdown if the OTP was sent successfully
             } else {
-                console.error(data.message);
+                console.error(data);
             }
         },
         error: function(xhr, status, error) {
