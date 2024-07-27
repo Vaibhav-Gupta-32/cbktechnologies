@@ -40,8 +40,10 @@ if (isset($_POST['login'])) {
         $stmt = mysqli_query($conn, $sql);
 
         if (mysqli_num_rows($stmt) > 0) {
+
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
+            // $_SESSION['role']     = 'admin'; // Add this line to store the user's role
 
             echo "<script>
             setTimeout(function() {

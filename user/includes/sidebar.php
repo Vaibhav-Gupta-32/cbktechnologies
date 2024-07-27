@@ -2,11 +2,15 @@
  <div class="sidebar pe-4 pb-3">
      <nav class="navbar bg-light navbar-light">
          <a href="../dash" class="navbar-brand mx-4 mb-3">
-             <h3 class="text-black fw-bold">CBK-Dash</h3>
+             <h3 class="text-black fw-bold">DASHBOARD</h3>
          </a>
          <div class="d-flex align-items-center ms-4 mb-4">
              <div class="ms-3">
-                 <h5 class="mb-0 text-info">Admin <sup class="text-success">Online</sup></h5>
+             <img class="rounded-circle me-lg-2" src="../img/user.png" alt="" style="width: 40px; height: 40px;">
+             <span class="d-none d-lg-inline-flex"></span>
+             </div>
+             <div class="ms-3">
+                 <h5 class="mb-0 text-info">User <sup class="text-success"></sup></h5>
              </div>
          </div>
          <div class="navbar-nav w-100">
@@ -14,13 +18,13 @@
              <a href="../swekshanudan/swekshanudan_form.php" class="nav-item nav-link"><i class="fa-solid fa-hand-holding-dollar me-2"></i>स्वेच्छानुदान</a>
              <a href="../nirmaan/nirmaan_form.php" class="nav-item nav-link"><i class="fa-solid fa-bridge-circle-check me-2"></i>निर्माण </a>
              <a href="../chikitsa/chikitsa_form.php" class="nav-item nav-link"><i class="fa fa-medkit me-2"></i>चिकित्सा अनुदान </a>
-             <a href="../aavedan/aavedan_form.php" class="nav-item nav-link"><i class="fa-solid fa-envelope-open-text me-2"></i>आवेदन </a>
+             <!-- <a href="../aavedan/aavedan_form.php" class="nav-item nav-link"><i class="fa-solid fa-envelope-open-text me-2"></i>आवेदन </a> -->
              <a href="../chikitsa_seva/chikitsa_seva_form.php" class="nav-item nav-link"><i class="fa fa-medkit me-2"></i>चिकित्सा सेवा </a>
              <a href="../sthanantran/sthanantran_form.php" class="nav-item nav-link"><i class="fa-solid fa-money-bill-transfer me-2"></i>स्थानातरण </a>
-             <a href="../protocol/prorocol_form.php" class="nav-item nav-link"><i class="fa-solid fa-file-shield me-2"></i>प्रोटोकॉल </a>
-             <a href="../aamantran/aamantran_form.php" class="nav-item nav-link"><i class="fa fa-envelope-open me-2"></i>आमंत्रण </a>
-             <a href="../charcha/charcha_form.php" class="nav-item nav-link"><i class="fa fa-comments me-2"></i>चर्चा </a>
-             <a href="../chikitsa/new_chikitsa.php" class="nav-item nav-link"><i class="fa-solid fa-chart-column me-2"></i>रिपोर्ट </a>
+             <!-- <a href="../protocol/prorocol_form.php" class="nav-item nav-link"><i class="fa-solid fa-file-shield me-2"></i>प्रोटोकॉल </a> -->
+             <!-- <a href="../aamantran/aamantran_form.php" class="nav-item nav-link"><i class="fa fa-envelope-open me-2"></i>आमंत्रण </a> -->
+             <!-- <a href="../charcha/charcha_form.php" class="nav-item nav-link"><i class="fa fa-comments me-2"></i>चर्चा </a> -->
+             <!-- <a href="../chikitsa/new_chikitsa.php" class="nav-item nav-link"><i class="fa-solid fa-chart-column me-2"></i>रिपोर्ट </a> -->
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>सेटिंग्स</a>
                  <div class="dropdown-menu bg-transparent border-0">

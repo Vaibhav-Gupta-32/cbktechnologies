@@ -61,8 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Add New District Name -->
 <div class="container-fluid pt-4 px-4">
     <form method="post" id="addForm">
-     <!-- Table End -->
-     <div class="row text-center align-items-center">
+        <!-- Table End -->
+        <div class="row text-center align-items-center">
             <h4 class="text-center fw-bolder text-primary mb-3">नए जिला का नाम जोड़ें</h4>
             <div class="col-lg-4 text-center mb-3">
                 <input type="text" name="district_name" class="form-control border-success" id="mobile" placeholder="जिला का नाम" required>
@@ -91,11 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </form>
-        <!-- Table Start -->
-        <div class="row">
-            <div class="col-sm-12 col-lg-12">
-                <div class="bg-light rounded table-h">
-                    <h5 class="mb-4 text-center mt-2 text-success fw-bolder">जिलों की सूची</h6>
+    <!-- Table Start -->
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div class="bg-light rounded table-h">
+                <h5 class="mb-4 text-center mt-2 text-success fw-bolder">जिलों की सूची</h6>
                     <table class="table table-striped">
                         <thead class="head">
                             <tr>
@@ -115,17 +115,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <th scope="row"><?= $i++ ?></th>
                                     <td><?= $row['district_name'] ?></td>
                                     <td class="d-flex justify-content-center flex-row action">
-                                    <a href="#" id="switch_edit" class="edit-btn" data-id="<?= $row[$tblkey]; ?>" data-name="<?= htmlspecialchars($row['district_name']); ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
-                                    <a class="text-danger " href="#" onclick="confirmDelete(<?=$row['district_id'];?>, '<?=$tblname; ?>' ,'<?=$tblkey?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
-                                        
+                                        <a href="#" id="switch_edit" class="edit-btn" data-id="<?= $row[$tblkey]; ?>" data-name="<?= htmlspecialchars($row['district_name']); ?>"><i class="fas fa-pen me-2" title="Edit"></i></a>
+                                        <a class="text-danger " href="#" onclick="confirmDelete(<?= $row['district_id']; ?>, '<?= $tblname; ?>' ,'<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2" title="Delete"></i></a>
+
                                     </td>
                                 </tr>
                             <?php } ?>
                         </tbody>
                     </table>
-                </div>
             </div>
         </div>
+    </div>
 </div>
 <!-- District Form Close  -->
 

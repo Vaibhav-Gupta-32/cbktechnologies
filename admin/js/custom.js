@@ -15,7 +15,7 @@ function confirmDelete(id, tableName, tablekey) {
     if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
         $.ajax({
             type: 'POST',
-            url: 'delete.php',
+            url: '../includes/delete.php',
             data: JSON.stringify({
                 id: id,
                 table: tableName,
@@ -23,8 +23,15 @@ function confirmDelete(id, tableName, tablekey) {
             }),
             contentType: 'application/json',
             success: function (response) {
-                // alert(response);
-                location.reload(); // Optionally, reload the page to reflect changes
+                alert(response);
+                // location.reload(); // Optionally, reload the page to reflect changes
+                // document.getElementById('msg').append(response);
+                // $('#msg').html(response);
+                // Reload the page after a short delay
+                setTimeout(function() {
+                    location.reload();
+                }, 100); // 100-milisecond delay
+
             },
             error: function (xhr, status, error) {
                 alert("Error: " + xhr.responseText);

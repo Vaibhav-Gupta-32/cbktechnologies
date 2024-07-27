@@ -21,71 +21,6 @@ $swekshanudan_status=getvalfield($conn,'swekshanudan','status',"phone_number='$m
     }
 </style>
 
-<!-- ============================================= -->
-<div class="container-fluid pt-4 px-4">
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card border-primary mb-3">
-        <div class="card-body text-primary">
-          <h5 class="card-title">नया आवेदन</h5>
-          <p class="card-text">Submit a new application</p>
-          <a href="../swekshanudan/swekshanudan.php" class="btn btn-primary">Submit</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card border-secondary mb-3">
-        <div class="card-body text-secondary">
-          <h5 class="card-title">प्राप्त आवेदन</h5>
-          <p class="card-text">View received applications</p>
-          <a href="../swekshanudan/aavedak.php" class="btn btn-secondary">View</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card border-warning mb-3">
-        <div class="card-body text-warning">
-          <h5 class="card-title">प्रस्तावित आवेदन</h5>
-          <p class="card-text">View proposed applications</p>
-          <a href="../swekshanudan/prastavit_aavedan.php" class="btn btn-warning">View</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card border-success mb-3">
-        <div class="card-body text-success">
-          <h5 class="card-title">स्वीकृत आवेदन</h5>
-          <p class="card-text">View approved applications</p>
-          <a href="../swekshanudan/sveekrt_aavedan.php" class="btn btn-success">View</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card border-info mb-3">
-        <div class="card-body text-info">
-          <h5 class="card-title">स्वीकृत आवेदन (प्रेषित)</h5>
-          <p class="card-text">View approved and sent applications</p>
-          <a href="../swekshanudan/presit_aavedan.php" class="btn btn-info">View</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card border-danger mb-3">
-        <div class="card-body text-danger">
-          <h5 class="card-title">अस्वीकृत आवेदन</h5>
-          <p class="card-text">View rejected applications</p>
-          <a href="../swekshanudan/asveekrt_aavedan.php" class="btn btn-danger">View</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- ===================Progress Bar Start========================== -->
 
 <div class="container-fluid pt-4 px-4">
   <div class="row">
@@ -126,67 +61,6 @@ $swekshanudan_status=getvalfield($conn,'swekshanudan','status',"phone_number='$m
 </div>
 <!-- =====================Progress Bar End======================== -->
 
-<!-- ===================Timeline Start========================== -->
-<div class="container-fluid pt-4 px-4">
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <ul class="timeline">
-        <li>
-          <div class="timeline-badge primary"><i class="fas fa-check"></i></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">नया आवेदन</h4>
-            </div>
-            <div class="timeline-body">
-              <p>Submit a new application</p>
-              <a href="../swekshanudan/swekshanudan.php" class="btn btn-primary">Submit</a>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="timeline-badge secondary"><i class="fas fa-check"></i></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">प्राप्त आवेदन</h4>
-            </div>
-            <div class="timeline-body">
-              <p>View received applications</p>
-              <a href="../swekshanudan/aavedak.php" class="btn btn-secondary">View</a>
-            </div>
-          </div>
-        </li>
-        <!-- Add more list items for each status -->
-      </ul>
-    </div>
-  </div>
-</div>
-<!-- ===================Timeline End========================== -->
-
-<!-- ===================Timeline End========================== -->
-<div class="container-fluid pt-4 px-4">
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="text-center mb-4">आवेदन डैशबोर्ड</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              नया आवेदन
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-             
-<!-- ===================Timeline End========================== -->
 
 
 

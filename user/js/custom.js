@@ -15,7 +15,7 @@ function confirmDelete(id, tableName, tablekey) {
     if (confirm("क्या आप वाकई इस रिकॉर्ड को हटाना चाहते हैं?")) {
         $.ajax({
             type: 'POST',
-            url: 'delete.php',
+            url: '../includes/delete.php',
             data: JSON.stringify({
                 id: id,
                 table: tableName,

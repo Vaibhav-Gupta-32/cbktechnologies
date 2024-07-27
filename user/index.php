@@ -8,25 +8,27 @@ if (isset($_POST['login_otp'])) {
     if (!isset($_POST['user_otp'])) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>OTP is required</b></div>";
     } else {
-       $otp =mysqli_escape_string($conn,$_POST['user_otp']);
-        $mobile_no = mysqli_escape_string($conn,$_POST['mobile_no']);
+        $otp = mysqli_escape_string($conn, $_POST['user_otp']);
+        $mobile_no = mysqli_escape_string($conn, $_POST['mobile_no']);
         $stored_otp = getvalfield($conn, "otps", "count(*)", "otp='$otp' and created_at <= valid_time");
         // echo 'dsa'. $stored_otp;
         // die;
         if ($stored_otp > 0) {
             // $_SESSION['otp'] = $otp;
-            $_SESSION['username'] = $mobile_no;
-            $_SESSION['password'] = $otp;
-            $sql = mysqli_query($conn,"INSERT INTO userlogin (username, mobile_no) VALUES ($mobile_no, $mobile_no)");
-            if($sql){
-            $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. User Login Successfully!..</b></div>";
-            echo "<script>
+            $_SESSION['mobile'] = $mobile_no;
+            $_SESSION['otp'] = $otp;
+            $_SESSION['role'] = 'user'; // Add this line to store the user's role
+
+            $sql = mysqli_query($conn, "INSERT INTO userlogin (username, mobile_no) VALUES ($mobile_no, $mobile_no)");
+            if ($sql) {
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. User Login Successfully!..</b></div>";
+                echo "<script>
             setTimeout(function() {
                 window.location.href = 'dash/';
             }, 2000); // 3000 milliseconds = 3 seconds
         </script>";
             }
-        // die;
+            // die;
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP Please Enter Correct OTP !!</b></div>";
         }
@@ -90,14 +92,14 @@ if (isset($_POST['login_otp'])) {
 
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value);startCountdown()" required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10">
+                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value);startCountdown()" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10">
                                     <label for="floatingInput">User Mobile No. <span class="text-danger">*</span></label>
                                     <div id="aa_container">
                                         <p class="text-success fw-bold" style="font-size:12px" id="aa"></p>
                                     </div>
                                 </div>
                                 <div class="form-floating mb-4">
-                                    <input type="text" class="form-control" id="otp_passkey" name="user_otp" placeholder="Password" maxlength="6" required  onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <input type="text" class="form-control" id="otp_passkey" name="user_otp" placeholder="Password" maxlength="6" required onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <label for="floatingPassword">OTP <span class="text-danger">*</span></label>
                                     <div id="otp-time" class="d-flex align-items-center justify-content-between">
                                         <span id="countdown"></span>
@@ -141,47 +143,47 @@ if (isset($_POST['login_otp'])) {
 
 </html>
 <script>
-function otpsend(mobile) {
-    $.ajax({
-        type: 'POST',
-        url: 'ajax_otpsend.php',
-        data: {
-            mobile_no: mobile
-        },
-        success: function(data) {
-            $('#aa_container').show();
-            $('#aa').append(data);
+    function otpsend(mobile) {
+        $.ajax({
+            type: 'POST',
+            url: 'ajax_otpsend.php',
+            data: {
+                mobile_no: mobile
+            },
+            success: function(data) {
+                $('#aa_container').show();
+                $('#aa').append(data);
 
-            if (data.status === success) {
-                startCountdown(); // Call startCountdown if the OTP was sent successfully
-            } else {
-                console.error(data);
+                if (data.status === success) {
+                    startCountdown(); // Call startCountdown if the OTP was sent successfully
+                } else {
+                    console.error(data);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("An error occurred: " + error);
             }
-        },
-        error: function(xhr, status, error) {
-            console.error("An error occurred: " + error);
-        }
-    });
-}
+        });
+    }
 
 
     function startCountdown() {
-            var countDownDate = new Date(Date.now() + 300000); // 300000 = 5 minutes in milliseconds
+        var countDownDate = new Date(Date.now() + 300000); // 300000 = 5 minutes in milliseconds
 
-            var x = setInterval(function() {
-                var now = new Date().getTime();
-                var distance = countDownDate - now;
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
 
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ";
+            document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s ";
 
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("countdown").innerHTML = "OTP expired";
-                    document.getElementById("resend").style.display = "block";
-                }
-            }, 1000);
-        }
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "OTP expired";
+                document.getElementById("resend").style.display = "block";
+            }
+        }, 1000);
+    }
 </script>

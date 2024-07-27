@@ -3,7 +3,7 @@
 <?php
 $tblname = "swekshanudan";
 $tblkey = "id";
-$pagename = "नया आवेदन भरे";
+$pagename = "नया स्वेच्छानुदान आवेदन भरे";
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
