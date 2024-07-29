@@ -13,10 +13,6 @@ $sector_id = "";
 $gram_id = "";
 $gram_panchayat_id = "";
 
-
-
-
-
 // Fetch districts for dropdown
 $district_query = "SELECT * FROM district_master";
 $district_result = mysqli_query($conn, $district_query);
