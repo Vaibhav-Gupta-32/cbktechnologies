@@ -154,16 +154,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     $sql .= " ORDER BY id DESC";
     // echo $sql;die;
 } else {
-    $sql = "SELECT *, 
-       v.vibhag_name AS aavak_vibhag_name, 
-       vm.vibhag_name AS jaavak_vibhag_name
-FROM $tblname 
-LEFT JOIN vibhag_master v ON aavak_vibhag = v.vibhag_id
-LEFT JOIN vibhag_master vm ON jaavak_vibhag = vm.vibhag_id
-WHERE status=0
-ORDER BY $tblkey DESC;";
-}
+    $sql = "SELECT 
+  a.*,
+  vm.vibhag_name AS a_vibhag_name,
+  dm.district_name AS a_district_name,
+  vm2.vidhansabha_name AS a_vidhansabha_name,
+  vm3.vikaskhand_name AS a_vikaskhand_name,
+  sm.sector_name AS a_sector_name,
+  gpm.gram_panchayat_name AS a_gram_panchayat_name,
+  gm.gram_name AS a_gram_name,
+  vm4.vibhag_name AS v_vibhag_name,
+  vm5.vibhag_name AS v_aavak_vibhag
 
+FROM 
+  $tblname a
+  LEFT JOIN vibhag_master vm ON a.a_jaavak_vibhag = vm.vibhag_id
+  LEFT JOIN district_master dm ON a.a_district_id = dm.district_id
+  LEFT JOIN vidhansabha_master vm2 ON a.a_vidhansabha_id = vm2.vidhansabha_id
+  LEFT JOIN vikaskhand_master vm3 ON a.a_vikaskhand_id = vm3.vikaskhand_id
+  LEFT JOIN sector_master sm ON a.a_sector_id = sm.sector_id
+  LEFT JOIN gram_panchayat_master gpm ON a.a_gram_panchayat_id = gpm.gram_panchayat_id
+  LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
+  LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
+  LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm4.vibhag_id
+
+WHERE 
+  a.status = '0'
+ORDER BY 
+  $tblkey DESC;";
+}
+// echo $sql;
 $fetch = mysqli_query($conn, $sql);
 //  Close Search
 
@@ -339,12 +359,12 @@ $fetch = mysqli_query($conn, $sql);
                                 <th scope="row"><?= $i++ ?></th>
                                 <td><?= $row['file_no'] ?></td>
                                 <td><?= $row['aavak_no'] ?></td>
-                                <td><?= $row['vibhag_name'] ?></td>
-                                <td><?= $row['subject'] ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['aadesh_date'])) ?></td>
+                                <td><?= $row['a_vibhag_name'] ?></td>
+                                <td><?= $row['a_subject'] ?></td>
+                                <td><?= date("d-m-Y", strtotime($row['v_aadesh_date'])) ?></td>
                                 <td>null </td>
-                                <td><?= $row['kisko_presit'] ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['jaavak_date'])) ?></td>
+                                <td><?= $row['a_kisko_presit'] ?></td>
+                                <td><?= date("d-m-Y", strtotime($row['a_jaavak_date'])) ?></td>
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                                     &nbsp;

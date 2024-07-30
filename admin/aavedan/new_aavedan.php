@@ -8,69 +8,82 @@ $pagename = "नया आवेदन भरे";
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     // Retrieve posted values
-    $mantri_comment = mysqli_real_escape_string($conn, $_POST['mantri_comment']);
-    $date = mysqli_real_escape_string($conn, $_POST['date']);
-    $file_no = mysqli_real_escape_string($conn, $_POST['file_no']);
-    $aadesh_date = mysqli_real_escape_string($conn, $_POST['aadesh_date']);
-    $jaavak_date = mysqli_real_escape_string($conn, $_POST['jaavak_date']);
-    $kisko_presit = mysqli_real_escape_string($conn, $_POST['kisko_presit']);
-    $jaavak_vibhag = mysqli_real_escape_string($conn, $_POST['jaavak_vibhag']);
-    $office_name = mysqli_real_escape_string($conn, $_POST['office_name']);
-    // $file_upload = $_FILES['file_upload']; // Note: $_FILES for file uploads
-    $reference = mysqli_real_escape_string($conn, $_POST['reference']);
-    $subject = mysqli_real_escape_string($conn, $_POST['subject']);
-    $aavak_vibhag = mysqli_real_escape_string($conn, $_POST['aavak_vibhag']);
-    $aavak_no = mysqli_real_escape_string($conn, $_POST['aavak_no']);
-    $choose_aavedak_vibhag = mysqli_real_escape_string($conn, $_POST['choose_aavedak_vibhag']);
+    $a_phone_number = mysqli_real_escape_string($conn, $_POST['a_phone_number']);
+    $a_aavedak_name = mysqli_real_escape_string($conn, $_POST['a_aavedak_name']);
+    $a_district_id = mysqli_real_escape_string($conn, $_POST['a_district_id']);
+    $a_vidhansabha_id = mysqli_real_escape_string($conn, $_POST['a_vidhansabha_id']);
+    $a_vikaskhand_id = mysqli_real_escape_string($conn, $_POST['a_vikaskhand_id']);
+    $a_sector_id = mysqli_real_escape_string($conn, $_POST['a_sector_id']);
+    $a_gram_panchayat_id = mysqli_real_escape_string($conn, $_POST['a_gram_panchayat_id']);
+    $a_gram_id = mysqli_real_escape_string($conn, $_POST['a_gram_id']);
+    $a_subject = mysqli_real_escape_string($conn, $_POST['a_subject']);
+    $a_reference = mysqli_real_escape_string($conn, $_POST['a_reference']);
+    $a_file_upload_1 = $_FILES['a_file_upload_1']['name'];
+    $a_office_name = mysqli_real_escape_string($conn, $_POST['a_office_name']);
+    $a_jaavak_vibhag = mysqli_real_escape_string($conn, $_POST['a_jaavak_vibhag']);
+    $a_kisko_presit = mysqli_real_escape_string($conn, $_POST['a_kisko_presit']);
+    $a_jaavak_date = mysqli_real_escape_string($conn, $_POST['a_jaavak_date']);
+    $a_application_date = mysqli_real_escape_string($conn, $_POST['a_application_date']);
+    $a_file_upload_2 = $_FILES['a_file_upload_2']['name'];
+    $a_mantri_comment = mysqli_real_escape_string($conn, $_POST['a_mantri_comment']);
 
+    $v_aavak_vibhag = mysqli_real_escape_string($conn, $_POST['v_aavak_vibhag']);
+    $v_subject = mysqli_real_escape_string($conn, $_POST['v_subject']);
+    $v_reference = mysqli_real_escape_string($conn, $_POST['v_reference']);
+    $v_file_upload_1 = $_FILES['v_file_upload_1']['name'];
+    $v_office_name = mysqli_real_escape_string($conn, $_POST['v_office_name']);
+    $v_jaavak_vibhag = mysqli_real_escape_string($conn, $_POST['v_jaavak_vibhag']);
+    $v_kisko_presit = mysqli_real_escape_string($conn, $_POST['v_kisko_presit']);
+    $v_jaavak_date = mysqli_real_escape_string($conn, $_POST['v_jaavak_date']);
+    $v_aadesh_date = mysqli_real_escape_string($conn, $_POST['v_aadesh_date']);
+    $v_file_upload_2 = $_FILES['v_file_upload_2']['name'];
+    $v_mantri_comment = mysqli_real_escape_string($conn, $_POST['v_mantri_comment']);
+
+    print_r($_POST);
     // File upload handling
     $target_dir = "uploads/";
-    $file_upload = $_FILES['file_upload']['name'];
-    $target_file = $target_dir . basename($_FILES["file_upload"]["name"]);
+    $target_file1 = $target_dir . basename($_FILES["a_file_upload_1"]["name"]);
+    $target_file2 = $target_dir . basename($_FILES["a_file_upload_2"]["name"]);
     $uploadOk = 1;
-    $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    // print_r($_POST);die;
+    $fileType1 = strtolower(pathinfo($target_file1, PATHINFO_EXTENSION));
+    $fileType2 = strtolower(pathinfo($target_file2, PATHINFO_EXTENSION));
+
     // Check if file already exists
-    if (file_exists($target_file)) {
+    if (file_exists($target_file1) || file_exists($target_file2)) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, file already exists.</b></div>";
         $uploadOk = 0;
     }
 
     // Check file size (500 KB limit)
-    if ($_FILES["file_upload"]["size"] > 500000) {
+    if ($_FILES["a_file_upload_1"]["size"] > 500000 || $_FILES["a_file_upload_2"]["size"] > 500000) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file is too large (limit is 500 KB).</b></div>";
         $uploadOk = 0;
     }
 
     // Allow certain file formats (JPG, PNG, PDF)
-    if ($fileType != "jpg" && $fileType != "png" && $fileType != "pdf") {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, only JPG, PNG, and PDF files are allowed.</b></div>";
+    if ($fileType1 != "jpg" && $fileType1 != "png" && $fileType1 != "pdf" || $fileType2 != "jpg" && $fileType2 != "png" && $fileType2 != "pdf") {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, only JPG, PNG & PDF files are allowed.</b></div>";
         $uploadOk = 0;
     }
 
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file was not uploaded.</b></div>";
+        // if everything is ok, try to upload file
     } else {
-        // Attempt to upload file
-        if (move_uploaded_file($_FILES["file_upload"]["tmp_name"], $target_file)) {
-            // File uploaded successfully, proceed with database insertion
-            // Prepare SQL statement
-            // Prepare SQL statement
-            $sql = "INSERT INTO $tblname 
-(date, file_no, mantri_comment, aadesh_date, jaavak_date, kisko_presit, jaavak_vibhag, office_name, file_upload, reference, subject, aavak_vibhag, aavak_no, choose_aavedak_vibhag) 
-VALUES 
-('$date', '$file_no', '$mantri_comment', '$aadesh_date', '$jaavak_date', '$kisko_presit', '$jaavak_vibhag', '$office_name', '$file_upload', '$reference', '$subject', '$aavak_vibhag', '$aavak_no', '$choose_aavedak_vibhag')";
-
-            // Execute SQL statement
-            if ($conn->query($sql) === TRUE) {
-                $msg = "<div class='msg-container'><b class='alert alert-success msg'>New Record Created Successfully.</b></div>";
-            } else {
-                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>New Record Created Unsuccessfully!!</b></div>";
-            }
+        if (move_uploaded_file($_FILES["a_file_upload_1"]["tmp_name"], $target_file1) && move_uploaded_file($_FILES["a_file_upload_2"]["tmp_name"], $target_file2)) {
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>The file has been uploaded.</b></div>";
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, there was an error uploading your file.</b></div>";
         }
+    }
+
+    // Insert data into database
+    $sql = "INSERT INTO $tblname (a_phone_number, a_aavedak_name, a_district_id, a_vidhansabha_id, a_vikaskhand_id, a_sector_id, a_gram_panchayat_id, a_gram_id, a_subject, a_reference, a_file_upload_1, a_office_name, a_jaavak_vibhag, a_kisko_presit, a_jaavak_date, a_application_date, a_file_upload_2, a_mantri_comment, v_aavak_vibhag, v_subject, v_reference, v_file_upload_1, v_office_name, v_jaavak_vibhag, v_kisko_presit, v_jaavak_date, v_aadesh_date, v_file_upload_2, v_mantri_comment, status) VALUES ('$a_phone_number', '$a_aavedak_name', '$a_district_id', '$a_vidhansabha_id', '$a_vikaskhand_id', '$a_sector_id', '$a_gram_panchayat_id', '$a_gram_id', '$a_subject', '$a_reference', '$a_file_upload_1', '$a_office_name', '$a_jaavak_vibhag', '$a_kisko_presit', '$a_jaavak_date', '$a_application_date', '$a_file_upload_2', '$a_mantri_comment', '$v_aavak_vibhag', '$v_subject', '$v_reference', '$v_file_upload_1', '$v_office_name', '$v_jaavak_vibhag', '$v_kisko_presit', '$v_jaavak_date', '$v_aadesh_date', '$v_file_upload_2', '$v_mantri_comment', '0')";
+    if (mysqli_query($conn, $sql)) {
+        $msg = "<div class='msg-container'><b class='alert alert-success msg'>Data inserted successfully.</b></div>";
+    } else {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Error: " . $sql . "<br>" . mysqli_error($conn) . "</b></div>";
     }
 }
 ?>
@@ -97,7 +110,7 @@ VALUES
             <div class="col-lg-6 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="file_no" id="file_no" placeholder=" " required onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input type="text" class="form-control" name="file_no" id="file_no" placeholder=" " onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                         <label for="file_no">फाइल क्र <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -105,12 +118,11 @@ VALUES
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" maxlength="10" name="date" id="date" placeholder=" " onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                        <input type="date" class="form-control" maxlength="10" name="date" id="date" placeholder=" " required>
                         <label for="date">दिनांक<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -123,325 +135,380 @@ VALUES
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 border-3 d-flex align-items-center" style="height: 55px;">
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="1" id="choose_aavedak_vibhag_1" required>
+                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="1" id="choose_aavedak_vibhag_1" onchange="formChange(1)" checked>
                             <label class="form-check-label" for="choose_aavedak_vibhag_1">आवेदक <span class="text-danger">*</span></label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="2" id="choose_aavedak_vibhag_2" required>
+                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="2" id="choose_aavedak_vibhag_2" onchange="formChange(2)">
                             <label class="form-check-label" for="choose_aavedak_vibhag_2">विभाग <span class="text-danger">*</span></label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-5" id="vibhag_form">
-            <!-- विभाग का form  -->
-                <div class="col-lg-12">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
-                            <label for="subject">विषय <span class="text-danger">*</span> </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="aavak_vibhag" name="aavak_vibhag" required>
-                                <option selected>आवक विभाग नाम चुनें</option>
-                                <?php
-                                $vibhag_result = mysqli_query($conn, "select * from vibhag_master where 1");
-                                mysqli_data_seek($vibhag_result, 0); // Reset pointer to fetch districts again
-                                while ($vibhag_row = mysqli_fetch_assoc($vibhag_result)) {
-                                    $selected = ($vibhag_row['vibhag_id'] == $vibhag_id) ? 'selected' : '';
-                                    echo "<option value='" . $vibhag_row['vibhag_id'] . "' $selected>" . $vibhag_row['vibhag_name'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                            <label for="aavak_vibhag">आवक विभाग <span class="text-danger">*</span></label>
-                        </div>
-                    </div>
-                </div>
+    </div>
 
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference">
-                            <label for="reference">द्वारा <span class="text-danger">*</span> </label>
-                        </div>
+    <div class="container-fluid px-4" id="aavedak_form">
+        <div class="row">
+            <!-- आवेदक का form -->
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" maxlength="10" name="a_phone_number" id="a_phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <label for="a_phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
                     </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3 ">
-                            <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                            <label for="file_upload">फाइल अपलोड करें <span class="text-danger">*</span> </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="office_name" name="office_name" required>
-                                <option>ऑफिस का नाम चुनें</option>
-                                <option value="टेक्नोलॉजी 1">टेक्नोलॉजी 1</option>
-                                <option value="टेक्नोलॉजी 2">टेक्नोलॉजी 2</option>
-                            </select>
-                            <label for="office_name">ऑफिस <span class="text-danger">*</span></label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="jaavak_vibhag" name="jaavak_vibhag" required>
-                                <option selected>जावक विभाग का नाम चुनें</option>
-                                <?php
-                                $vibhag_result = mysqli_query($conn, "select * from vibhag_master where 1");
-                                mysqli_data_seek($vibhag_result, 0); // Reset pointer to fetch districts again
-                                while ($vibhag_row = mysqli_fetch_assoc($vibhag_result)) {
-                                    $selected = ($vibhag_row['vibhag_id'] == $vibhag_id) ? 'selected' : '';
-                                    echo "<option value='" . $vibhag_row['vibhag_id'] . "' $selected>" . $vibhag_row['vibhag_name'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                            <label for="jaavak_vibhag">जावक विभाग <span class="text-danger">*</span></label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="kisko_presit" id="kisko_presit" placeholder="पद का नाम" required>
-                            <label for="kisko_presit">किसको प्रेषित किया गया <span class="text-danger">*</span> </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <?php
-                            // Set default current date
-                            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                            ?>
-                            <input type="date" class="form-control" id="jaavak_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="jaavak_date">
-                            <label for="jaavak_date">जावक दिनांक <span class="text-danger">*</span> </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <?php
-                            // Set default current date
-                            $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                            ?>
-                            <input type="date" class="form-control" id="aadesh_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="aadesh_date">
-                            <label for="aadesh_date">आदेश दिनांक <span class="text-danger">*</span> </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-12">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" id="mantri_comment" placeholder="टिप्पणी" required style="height: 150px;" name="mantri_comment"></textarea>
-                            <label for="mantri_comment">मंत्री जी की टिप <span class="text-danger">*</span> </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12 text-center">
-                <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
                 </div>
             </div>
-
-        </div>
-        <div class="row mt-5" id="aavedak_form">
-            <!-- आवेदक का form -->
-                    <div class="col-lg-6 col-md-12 col-sm-12 align-content-center">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="name" id="aavedak" placeholder="आवेदक का नाम" required>
-                                <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-                                <label for="phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
-                            </div>
-                        </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="a_aavedak_name" id="a_aavedak_name" placeholder="आवेदक का नाम">
+                        <label for="a_aavedak_name">आवेदक का नाम <span class="text-danger">*</span> </label>
                     </div>
 
-                    <div class="col-lg-6 text-center mb-3">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <select name="district_id" id="districtSelect" class="form-select form-control bg-white" required>
-                                    <?php
-                                    // Fetch districts for dropdown
-                                    $district_query = "SELECT * FROM district_master";
-                                    $district_result = mysqli_query($conn, $district_query);
-                                    ?>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="a_district_id" id="districtSelect" class="form-select form-control bg-white">
+                            <?php
+                            // Fetch districts for dropdown
+                            $district_query = "SELECT * FROM district_master";
+                            $district_result = mysqli_query($conn, $district_query);
+                            ?>
 
-                                    <option selected>जिले का नाम चुनें</option>
-                                    <?php
-                                    while ($district_row = mysqli_fetch_assoc($district_result)) {
-                                        echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
-                                    }
-                                    ?>
-                                </select>
-                                <label for="districtSelect">जिले का नाम चुनें <span class="text-danger">*</span></label>
+                            <option selected>जिला का नाम चुनें</option>
+                            <?php
+                            while ($district_row = mysqli_fetch_assoc($district_result)) {
+                                echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="districtSelect">जिला <span class="text-danger">*</span></label>
 
-                            </div>
-                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="a_vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
+                            <option selected>विधानसभा का नाम चुनें</option>
+                            <!-- Options for vidhansabha will go here -->
+                        </select>
+                        <label for="vidhansabha">विधानसभा<span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="a_vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
+                            <option selected>विकासखंड का नाम चुनें</option>
+                            <!-- Option Load By AJAX -->
 
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white " required>
-                                    <option selected>विधानसभा का नाम चुनें</option>
-                                    <!-- Options for vidhansabha will go here -->
-                                </select>
-                                <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
-                            </div>
-                        </div>
+                        </select>
+                        <label for="vikaskhand">विकासखंड <span class="text-danger">*</span> </label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" required>
-                                    <option selected>विकासखंड का नाम चुनें</option>
-                                    <!-- Option Load By AJAX -->
-
-                                </select>
-                                <label for="vikaskhand">विकासखंड का नाम चुनें <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="a_sector_id" id="sectorSelect" class="form-select form-control bg-white">
+                            <option selected>सेक्टर का नाम चुनें</option>
+                            <!-- Options for sectors will go here -->
+                        </select>
+                        <label for="sector">सेक्टर <span class="text-danger">*</span> </label>
                     </div>
-
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white" required>
-                                    <option selected>सेक्टर का नाम चुनें</option>
-                                    <!-- Options for sectors will go here -->
-                                </select>
-                                <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="a_gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
+                            <option selected>ग्राम पंचायत का नाम चुनें</option>
+                            <!-- Options for panchayat will go here -->
+                        </select>
+                        <label for="gram_panchayt">ग्राम पंचायत <span class="text-danger">*</span> </label>
                     </div>
-
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white" required>
-                                    <option selected>ग्राम पंचायत का नाम चुनें</option>
-                                    <!-- Options for panchayat will go here -->
-                                </select>
-                                <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="gramSelect" name="a_gram_id">
+                            <option selected>ग्राम का नाम चुनें</option>
+                            <!-- by load ajax -->
+                        </select>
+                        <label for="gram">ग्राम <span class="text-danger">*</span></label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="gramSelect" name="gram_id" required>
-                                    <option selected>ग्राम का नाम चुनें</option>
-                                    <!-- by load ajax -->
-                                </select>
-                                <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="a_subject" placeholder="विषय" name="a_subject">
+                        <label for="a_subject">विषय का नाम <span class="text-danger">*</span> </label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
-                                <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="a_reference" placeholder="द्वारा" name="a_reference">
+                        <label for="a_reference">द्वारा <span class="text-danger">*</span> </label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference">
-                                <label for="reference">द्वारा <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3 ">
+                        <input type="file" class="form-control bg-white" id="a_file_upload_1" placeholder="फाइल अपलोड करें" name="a_file_upload_1">
+                        <label for="a_file_upload_1">फाइल अपलोड करे <span class="text-danger">*</span> </label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="designation" id="designation" placeholder="पद का नाम" required>
-                                <label for="designation">वर्त्तमान पद एवं स्थान <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="a_office_name" name="a_office_name">
+                            <option>ऑफिस का नाम चुनें</option>
+                            <option value="टेक्नोलॉजी 1">टेक्नोलॉजी 1</option>
+                            <option value="टेक्नोलॉजी 2">टेक्नोलॉजी 2</option>
+                        </select>
+                        <label for="a_office_name">ऑफिस <span class="text-danger">*</span></label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="designation" id="designation" placeholder="पद का नाम" required>
-                                <label for="designation">प्रस्तावित पद एवं स्थान <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="a_jaavak_vibhag" name="a_jaavak_vibhag">
+                            <option selected>जावक विभाग का नाम चुनें</option>
+                            <?php
+                            $vibhag_result = mysqli_query($conn, "select * from vibhag_master where 1");
+                            mysqli_data_seek($vibhag_result, 0); // Reset pointer to fetch districts again
+                            while ($vibhag_row = mysqli_fetch_assoc($vibhag_result)) {
+                                $selected = ($vibhag_row['vibhag_id'] == $vibhag_id) ? 'selected' : '';
+                                echo "<option value='" . $vibhag_row['vibhag_id'] . "' $selected>" . $vibhag_row['vibhag_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="a_jaavak_vibhag">जावक विभाग <span class="text-danger">*</span></label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group shadow">
-                            <div class="form-floating mb-3">
-                                <?php
-                                // Set default current date
-                                $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                                ?>
-                                <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date">
-                                <label for="application_date">आवेदन की तिथि <span class="text-danger">*</span> </label>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group shadow">
-                                <div class="form-floating mb-3 ">
-                                    <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
-                                    <label for="file_upload">आवेदन <span class="text-danger">*</span> </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group shadow">
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"></textarea>
-                                    <label for="comment">टिप्पणी <span class="text-danger">*</span> </label>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="a_kisko_presit" id="a_kisko_presit" placeholder="पद का नाम">
+                        <label for="a_kisko_presit">किसको प्रेषित किया गया <span class="text-danger">*</span> </label>
                     </div>
-           
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" class="form-control" id="a_jaavak_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" name="a_jaavak_date">
+                        <label for="a_jaavak_date">जावक दिनांक<span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" class="form-control" id="a_application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" name="a_application_date">
+                        <label for="a_application_date">आदेश दिनांक<span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3 ">
+                        <input type="file" class="form-control bg-white" id="a_file_upload_2" placeholder="फाइल अपलोड करें" name="a_file_upload_2">
+                        <label for="a_file_upload_2">फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="a_mantri_comment" placeholder="टिप्पणी" style="height: 150px;" name="a_mantri_comment"></textarea>
+                        <label for="a_mantri_comment">मंत्री जी की टिप <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-12 text-center">
                 <div class="form-group">
                     <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
                 </div>
             </div>
-
             <!--  -->
         </div>
     </div>
+
+    <div class="container-fluid px-4 " id="vibhag_form">
+        <div class="row">
+            <!-- विभाग का form  -->
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="v_aavak_vibhag" name="v_aavak_vibhag">
+                            <option>विभाग चुनें</option>
+                            <?php
+                            $vibhag_result = mysqli_query($conn, "select * from vibhag_master where 1");
+                            mysqli_data_seek($vibhag_result, 0); // Reset pointer to fetch districts again
+                            while ($vibhag_row = mysqli_fetch_assoc($vibhag_result)) {
+                                $selected = ($vibhag_row['vibhag_id'] == $vibhag_id) ? 'selected' : '';
+                                echo "<option value='" . $vibhag_row['vibhag_id'] . "' $selected>" . $vibhag_row['vibhag_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="v_aavak_vibhag">आवक विभाग <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="v_subject" placeholder="विषय" name="v_subject">
+                        <label for="v_subject">विषय <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="v_reference" placeholder="द्वारा" name="v_reference">
+                        <label for="v_reference">द्वारा <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3 ">
+                        <input type="file" class="form-control bg-white" id="v_file_upload_1" placeholder="फाइल अपलोड करें" name="v_file_upload_1">
+                        <label for="v_file_upload_1">फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="v_office_name" name="v_office_name">
+                            <option>ऑफिस का नाम चुनें</option>
+                            <option value="टेक्नोलॉजी 1">टेक्नोलॉजी 1</option>
+                            <option value="टेक्नोलॉजी 2">टेक्नोलॉजी 2</option>
+                        </select>
+                        <label for="v_office_name">ऑफिस <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="v_jaavak_vibhag" name="v_jaavak_vibhag">
+                            <option>जावक विभाग का नाम चुनें</option>
+                            <?php
+                            $vibhag_result = mysqli_query($conn, "select * from vibhag_master where 1");
+                            mysqli_data_seek($vibhag_result, 0); // Reset pointer to fetch districts again
+                            while ($vibhag_row = mysqli_fetch_assoc($vibhag_result)) {
+                                $selected = ($vibhag_row['vibhag_id'] == $vibhag_id) ? 'selected' : '';
+                                echo "<option value='" . $vibhag_row['vibhag_id'] . "' $selected>" . $vibhag_row['vibhag_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="v_jaavak_vibhag">जावक विभाग <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="v_kisko_presit" id="v_kisko_presit" placeholder="पद का नाम">
+                        <label for="v_kisko_presit">किसको प्रेषित किया गया <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" class="form-control" id="v_jaavak_date"  placeholder="आवेदन दिनांक" name="v_jaavak_date">
+                        <label for="v_jaavak_date">जावक दिनांक <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" class="form-control" id="v_aadesh_date" placeholder="आवेदन दिनांक" name="v_aadesh_date">
+                        <label for="v_aadesh_date">आदेश दिनांक <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3 ">
+                        <input type="file" class="form-control bg-white" id="v_file_upload_2" placeholder="फाइल अपलोड करें" name="v_file_upload_2">
+                        <label for="v_file_upload_2">फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="v_mantri_comment" placeholder="टिप्पणी" style="height: 150px;" name="v_mantri_comment"></textarea>
+                        <label for="v_mantri_comment">मंत्री जी की टिप <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 text-center">
+                <div class="form-group">
+                    <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </form>
 <!-- New aavedan close -->
 <script>
-    document.getElementById('choose_aavedak_vibhag_1').addEventListener('click', function(event) {
-        document.getElementById('aavedak_form').style.display = 'block';
-        document.getElementById('vibhag_form').style.display = 'none';
-    });
+    function formChange(aa) {
+        // Get the radio buttons and forms
+        const radioAavedak = document.getElementById('choose_aavedak_vibhag_1');
+        const radioVibhag = document.getElementById('choose_aavedak_vibhag_2');
+        const aavedakForm = document.getElementById('aavedak_form');
+        const vibhagForm = document.getElementById('vibhag_form');
 
-    document.getElementById('choose_aavedak_vibhag_2').addEventListener('click', function(event) {
-        document.getElementById('aavedak_form').style.display = 'none';
-        document.getElementById('vibhag_form').style.display = 'block';
-    });
+        // Toggle forms based on the value of aa
+        if (aa == 1) {
+            aavedakForm.style.display = 'block';
+            vibhagForm.style.display = 'none';
+        } else if (aa == 2) {
+            aavedakForm.style.display = 'none';
+            vibhagForm.style.display = 'block';
+        }
+    }
+    window.onload = function() {
+        formChange(1);
+    };
 </script>
 <?php include('../includes/footer.php'); ?>
