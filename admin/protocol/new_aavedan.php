@@ -5,8 +5,6 @@ $tblname = "protocol_details";
 $tblkey = "id";
 $pagename = "नया प्रोटोकॉल दर्ज करे |";
 
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     // Input validation
     $errors = [];
@@ -41,41 +39,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $district_id = mysqli_real_escape_string($conn, trim($_POST['district_id']));
     }
     // =======================
-      // Collect multiple entries
-      $entry_times = isset($_POST['entry_time']) ? $_POST['entry_time'] : [];
-      $exit_times = isset($_POST['exit_time']) ? $_POST['exit_time'] : [];
-      $madhyams = isset($_POST['madhyam']) ? $_POST['madhyam'] : [];
-      $details_arr = isset($_POST['details']) ? $_POST['details'] : [];
-  
-      if (empty($entry_times) || empty($exit_times) || empty($madhyams) || empty($details_arr)) {
-          $errors[] = 'सभी फ़ील्ड्स आवश्यक हैं';
-      } else {
-          foreach ($entry_times as $entry_time) {
-              if (empty($entry_time)) {
-                  $errors[] = 'प्रवेश का समय आवश्यक है';
-                  break;
-              }
-          }
-          
-          foreach ($exit_times as $exit_time) {
-              if (empty($exit_time)) {
-                  $errors[] = 'बाहर निकलने का समय आवश्यक है';
-                  break;
-              }
-          }
-          foreach ($madhyams as $madhyam) {
-              if (empty($madhyam)) {
-                  $errors[] = 'माध्यम आवश्यक है';
-                  break;
-              }
-          }
-          foreach ($details_arr as $detail) {
-              if (empty($detail)) {
-                  $errors[] = 'विवरण आवश्यक है';
-                  break;
-              }
-          }
-      }
+    // Collect multiple entries
+    $entry_times = isset($_POST['entry_time']) ? $_POST['entry_time'] : [];
+    $exit_times = isset($_POST['exit_time']) ? $_POST['exit_time'] : [];
+    $madhyams = isset($_POST['madhyam']) ? $_POST['madhyam'] : [];
+    $details_arr = isset($_POST['details']) ? $_POST['details'] : [];
+
+    if (empty($entry_times) || empty($exit_times) || empty($madhyams) || empty($details_arr)) {
+        $errors[] = 'सभी फ़ील्ड्स आवश्यक हैं';
+    } else {
+        foreach ($entry_times as $entry_time) {
+            if (empty($entry_time)) {
+                $errors[] = 'प्रवेश का समय आवश्यक है';
+                break;
+            }
+        }
+
+        foreach ($exit_times as $exit_time) {
+            if (empty($exit_time)) {
+                $errors[] = 'बाहर निकलने का समय आवश्यक है';
+                break;
+            }
+        }
+        foreach ($madhyams as $madhyam) {
+            if (empty($madhyam)) {
+                $errors[] = 'माध्यम आवश्यक है';
+                break;
+            }
+        }
+        foreach ($details_arr as $detail) {
+            if (empty($detail)) {
+                $errors[] = 'विवरण आवश्यक है';
+                break;
+            }
+        }
+    }
     // =======================
 
 
@@ -84,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $exit_time_json = json_encode($exit_times, JSON_UNESCAPED_UNICODE);
         $madhyam_json = json_encode($madhyams, JSON_UNESCAPED_UNICODE);
         $details_json = json_encode($details_arr, JSON_UNESCAPED_UNICODE);
-        
+
         $sql = "INSERT INTO $tblname (kramank_no, protocol_date, travel_date, days, entry_time, exit_time, madhyam, district_id, details, create_date) VALUES ('$kramank_no', '$protocol_date', '$travel_date', '$days', '$entry_time_json', '$exit_time_json', '$madhyam_json', '$district_id', '$details_json', CURRENT_TIMESTAMP)";
         // echo $sql;die;
         if (mysqli_query($conn, $sql)) {
@@ -124,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     }
 
     /* .shadow { */
-        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 15px; */
@@ -138,8 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
+        <!-- row1 Start-->
         <div class="row mt-5">
-            <div class="col-lg-6 col-md-12 col-sm-12 align-content-center">
+            <div class="col-lg-4  align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
 
@@ -149,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" name="protocol_date" id="protocol_date" placeholder="दिनांक (जब प्रोटोकॉल जारी हुआ)" required value="">
@@ -157,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="travel_date" placeholder=" " required name="travel_date">
@@ -182,7 +181,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-6 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -206,47 +204,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-            <div id="formContainer">
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="madhyam" placeholder="माध्यम" required name="madhyam">
-                            <label for="madhyam">माध्यम<span class="text-danger">*</span> : </label>
-                        </div>
+        </div>
+        <!-- Row1 End -->
+
+        <!--row 2 Start -->
+        <div class="row mt-2">
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="madhyam" placeholder="माध्यम" required name="madhyam">
+                        <label for="madhyam">माध्यम<span class="text-danger">*</span> : </label>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="time" class="form-control" id="entry_time" placeholder=" " required name="entry_time">
-                            <label for="entry_time">आगमन<span class="text-danger">*</span> : </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="time" class="form-control" id="exit_time" placeholder=" " required name="exit_time">
-                            <label for="exit_time">प्रस्थान<span class="text-danger">*</span> :</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
-                            <label for="comment">विवरण<span class="text-danger">*</span> : </label>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" id="addMore">Add More</button>
             </div>
-            <div class="col-lg-12 text-center">
-                <div class="form-group">
-                    <button class="col-6 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="time" class="form-control" id="entry_time" placeholder=" " required name="entry_time">
+                        <label for="entry_time">आगमन<span class="text-danger">*</span> : </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="time" class="form-control" id="exit_time" placeholder=" " required name="exit_time">
+                        <label for="exit_time">प्रस्थान<span class="text-danger">*</span> :</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
+                        <label for="comment">विवरण<span class="text-danger">*</span> : </label>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- row2 End-->
+
+        <!-- row3 Start -->
+        <div class="addmore-form " id="formContainer">
+
+        </div>
+        <!-- row3 End -->
+        <div class="row mt-2 ">
+            <div class="form-group d-flex justify-content-between">
+                <button class="col-lg-4 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                <button class=" col-lg-4 btn btn-primary  text-white btn  text-center shadow" type="button" id="addMore" name="addMore">Add More</button>
+            </div>
+        </div>
+
     </div>
 </form>
 
@@ -254,10 +263,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     document.getElementById('addMore').addEventListener('click', function() {
         let formContainer = document.getElementById('formContainer');
         let newFields = document.createElement('div');
-        newFields.className = 'row';
-
+        newFields.className = 'row mt-2 pt-2 border-top border-dark border-3 rounded';
         newFields.innerHTML = `
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" placeholder="माध्यम" required name="madhyam">
@@ -265,7 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
                     <input type="time" class="form-control" placeholder=" " required name="entry_time">
@@ -273,7 +281,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="form-group shadow">
                 <div class="form-floating mb-3">
                     <input type="time" class="form-control" placeholder=" " required name="exit_time">
@@ -281,21 +289,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </div>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-10">
             <div class="form-group shadow">
-                <div class="form-floating mb-3">
+                <div class="form-floating">
                     <textarea class="form-control" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
                     <label>विवरण<span class="text-danger">*</span> : </label>
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 text-end">
-            <button type="button" class="btn btn-danger remove-btn">Remove</button>
+        <div class="col-lg-2  d-flex justify-content-center align-items-center">
+            <div type="button" class=" mt-0 btn btn-danger remove-btn"><i class="fa-solid fa-trash-can"></i> Remove</div>
         </div>
     `;
-
         formContainer.appendChild(newFields);
-
         newFields.querySelector('.remove-btn').addEventListener('click', function() {
             formContainer.removeChild(newFields);
         });
