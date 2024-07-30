@@ -6,84 +6,41 @@ $tblkey = "id";
 $pagename = "नया प्रोटोकॉल दर्ज करे |";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-    // Input validation
-    $errors = [];
-
-    if (empty($_POST['kramank_no'])) {
-        $errors[] = 'क्रमांक संख्या आवश्यक है';
-    } else {
-        $kramank_no = mysqli_real_escape_string($conn, trim($_POST['kramank_no']));
-    }
-
-    if (empty($_POST['protocol_date'])) {
-        $errors[] = 'प्रोटोकॉल की तारीख आवश्यक है';
-    } else {
-        $protocol_date = mysqli_real_escape_string($conn, trim($_POST['protocol_date']));
-    }
-
-    if (empty($_POST['travel_date'])) {
-        $errors[] = 'यात्रा की तारीख आवश्यक है';
-    } else {
-        $travel_date = mysqli_real_escape_string($conn, trim($_POST['travel_date']));
-    }
-
-    if (empty($_POST['days'])) {
-        $errors[] = 'दिन आवश्यक हैं';
-    } else {
-        $days = mysqli_real_escape_string($conn, trim($_POST['days']));
-    }
-
-    if (empty($_POST['district_id'])) {
-        $errors[] = 'जिला आईडी आवश्यक है';
-    } else {
-        $district_id = mysqli_real_escape_string($conn, trim($_POST['district_id']));
-    }
+    $kramank_no = mysqli_real_escape_string($conn, trim($_POST['kramank_no']));
+    $travel_date = mysqli_real_escape_string($conn, trim($_POST['travel_date']));
+    $protocol_date = mysqli_real_escape_string($conn, trim($_POST['protocol_date']));
+    $days = mysqli_real_escape_string($conn, trim($_POST['days']));
+    $tip = mysqli_real_escape_string($conn, trim($_POST['tip']));
+    $district_id = mysqli_real_escape_string($conn, trim($_POST['district_id']));
     // =======================
     // Collect multiple entries
-    $entry_times = isset($_POST['entry_time']) ? $_POST['entry_time'] : [];
-    $exit_times = isset($_POST['exit_time']) ? $_POST['exit_time'] : [];
-    $madhyams = isset($_POST['madhyam']) ? $_POST['madhyam'] : [];
-    $details_arr = isset($_POST['details']) ? $_POST['details'] : [];
+    $entryTimes = $_POST['entry_time'];
+    $exitTimes = $_POST['exit_time'];
+    $madhyams = $_POST['madhyam'];
+    $details = $_POST['details'];
 
-    if (empty($entry_times) || empty($exit_times) || empty($madhyams) || empty($details_arr)) {
-        $errors[] = 'सभी फ़ील्ड्स आवश्यक हैं';
-    } else {
-        foreach ($entry_times as $entry_time) {
-            if (empty($entry_time)) {
-                $errors[] = 'प्रवेश का समय आवश्यक है';
-                break;
-            }
-        }
+      // Process the data
+  foreach ($entryTimes as $key => $entryTime) {
+    $exitTime = $exitTimes[$key];
+    $madhyam = $madhyams[$key];
+    $detail = $details[$key];
 
-        foreach ($exit_times as $exit_time) {
-            if (empty($exit_time)) {
-                $errors[] = 'बाहर निकलने का समय आवश्यक है';
-                break;
-            }
-        }
-        foreach ($madhyams as $madhyam) {
-            if (empty($madhyam)) {
-                $errors[] = 'माध्यम आवश्यक है';
-                break;
-            }
-        }
-        foreach ($details_arr as $detail) {
-            if (empty($detail)) {
-                $errors[] = 'विवरण आवश्यक है';
-                break;
-            }
-        }
-    }
-    // =======================
+    // Create a JSON object to store the data in a single column
+    $data = array(
+      'entry_time' => $entryTime,
+      'exit_time' => $exitTime,
+      'madhyam' => $madhyam,
+      'details' => $detail
+    );
+    $json_data = json_encode($data);
+
+    // Insert the data into the database
+    // $sql = "INSERT INTO your_table_name (data) VALUES ('$json_data')";
+    // mysqli_query($conn, $sql);
+  }
 
 
-    if (empty($errors)) {
-        $entry_time_json = json_encode($entry_times, JSON_UNESCAPED_UNICODE);
-        $exit_time_json = json_encode($exit_times, JSON_UNESCAPED_UNICODE);
-        $madhyam_json = json_encode($madhyams, JSON_UNESCAPED_UNICODE);
-        $details_json = json_encode($details_arr, JSON_UNESCAPED_UNICODE);
-
-        $sql = "INSERT INTO $tblname (kramank_no, protocol_date, travel_date, days, entry_time, exit_time, madhyam, district_id, details, create_date) VALUES ('$kramank_no', '$protocol_date', '$travel_date', '$days', '$entry_time_json', '$exit_time_json', '$madhyam_json', '$district_id', '$details_json', CURRENT_TIMESTAMP)";
+        $sql = "INSERT INTO $tblname (kramank_no, protocol_date, travel_date, days, entry_time, exit_time, madhyam, district_id, details, tip, data, create_date) VALUES ('$kramank_no', '$protocol_date', '$travel_date', '$days', '$entryTimes', '$exitTimes', '$madhyams', '$district_id', '$details', $tip, $json_data, CURRENT_TIMESTAMP)";
         // echo $sql;die;
         if (mysqli_query($conn, $sql)) {
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>New Record Created Successfully.</b></div>";
@@ -91,12 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             // echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>New Record Created Unsuccessfully!!</b></div>";
         }
-    } else {
-        foreach ($errors as $error) {
-            // echo "<p style='color: red;'>$error</p>";
-            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Something Went Wrong!!</b></div>";
-        }
-    }
+    
 }
 
 // mysqli_close($conn);
@@ -204,6 +156,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="tip" placeholder="टिप्पणी" required style="height: 150px;" name="tip"></textarea>
+                        <label for="tip">टिप <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Row1 End -->
 
@@ -212,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="madhyam" placeholder="माध्यम" required name="madhyam">
+                        <input type="text" class="form-control" id="madhyam" placeholder="माध्यम" required name="madhyam[]">
                         <label for="madhyam">माध्यम<span class="text-danger">*</span> : </label>
                     </div>
                 </div>
@@ -220,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="time" class="form-control" id="entry_time" placeholder=" " required name="entry_time">
+                        <input type="time" class="form-control" id="entry_time" placeholder=" " required name="entry_time[]">
                         <label for="entry_time">आगमन<span class="text-danger">*</span> : </label>
                     </div>
                 </div>
@@ -228,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="time" class="form-control" id="exit_time" placeholder=" " required name="exit_time">
+                        <input type="time" class="form-control" id="exit_time" placeholder=" " required name="exit_time[]">
                         <label for="exit_time">प्रस्थान<span class="text-danger">*</span> :</label>
                     </div>
                 </div>
@@ -236,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 80px;" name="details"></textarea>
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 80px;" name="details[]"></textarea>
                         <label for="comment">विवरण<span class="text-danger">*</span> : </label>
                     </div>
                 </div>

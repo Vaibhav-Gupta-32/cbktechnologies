@@ -43,7 +43,7 @@ if (isset($_POST['login'])) {
 
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
-            // $_SESSION['role']     = 'admin'; // Add this line to store the user's role
+            $_SESSION['role']     = 'admin'; // Add this line to store the user's role
 
             echo "<script>
             setTimeout(function() {

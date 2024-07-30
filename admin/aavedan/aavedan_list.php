@@ -354,17 +354,20 @@ $fetch = mysqli_query($conn, $sql);
                         <?php
                         $i = 1;
                         while ($row = mysqli_fetch_array($fetch)) {
+                            $choose_aavedak_vibhag=$row['choose_aavedak_vibhag'];
                         ?>
                             <tr class=" text-center">
                                 <th scope="row"><?= $i++ ?></th>
                                 <td><?= $row['file_no'] ?></td>
                                 <td><?= $row['aavak_no'] ?></td>
-                                <td><?= $row['a_vibhag_name'] ?></td>
-                                <td><?= $row['a_subject'] ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['v_aadesh_date'])) ?></td>
+                  
+                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_vibhag_name']; }else{ echo $row['v_vibhag_name'];} ?></td>
+                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_subject']; }else{ echo $row['v_subject'];} ?></td>
                                 <td>null </td>
-                                <td><?= $row['a_kisko_presit'] ?></td>
-                                <td><?= date("d-m-Y", strtotime($row['a_jaavak_date'])) ?></td>
+                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_application_date']; }else{ echo $row['v_aadesh_date'];} ?></td>
+                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_kisko_presit']; }else{ echo $row['v_kisko_presit'];} ?></td>
+                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_jaavak_date']; }else{ echo $row['v_jaavak_date'];} ?></td>
+
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                                     &nbsp;

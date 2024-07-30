@@ -242,7 +242,7 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
     <!-- Sale & Revenue End -->
 
     <!-- Status Code Start -->
-     <div class="container-fluid pt-4 px-4">
+     <!-- <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">
             <h3 class="mb-0 text-center fw-bold text-primary">Status Code</h3>
             <hr class=" p-1 m-1 text-primary">
@@ -254,7 +254,7 @@ $asveekrt_aavedan=getvalfield($conn,'swekshanudan','count(*)','status=4');
                     4 = अस्वीकृत आवेदन 
                </div>
         </div>
-     </div>
+     </div> -->
     <!-- Status Code End -->
 
     <!-- Sales Chart Start -->
