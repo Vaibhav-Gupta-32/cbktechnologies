@@ -8,6 +8,10 @@ $pagename = "नया आवेदन भरे";
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     // Retrieve posted values
+    $file_no = mysqli_real_escape_string($conn, $_POST['file_no']);
+    $date = mysqli_real_escape_string($conn, $_POST['date']);
+    $aavak_no = mysqli_real_escape_string($conn, $_POST['aavak_no']);
+    $choose_aavedak_vibhag = mysqli_real_escape_string($conn, $_POST['choose_aavedak_vibhag']);
     $a_phone_number = mysqli_real_escape_string($conn, $_POST['a_phone_number']);
     $a_aavedak_name = mysqli_real_escape_string($conn, $_POST['a_aavedak_name']);
     $a_district_id = mysqli_real_escape_string($conn, $_POST['a_district_id']);
@@ -39,29 +43,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $v_file_upload_2 = $_FILES['v_file_upload_2']['name'];
     $v_mantri_comment = mysqli_real_escape_string($conn, $_POST['v_mantri_comment']);
 
-    print_r($_POST);
+    // print_r($_FILES);
     // File upload handling
     $target_dir = "uploads/";
-    $target_file1 = $target_dir . basename($_FILES["a_file_upload_1"]["name"]);
-    $target_file2 = $target_dir . basename($_FILES["a_file_upload_2"]["name"]);
-    $uploadOk = 1;
-    $fileType1 = strtolower(pathinfo($target_file1, PATHINFO_EXTENSION));
-    $fileType2 = strtolower(pathinfo($target_file2, PATHINFO_EXTENSION));
+    $a_target_file1 = $target_dir . basename($_FILES["a_file_upload_1"]["name"]);
+    $a_target_file2 = $target_dir . basename($_FILES["a_file_upload_2"]["name"]);
 
+    $v_target_file1 = $target_dir . basename($_FILES["v_file_upload_1"]["name"]);
+    $v_target_file2 = $target_dir . basename($_FILES["v_file_upload_2"]["name"]);
+
+    $a_fileType1 = strtolower(pathinfo($a_target_file1, PATHINFO_EXTENSION));
+    $a_fileType2 = strtolower(pathinfo($a_target_file2, PATHINFO_EXTENSION));
+
+    $v_fileType1 = strtolower(pathinfo($v_target_file1, PATHINFO_EXTENSION));
+    $v_fileType2 = strtolower(pathinfo($v_target_file2, PATHINFO_EXTENSION));
+
+    $uploadOk = 1;
+    // Function to check if the file exists and the path is not empty
+    function checkFileExists($filePath) {
+        return file_exists($filePath);
+    }
     // Check if file already exists
-    if (file_exists($target_file1) || file_exists($target_file2)) {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, file already exists.</b></div>";
+    if ((empty($a_target_file1) && empty($a_target_file2) && (checkFileExists($v_target_file1) || checkFileExists($v_target_file2))) || 
+    (empty($v_target_file1) && empty($v_target_file2) && (checkFileExists($a_target_file1) || checkFileExists($a_target_file2))) || 
+    checkFileExists($a_target_file1) || checkFileExists($a_target_file2) || 
+    checkFileExists($v_target_file1) || checkFileExists($v_target_file2)) {
+        // $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, file already exists.</b></div>";
+        echo "<script>alert('Sorry, file already exists.')></script>";
         $uploadOk = 0;
     }
 
     // Check file size (500 KB limit)
-    if ($_FILES["a_file_upload_1"]["size"] > 500000 || $_FILES["a_file_upload_2"]["size"] > 500000) {
+    if ($_FILES["a_file_upload_1"]["size"] > 500000 || $_FILES["a_file_upload_2"]["size"] > 500000 ||  $_FILES["v_file_upload_1"]["size"] > 500000 || $_FILES["v_file_upload_1"]["size"] > 500000) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file is too large (limit is 500 KB).</b></div>";
         $uploadOk = 0;
     }
 
-    // Allow certain file formats (JPG, PNG, PDF)
-    if ($fileType1 != "jpg" && $fileType1 != "png" && $fileType1 != "pdf" || $fileType2 != "jpg" && $fileType2 != "png" && $fileType2 != "pdf") {
+    if ((!empty($a_fileType1) && $a_fileType1 != "jpg" && $a_fileType1 != "png" && $a_fileType1 != "pdf") ||
+        (!empty($a_fileType2) && $a_fileType2 != "jpg" && $a_fileType2 != "png" && $a_fileType2 != "pdf") ||
+        (!empty($v_fileType1) && $v_fileType1 != "jpg" && $v_fileType1 != "png" && $v_fileType1 != "pdf") ||
+        (!empty($v_fileType2) && $v_fileType2 != "jpg" && $v_fileType2 != "png" && $v_fileType2 != "pdf")
+    ) {
+
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, only JPG, PNG & PDF files are allowed.</b></div>";
         $uploadOk = 0;
     }
@@ -71,15 +94,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file was not uploaded.</b></div>";
         // if everything is ok, try to upload file
     } else {
-        if (move_uploaded_file($_FILES["a_file_upload_1"]["tmp_name"], $target_file1) && move_uploaded_file($_FILES["a_file_upload_2"]["tmp_name"], $target_file2)) {
+        if ((move_uploaded_file($_FILES["a_file_upload_1"]["tmp_name"], $a_target_file1) && move_uploaded_file($_FILES["a_file_upload_2"]["tmp_name"], $a_target_file2)) || (move_uploaded_file($_FILES["v_file_upload_1"]["tmp_name"], $v_target_file1) && move_uploaded_file($_FILES["v_file_upload_2"]["tmp_name"], $v_target_file2))) {
+
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>The file has been uploaded.</b></div>";
+            
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, there was an error uploading your file.</b></div>";
         }
     }
-
+    // file_no date aavak_no choose_aavedak_vibhag
     // Insert data into database
-    $sql = "INSERT INTO $tblname (a_phone_number, a_aavedak_name, a_district_id, a_vidhansabha_id, a_vikaskhand_id, a_sector_id, a_gram_panchayat_id, a_gram_id, a_subject, a_reference, a_file_upload_1, a_office_name, a_jaavak_vibhag, a_kisko_presit, a_jaavak_date, a_application_date, a_file_upload_2, a_mantri_comment, v_aavak_vibhag, v_subject, v_reference, v_file_upload_1, v_office_name, v_jaavak_vibhag, v_kisko_presit, v_jaavak_date, v_aadesh_date, v_file_upload_2, v_mantri_comment, status) VALUES ('$a_phone_number', '$a_aavedak_name', '$a_district_id', '$a_vidhansabha_id', '$a_vikaskhand_id', '$a_sector_id', '$a_gram_panchayat_id', '$a_gram_id', '$a_subject', '$a_reference', '$a_file_upload_1', '$a_office_name', '$a_jaavak_vibhag', '$a_kisko_presit', '$a_jaavak_date', '$a_application_date', '$a_file_upload_2', '$a_mantri_comment', '$v_aavak_vibhag', '$v_subject', '$v_reference', '$v_file_upload_1', '$v_office_name', '$v_jaavak_vibhag', '$v_kisko_presit', '$v_jaavak_date', '$v_aadesh_date', '$v_file_upload_2', '$v_mantri_comment', '0')";
+    $sql = "INSERT INTO $tblname (file_no, date, aavak_no, choose_aavedak_vibhag, a_phone_number, a_aavedak_name, a_district_id, a_vidhansabha_id, a_vikaskhand_id, a_sector_id, a_gram_panchayat_id, a_gram_id, a_subject, a_reference, a_file_upload_1, a_office_name, a_jaavak_vibhag, a_kisko_presit, a_jaavak_date, a_application_date, a_file_upload_2, a_mantri_comment, v_aavak_vibhag, v_subject, v_reference, v_file_upload_1, v_office_name, v_jaavak_vibhag, v_kisko_presit, v_jaavak_date, v_aadesh_date, v_file_upload_2, v_mantri_comment, status) VALUES ('$file_no', '$date', '$aavak_no', '$choose_aavedak_vibhag', '$a_phone_number', '$a_aavedak_name', '$a_district_id', '$a_vidhansabha_id', '$a_vikaskhand_id', '$a_sector_id', '$a_gram_panchayat_id', '$a_gram_id', '$a_subject', '$a_reference', '$a_file_upload_1', '$a_office_name', '$a_jaavak_vibhag', '$a_kisko_presit', '$a_jaavak_date', '$a_application_date', '$a_file_upload_2', '$a_mantri_comment', '$v_aavak_vibhag', '$v_subject', '$v_reference', '$v_file_upload_1', '$v_office_name', '$v_jaavak_vibhag', '$v_kisko_presit', '$v_jaavak_date', '$v_aadesh_date', '$v_file_upload_2', '$v_mantri_comment', '0')";
+    // echo $sql;
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='msg-container'><b class='alert alert-success msg'>Data inserted successfully.</b></div>";
     } else {
@@ -178,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             $district_result = mysqli_query($conn, $district_query);
                             ?>
 
-                            <option selected>जिला का नाम चुनें</option>
+                            <option>जिला का नाम चुनें</option>
                             <?php
                             while ($district_row = mysqli_fetch_assoc($district_result)) {
                                 echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
@@ -194,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select name="a_vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                            <option selected>विधानसभा का नाम चुनें</option>
+                            <option>विधानसभा का नाम चुनें</option>
                             <!-- Options for vidhansabha will go here -->
                         </select>
                         <label for="vidhansabha">विधानसभा<span class="text-danger">*</span></label>
@@ -205,7 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select name="a_vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
-                            <option selected>विकासखंड का नाम चुनें</option>
+                            <option>विकासखंड का नाम चुनें</option>
                             <!-- Option Load By AJAX -->
 
                         </select>
@@ -217,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select name="a_sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                            <option selected>सेक्टर का नाम चुनें</option>
+                            <option>सेक्टर का नाम चुनें</option>
                             <!-- Options for sectors will go here -->
                         </select>
                         <label for="sector">सेक्टर <span class="text-danger">*</span> </label>
@@ -228,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select name="a_gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                            <option selected>ग्राम पंचायत का नाम चुनें</option>
+                            <option>ग्राम पंचायत का नाम चुनें</option>
                             <!-- Options for panchayat will go here -->
                         </select>
                         <label for="gram_panchayt">ग्राम पंचायत <span class="text-danger">*</span> </label>
@@ -239,7 +265,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select class="form-select" id="gramSelect" name="a_gram_id">
-                            <option selected>ग्राम का नाम चुनें</option>
+                            <option>ग्राम का नाम चुनें</option>
                             <!-- by load ajax -->
                         </select>
                         <label for="gram">ग्राम <span class="text-danger">*</span></label>
@@ -286,7 +312,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select class="form-select" id="a_jaavak_vibhag" name="a_jaavak_vibhag">
-                            <option selected>जावक विभाग का नाम चुनें</option>
+                            <option>जावक विभाग का नाम चुनें</option>
                             <?php
                             $vibhag_result = mysqli_query($conn, "select * from vibhag_master where 1");
                             mysqli_data_seek($vibhag_result, 0); // Reset pointer to fetch districts again
@@ -447,7 +473,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="v_jaavak_date"  placeholder="आवेदन दिनांक" name="v_jaavak_date">
+                        <input type="date" class="form-control" id="v_jaavak_date" placeholder="आवेदन दिनांक" name="v_jaavak_date">
                         <label for="v_jaavak_date">जावक दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
