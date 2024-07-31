@@ -1,4 +1,5 @@
 <?php
+
 include('config/dbconnection.php');
 session_start();
 
@@ -6,61 +7,126 @@ $msg = "";
 $otp = "";
 
 if (isset($_POST['login_otp'])) {
-    if (!isset($_POST['amdin_otp'])) {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>OTP is required</b></div>";
-    } else {
-        $otp = $_POST['amdin_otp'];
-        $mobile_no = $_POST['mobile_no'];
-        $stored_otp = getvalfield($conn, "otps", "count(*)", "otp='$otp' and created_at <= valid_time");
-        $username = getvalfield($conn, "adminlogin", "username", "mobile_no='$mobile_no'");
-        $password = getvalfield($conn, "adminlogin", "password", "mobile_no='$mobile_no'");
-        // echo 'sada'.$password;die;
+    $otp       = trim(htmlspecialchars($_POST['amdin_otp']));
+    $mobile_no = trim(htmlspecialchars($_POST['mobile_no']));
+
+    if (!empty($otp) && !empty($mobile_no)) {
+        // Securely fetch OTP information
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM otps WHERE otp = ? AND created_at <= valid_time");
+        $stmt->bind_param("s", $otp);
+        $stmt->execute();
+        $stmt->bind_result($stored_otp);
+        $stmt->fetch();
+        $stmt->close();
+
         if ($stored_otp > 0) {
-            $_SESSION['otp'] = $otp;
+             // Securely fetch username and password
+            $stmt = $conn->prepare("SELECT username, password FROM adminlogin WHERE mobile_no = ?");
+            $stmt->bind_param("s", $mobile_no);
+            $stmt->execute();
+            $stmt->bind_result($username, $password);
+            $stmt->fetch();
+            $stmt->close();
+
+            // Set session variables
+            $_SESSION['role'] = 'admin';
             $_SESSION['username'] = $username;
-            $_SESSION['password'] = $password;
+            
+
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. Admin Login Successfully!..</b></div>";
             echo "<script>
             setTimeout(function() {
                 window.location.href = 'dash/';
             }, 2000); // 3000 milliseconds = 3 seconds
         </script>";
-        // die;
+            // die;
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP Please Enter Correct OTP !!</b></div>";
         }
+    } else {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Please enter both user mobile number and OTP.</b></div>";
     }
 }
-
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = base64_encode($_POST['password']);
-    if (isset($username) && isset($password)) {
-        $sql = "SELECT username, password FROM adminlogin WHERE username='$username' and password='$password'";
-        $stmt = mysqli_query($conn, $sql);
+    $username = trim(htmlspecialchars($_POST['username']));
+    $password = trim(htmlspecialchars($_POST['password']));
 
-        if (mysqli_num_rows($stmt) > 0) {
+    if (!empty($username) && !empty($password)) {
+        // Prepare a secure SQL statement
+        $sql = "SELECT username, password FROM adminlogin WHERE username = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, 's', $username);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
 
-            $_SESSION['username'] = $username;
-            $_SESSION['password'] = $password;
-            $_SESSION['role']     = 'admin'; // Add this line to store the user's role
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+            mysqli_stmt_bind_result($stmt, $db_username, $db_password);
+            mysqli_stmt_fetch($stmt);
 
-            echo "<script>
-            setTimeout(function() {
-                window.location.href = 'dash/';
-                }, 2400); // 3000 milliseconds = 3 seconds
+            // Debug the retrieved values
+            // echo "Entered Password: " . htmlspecialchars($password) . "<br>";
+            // echo "Stored Hashed Password: " . htmlspecialchars($db_password) . "<br>";
+
+            // Verify the hashed password
+            if (password_verify($password, $db_password)) {
+                // Set session variables
+                $_SESSION['username'] = $db_username;
+                $_SESSION['role']     = 'admin';
+
+                // Redirect to dashboard
+                echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'dash/';
+                }, 2400);
                 </script>";
-                $msg ="<div class='msg-container'><b class='alert alert-success msg'>Admin Login Successfully!..</b></div>";
-            // exit(); // Ensure the script stops executing after redirection
+                $msg = "<div class='msg-container'><b class='alert alert-success msg'>Admin Login Successfully!..</b></div>";
+            } else {
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid Username or Password !..</b></div>";
+            }
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid Username or Password !..</b></div>";
         }
+
+        mysqli_stmt_close($stmt);
+    } else {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Please enter both username and password.</b></div>";
     }
+
     mysqli_close($conn);
 }
+// if (isset($_POST['login'])) {
+//     $username = $_POST['username'];
+//     $password = base64_encode($_POST['password']);
+//     if (isset($username) && isset($password)) {
+//         $sql = "SELECT username, password FROM adminlogin WHERE username='$username' and password='$password'";
+//         $stmt = mysqli_query($conn, $sql);
+
+//         if (mysqli_num_rows($stmt) > 0) {
+
+//             $_SESSION['username'] = $username;
+//             $_SESSION['password'] = $password;
+//             $_SESSION['role']     = 'admin'; // Add this line to store the user's role
+
+//             echo "<script>
+//             setTimeout(function() {
+//                 window.location.href = 'dash/';
+//                 }, 2400); // 3000 milliseconds = 3 seconds
+//                 </script>";
+//                 $msg ="<div class='msg-container'><b class='alert alert-success msg'>Admin Login Successfully!..</b></div>";
+//             // exit(); // Ensure the script stops executing after redirection
+//         } else {
+//             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid Username or Password !..</b></div>";
+//         }
+//     }
+//     mysqli_close($conn);
+// }
+// echo $hashed_password = password_hash('123', PASSWORD_DEFAULT);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>DASHMIN - Bootstrap Admin Template</title>
@@ -77,6 +143,7 @@ if (isset($_POST['login'])) {
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
+
 <body>
     <div id="form-main-wrapper">
         <div class="form-container">
@@ -84,14 +151,14 @@ if (isset($_POST['login'])) {
                 <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                         <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-                            <?php if (isset($msg)) echo $msg;?>
+                            <?php if (isset($msg)) echo $msg; ?>
                             <!-- Spinner Start -->
-        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                            <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div> -->
-        <!-- Spinner End -->
+                            <!-- Spinner End -->
                             <form action="" method="POST" id="usernamePasswordForm">
                                 <div class="d-flex align-items-center justify-content-center mb-3">
                                     <a href="" class="">
@@ -196,28 +263,28 @@ if (isset($_POST['login'])) {
         }
 
         function otpsend(mobile) {
-    $.ajax({
-        type: 'POST',
-        url: 'ajax_otpsend.php',
-        data: {
-            mobile_no: mobile
-        },
-        success: function(data) {
-            $('#aa_container').show();
-            $('#aa').append(data.message);
+            $.ajax({
+                type: 'POST',
+                url: 'ajax_otpsend.php',
+                data: {
+                    mobile_no: mobile
+                },
+                success: function(data) {
+                    $('#aa_container').show();
+                    $('#aa').append(data.message);
 
-            if (data.status === 'success') {
-                startCountdown(); // Call startCountdown if the OTP was sent successfully
-            } else {
-                console.error(data.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("An error occurred: " + error);
+                    if (data.status === 'success') {
+                        startCountdown(); // Call startCountdown if the OTP was sent successfully
+                    } else {
+                        console.error(data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("An error occurred: " + error);
+                }
+            });
         }
-    });
-}
-otpsend();
+        otpsend();
     </script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -232,4 +299,5 @@ otpsend();
     <!-- <script src="js/main.js"></script> -->
     <script src="js/custom.js"></script>
 </body>
+
 </html>

@@ -1,27 +1,23 @@
 <?php
 session_start();
-if (!isset($_SESSION['mobile']) || !isset($_SESSION['otp'])) {
-    // Redirect to login page if the user is not logged in
-    header('Location:../index.php');
+
+$timeout_duration = 1800; // 30 minutes in seconds
+
+// Check if the session has expired
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
+    // Session has expired
+    session_unset();
+    session_destroy();
+    header('Location: ../index.php');
     exit();
 }
-?>
-<?php
-// session_start();
-// if (!isset($_SESSION['mobile']) ||!isset($_SESSION['otp']) ||!isset($_SESSION['role'])) {
-//     // Redirect to login page if the user is not logged in
-//     header('Location:../index.php');
-//     exit();
-// }
 
-// // Check the user's role and redirect accordingly
-// if ($_SESSION['role'] == 'admin') {
-//     // Redirect to admin dashboard
-//     header('Location:../admin/dash');
-//     exit();
-// } elseif ($_SESSION['role'] == 'user') {
-//     // Redirect to user dashboard
-//     header('Location:../../user/dash/');
-//     exit();
-// }
-?>
+// Update last activity time
+$_SESSION['last_activity'] = time();
+
+// Check if user is logged in and has the correct role
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'user') {
+    // Redirect to login page if the user is not logged in or not an admin
+    header('Location: ../index.php');
+    exit();
+}

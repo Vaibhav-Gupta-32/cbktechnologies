@@ -1,7 +1,7 @@
 <?php
 // print_r($conn);
 $username=$_SESSION['username'];
-$password=$_SESSION['password'];
+// $password=$_SESSION['password'];
 ?>
 <!-- Content Start -->
 <div class="content">

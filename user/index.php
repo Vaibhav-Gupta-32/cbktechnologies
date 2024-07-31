@@ -4,36 +4,50 @@ session_start();
 $msg = "";
 $otp = "";
 
-if (isset($_POST['login_otp'])) {
-    if (!isset($_POST['user_otp'])) {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>OTP is required</b></div>";
-    } else {
-        $otp = mysqli_escape_string($conn, $_POST['user_otp']);
-        $mobile_no = mysqli_escape_string($conn, $_POST['mobile_no']);
-        $stored_otp = getvalfield($conn, "otps", "count(*)", "otp='$otp' and created_at <= valid_time");
-        // echo 'dsa'. $stored_otp;
-        // die;
-        if ($stored_otp > 0) {
-            // $_SESSION['otp'] = $otp;
-            $_SESSION['mobile'] = $mobile_no;
-            $_SESSION['otp'] = $otp;
-            $_SESSION['role'] = 'user'; // Add this line to store the user's role
 
-            $sql = mysqli_query($conn, "INSERT INTO userlogin (username, mobile_no) VALUES ($mobile_no, $mobile_no)");
-            if ($sql) {
+if (isset($_POST['login_otp'])) {
+    $otp = trim(htmlspecialchars($_POST['user_otp']));
+    $mobile_no = trim(htmlspecialchars($_POST['mobile_no']));
+
+    if (!empty($otp) && !empty($mobile_no)) {
+        // Securely fetch OTP information
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM otps WHERE otp = ? AND created_at <= valid_time");
+        $stmt->bind_param("s", $otp);
+        $stmt->execute();
+        $stmt->bind_result($stored_otp);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($stored_otp > 0) {
+            // Set session variables
+            $_SESSION['username'] = $mobile_no;
+            $_SESSION['role'] = 'user';
+
+            // Securely insert user login information
+            $stmt = $conn->prepare("INSERT INTO userlogin (username, mobile_no) VALUES (?, ?)");
+            $stmt->bind_param("ss", $mobile_no, $mobile_no); // Assuming username is the same as mobile_no
+            $stmt_execute_result = $stmt->execute();
+            $stmt->close();
+
+            if ($stmt_execute_result) {
                 $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. User Login Successfully!..</b></div>";
                 echo "<script>
-            setTimeout(function() {
-                window.location.href = 'dash/';
-            }, 2000); // 3000 milliseconds = 3 seconds
-        </script>";
+                    setTimeout(function() {
+                        window.location.href = 'dash/';
+                    }, 2000); // 2000 milliseconds = 2 seconds
+                  </script>";
+            } else {
+                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Failed to log in user. Please try again.</b></div>";
             }
-            // die;
         } else {
-            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP Please Enter Correct OTP !!</b></div>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP. Please enter the correct OTP !!</b></div>";
         }
+    } else {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Please enter both mobile number and OTP.</b></div>";
     }
 }
+
+$conn->close();
 ?>
 <!-- Html Starting -->
 <!DOCTYPE html>
