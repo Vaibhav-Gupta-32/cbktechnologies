@@ -44,7 +44,7 @@ if (isset($_POST['login_otp'])) {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP Please Enter Correct OTP !!</b></div>";
         }
     } else {
-        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Please enter both user mobile number and OTP.</b></div>";
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Please enter both mobile number and OTP.</b></div>";
     }
 }
 if (isset($_POST['login'])) {
