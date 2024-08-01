@@ -66,6 +66,7 @@ WHERE
     $a_file_upload_2 = $fetch['a_file_upload_2'];
     $a_mantri_comment = $fetch['a_mantri_comment'];
 
+    $v_mantri_comment = $fetch['v_mantri_comment'];
     $v_aavak_vibhag = $fetch['v_aavak_vibhag'];
     $v_subject = $fetch['v_subject'];
     $v_reference = $fetch['v_reference'];
@@ -120,14 +121,14 @@ WHERE
             </div>
 
             <div class="col-lg-6">
-                <div class="form-group shadow">
+                <div class="form-group shadow" style="background-color: #e9ecef;">
                     <div class="form-floating mb-3 border-3 d-flex align-items-center" style="height: 55px;">
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="1" <?= ($choose_aavedak_vibhag == 1) ? 'checked' : ''; ?>>
+                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="1" <?= ($choose_aavedak_vibhag == 1) ? 'checked' : ''; ?> disabled>
                             <label class="form-check-label" for="choose_aavedak_vibhag_1">आवेदक <span class="text-danger">*</span></label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="2" <?= ($choose_aavedak_vibhag == 2) ? 'checked' : ''; ?>>
+                            <input type="radio" class="form-check-input" name="choose_aavedak_vibhag" value="2" <?= ($choose_aavedak_vibhag == 2) ? 'checked' : ''; ?> disabled>
                             <label class="form-check-label" for="choose_aavedak_vibhag_2">विभाग <span class="text-danger">*</span></label>
                         </div>
                     </div>
@@ -142,6 +143,7 @@ WHERE
                 <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
+                            <input type="hidden" class="form-control " name="edit_id" id="edit_id" placeholder=" " value="<?= $id ?>">
                             <input type="text" class="form-control " maxlength="10" name="a_phone_number" id="a_phone_number" placeholder=" " value="<?= $a_phone_number ?>">
                             <label for="a_phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
                         </div>
@@ -299,7 +301,7 @@ WHERE
                 <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3 input-group">
-                            <input type="text" class="form-control" id="a_file_upload_1" name="a_file_upload_1" value="<?= $a_file_upload_1 ?>">
+                            <input type="file" class="form-control" id="a_file_upload_1" name="a_file_upload_1" value="<?= $a_file_upload_1 ?>">
                             <label for="a_file_upload_1"> अपलोडेड फाइल </label>
                             <span class="input-group-text bg-">
                                 <a href="uploads/<?= $a_file_upload_1 ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
@@ -367,7 +369,7 @@ WHERE
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3 input-group">
-                            <input type="text" class="form-control" id="a_file_upload_2" name="a_file_upload_2" value="<?= $a_file_upload_2 ?>">
+                            <input type="file" class="form-control" id="a_file_upload_2" name="a_file_upload_2" value="<?= $a_file_upload_2 ?>">
                             <label for="a_file_upload_2"> अपलोडेड फाइल </label>
                             <span class="input-group-text bg-">
                                 <a href="uploads/<?= $a_file_upload_2 ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
@@ -385,7 +387,7 @@ WHERE
                 </div>
                 <div class="col-lg-12 text-center">
                     <div class="form-group">
-                        <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                        <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="Update"><b>Submit</b></button>
                     </div>
                 </div>
                 <!--  -->
@@ -432,7 +434,7 @@ WHERE
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3 input-group">
-                            <input type="text" class="form-control" id="v_file_upload_1" name="v_file_upload_1" value="<?= $v_file_upload_1 ?>">
+                            <input type="file" class="form-control" id="v_file_upload_1" name="v_file_upload_1" value="<?= $v_file_upload_1 ?>">
                             <label for="v_file_upload_1"> अपलोडेड फाइल </label>
                             <span class="input-group-text bg-">
                                 <a href="uploads/<?= $v_file_upload_1 ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
@@ -508,7 +510,7 @@ WHERE
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3 input-group">
-                            <input type="text" class="form-control" id="v_file_upload_2" name="v_file_upload_2" value="<?= $v_file_upload_2 ?>">
+                            <input type="file" class="form-control" id="v_file_upload_2" name="v_file_upload_2" value="<?= $v_file_upload_2 ?>">
                             <label for="v_file_upload_2"> अपलोडेड फाइल </label>
                             <span class="input-group-text bg-">
                                 <a href="uploads/<?= $v_file_upload_2 ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
@@ -526,7 +528,7 @@ WHERE
                 </div>
                 <div class="col-lg-12 text-center">
                     <div class="form-group">
-                        <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                        <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="Update"><b>Submit</b></button>
                     </div>
                 </div>
             </div>

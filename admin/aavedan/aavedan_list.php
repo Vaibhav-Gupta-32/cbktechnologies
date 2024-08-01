@@ -4,29 +4,62 @@
 $tblname = "aavedan";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
-// $msg="";
+
+// defined variables
+$v_mantri_comment  ="";
+$v_aavak_vibhag  ="";
+$v_subject  ="";
+$v_office_name  ="";
+$v_reference  ="";
+$v_jaavak_vibhag  ="";
+$v_kisko_presit  ="";
+$v_jaavak_date  ="";
+$v_aadesh_date  ="";
 
 // Update Form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
-    $mantri_comment = $_POST['mantri_comment'];
-    $date = $_POST['date'];
+
     $file_no = $_POST['file_no'];
-    $aadesh_date = $_POST['aadesh_date'];
-    $jaavak_date = $_POST['jaavak_date'];
-    $kisko_presit = $_POST['kisko_presit'];
-    $jaavak_vibhag = $_POST['jaavak_vibhag'];
-    $office_name = $_POST['office_name'];
-    $existing_file = $_POST['existing_file'];
-    // $file_upload = $_FILES['file_upload']['name']; // Note: $_FILES for file uploads
-    $reference = $_POST['reference'];
-    $subject = $_POST['subject'];
-    $aavak_vibhag = $_POST['aavak_vibhag'];
+    $date = $_POST['date'];
     $aavak_no = $_POST['aavak_no'];
-    $choose_aavedak_vibhag = $_POST['choose_aavedak_vibhag'];
-// print_r($_POST);die;
+    $a_phone_number = $_POST['a_phone_number'];
+    $a_aavedak_name = $_POST['a_aavedak_name'];
+    $a_district_id = $_POST['a_district_id'];
+    $a_vidhansabha_id = $_POST['a_vidhansabha_id'];
+    $a_vikaskhand_id = $_POST['a_vikaskhand_id'];
+    $a_sector_id = $_POST['a_sector_id'];
+    $a_gram_panchayat_id = $_POST['a_gram_panchayat_id'];
+    $a_gram_id = $_POST['a_gram_id'];
+    $a_subject = $_POST['a_subject'];
+    $a_reference = $_POST['a_reference'];
+    $a_office_name = $_POST['a_office_name'];
+    $a_jaavak_vibhag = $_POST['a_jaavak_vibhag'];
+    $a_kisko_presit = $_POST['a_kisko_presit'];
+    $a_jaavak_date = $_POST['a_jaavak_date'];
+    $a_application_date = $_POST['a_application_date'];
+    $a_mantri_comment = $_POST['a_mantri_comment'];
+    
+    $v_mantri_comment = $_POST['v_mantri_comment'];
+    $v_aavak_vibhag = $_POST['v_aavak_vibhag'];
+    $v_subject = $_POST['v_subject'];
+    $v_reference = $_POST['v_reference'];
+    $v_office_name = $_POST['v_office_name'];
+    $v_jaavak_vibhag = $_POST['v_jaavak_vibhag'];
+    $v_kisko_presit = $_POST['v_kisko_presit'];
+    $v_jaavak_date = $_POST['v_jaavak_date'];
+    $v_aadesh_date = $_POST['v_aadesh_date'];
+
+    // $a_file_upload_1 = $_POST['a_file_upload_1'];
+    // $a_file_upload_2 = $_POST['a_file_upload_2'];
+    // $v_file_upload_1 = $_POST['v_file_upload_1'];
+    // $v_file_upload_2 = $_POST['v_file_upload_2'];
+
+
     if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
         $s_id = $_POST['edit_id'];
-
+        // print_r($_POST);
+        // print_r($_FILES);
+        die;
         // Check if a new file was uploaded
         if (!empty($file_upload)) {
             // Handle file upload logic
@@ -354,19 +387,38 @@ $fetch = mysqli_query($conn, $sql);
                         <?php
                         $i = 1;
                         while ($row = mysqli_fetch_array($fetch)) {
-                            $choose_aavedak_vibhag=$row['choose_aavedak_vibhag'];
+                            $choose_aavedak_vibhag = $row['choose_aavedak_vibhag'];
                         ?>
                             <tr class=" text-center">
                                 <th scope="row"><?= $i++ ?></th>
                                 <td><?= $row['file_no'] ?></td>
                                 <td><?= $row['aavak_no'] ?></td>
-                  
-                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_vibhag_name']; }else{ echo $row['v_vibhag_name'];} ?></td>
-                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_subject']; }else{ echo $row['v_subject'];} ?></td>
+                                <td><?php if ($choose_aavedak_vibhag == 1) {
+                                        echo $row['a_vibhag_name'];
+                                    } else {
+                                        echo $row['v_vibhag_name'];
+                                    } ?></td>
+                                <td><?php if ($choose_aavedak_vibhag == 1) {
+                                        echo $row['a_subject'];
+                                    } else {
+                                        echo $row['v_subject'];
+                                    } ?></td>
+                                <td><?php if ($choose_aavedak_vibhag == 1) {
+                                        echo date('d-m-Y', strtotime($row['a_application_date']));
+                                    } else {
+                                        echo date('d-m-Y', strtotime($row['v_aadesh_date']));
+                                    } ?></td>
                                 <td>null </td>
-                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_application_date']; }else{ echo $row['v_aadesh_date'];} ?></td>
-                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_kisko_presit']; }else{ echo $row['v_kisko_presit'];} ?></td>
-                                <td><?php if($choose_aavedak_vibhag==1){ echo $row['a_jaavak_date']; }else{ echo $row['v_jaavak_date'];} ?></td>
+                                <td><?php if ($choose_aavedak_vibhag == 1) {
+                                        echo $row['a_kisko_presit'];
+                                    } else {
+                                        echo $row['v_kisko_presit'];
+                                    } ?></td>
+                                <td><?php if ($choose_aavedak_vibhag == 1) {
+                                        echo date('d-m-Y', strtotime($row['a_jaavak_date']));
+                                    } else {
+                                        echo date('d-m-Y', strtotime($row['v_jaavak_date']));
+                                    } ?></td>
 
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>

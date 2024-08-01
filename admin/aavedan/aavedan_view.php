@@ -9,7 +9,7 @@ if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
-    $sql = mysqli_query($conn, "SELECT 
+    $sql = "SELECT 
   a.*,
   vm.vibhag_name AS a_vibhag_name,
   dm.district_name AS a_district_name,
@@ -31,13 +31,15 @@ FROM
   LEFT JOIN gram_panchayat_master gpm ON a.a_gram_panchayat_id = gpm.gram_panchayat_id
   LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
   LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
-  LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm4.vibhag_id
+  LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm5.vibhag_id
 
 WHERE 
-  a.status = '0'
+  a.status = '0' and a.$tblkey='$id'
 ORDER BY 
-  $tblkey DESC");
-    $fetch = mysqli_fetch_array($sql);
+  a.$tblkey DESC";
+    // echo 'id :'.$id.'----'. $sql; 
+    $run = mysqli_query($conn, $sql);
+    $fetch = mysqli_fetch_array($run);
     // Retrieve posted values
     $file_no = $fetch['file_no'];
     $date = $fetch['date'];
@@ -67,6 +69,7 @@ ORDER BY
     $a_file_upload_2 = $fetch['a_file_upload_2'];
     $a_mantri_comment = $fetch['a_mantri_comment'];
 
+    $v_mantri_comment = $fetch['v_mantri_comment'];
     $v_aavak_vibhag = $fetch['v_aavak_vibhag'];
     $v_subject = $fetch['v_subject'];
     $v_reference = $fetch['v_reference'];
@@ -356,7 +359,7 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="v_subject" placeholder="विषय" name="v_subject" value="<?=$v_subject?>" readonly>
+                            <input type="text" class="form-control" id="v_subject" placeholder="विषय" name="v_subject" value="<?= $v_subject ?>" readonly>
                             <label for="v_subject">विषय <span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -364,7 +367,7 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="v_reference" placeholder="द्वारा" name="v_reference" value="<?=$v_reference?>" readonly>
+                            <input type="text" class="form-control" id="v_reference" placeholder="द्वारा" name="v_reference" value="<?= $v_reference ?>" readonly>
                             <label for="v_reference">द्वारा <span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -416,7 +419,7 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="v_kisko_presit" id="v_kisko_presit" placeholder="पद का नाम" value="<?=$v_kisko_presit?>" readonly>
+                            <input type="text" class="form-control" name="v_kisko_presit" id="v_kisko_presit" placeholder="पद का नाम" value="<?= $v_kisko_presit ?>" readonly>
                             <label for="v_kisko_presit">किसको प्रेषित किया गया <span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -428,7 +431,7 @@ ORDER BY
                             // Set default current date
                             $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                             ?>
-                            <input type="text" class="form-control" id="v_jaavak_date" placeholder="आवेदन दिनांक" name="v_jaavak_date" readonly value="<?=date('d-m-Y',strtotime($v_jaavak_date));?>">
+                            <input type="text" class="form-control" id="v_jaavak_date" placeholder="आवेदन दिनांक" name="v_jaavak_date" readonly value="<?= date('d-m-Y', strtotime($v_jaavak_date)); ?>">
                             <label for="v_jaavak_date">जावक दिनांक <span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -440,7 +443,7 @@ ORDER BY
                             // Set default current date
                             $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                             ?>
-                            <input type="text" class="form-control" id="v_aadesh_date" placeholder="आवेदन दिनांक" name="v_aadesh_date" value="<?=date('d-m-Y',strtotime($v_aadesh_date));?>" readonly>
+                            <input type="text" class="form-control" id="v_aadesh_date" placeholder="आवेदन दिनांक" name="v_aadesh_date" value="<?= date('d-m-Y', strtotime($v_aadesh_date)); ?>" readonly>
                             <label for="v_aadesh_date">आदेश दिनांक <span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -459,7 +462,7 @@ ORDER BY
                 <div class="col-lg-12">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" id="v_mantri_comment" placeholder="टिप्पणी" style="height: 150px;" name="v_mantri_comment" readonly><?=$v_mantri_comment?></textarea>
+                            <textarea class="form-control" id="v_mantri_comment" placeholder="टिप्पणी" style="height: 150px;" name="v_mantri_comment" readonly><?= $v_mantri_comment ?></textarea>
                             <label for="v_mantri_comment">मंत्री जी की टिप <span class="text-danger">*</span> </label>
                         </div>
                     </div>

@@ -58,16 +58,74 @@ function storeOTP($conn, $phoneNumber, $otp, $status)
     $stmt->close();
 }
 
-function generateEnquiryNumber($conn, $tblname, $prefix) {
+function generateEnquiryNumber($conn, $tblname, $prefix)
+{
     // Get the count of existing entries in the table
     $query = "SELECT COUNT(*) as count FROM $tblname";
     $result = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($result);
     $count = $row['count'];
-  
+
     // Generate the enquiry number
     $enquiryNumber = $prefix . sprintf('%003d', $count + 1);
-  
+
     return $enquiryNumber;
     // print_r($enquiryNumber);
-  }
+}
+
+
+    // Function to check if the file exists and the path is not empty
+    function checkFileExists($filePath)
+    {
+        return !empty($filePath) && file_exists($filePath);
+    }
+
+    function handleFileUpload($fileInputName, $target_dir, $maxSize, $allowedTypes)
+    {
+        $uploadOk = 1;
+        $errorMsg = "";
+
+        $file = $_FILES[$fileInputName];
+        $target_file = $target_dir . basename($file["name"]);
+        $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        if (!empty(basename($file["name"]))) {
+            // Check if the file already exists
+            if (checkFileExists($target_file)) {
+                $errorMsg .= "<script>alert('Sorry, file already exists.')</script>";
+                $uploadOk = 0;
+            }
+
+            // Check file size
+            if ($file["size"] > $maxSize) {
+                $errorMsg .= "<script>alert('Sorry, your file is too large (limit is " . ($maxSize / 1000000) . " MB).')</script>";
+                $uploadOk = 0;
+            }
+
+            // Check file type
+            if (!in_array($fileType, $allowedTypes)) {
+                $errorMsg .= "<script>alert('Sorry, only " . implode(", ", $allowedTypes) . " files are allowed.')</script>";
+                $uploadOk = 0;
+            }
+
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo $errorMsg;
+                return false;
+            } else {
+                // Try to upload file
+                if (move_uploaded_file($file["tmp_name"], $target_file)) {
+                    echo "<script>alert('The file " . basename($file["name"]) . " has been uploaded.')</script>";
+                    // return true;
+                    return ['success' => true, 'filePath' => basename($file["name"])];
+                } else {
+                    echo "<script>alert('Sorry, there was an error uploading your file.')</script>";
+                    // return false;
+                    return ['success' => false, 'filePath' => ''];
+                
+                }
+            }
+        }
+    }
+
+
