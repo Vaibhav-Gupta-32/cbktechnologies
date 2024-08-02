@@ -154,7 +154,7 @@
              <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>सेटिंग्स</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../" class="dropdown-item">प्रोफाइल सेटिंग्स </a>
+                     <a href="../dash/profile.php" class="dropdown-item">प्रोफाइल सेटिंग्स </a>
                  </div>
              </div>
 

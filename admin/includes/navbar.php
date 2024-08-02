@@ -1,8 +1,7 @@
 <?php
 // print_r($conn);
 $username=$_SESSION['username'];
-// $role=$_SESSION['role'];
-// $password=$_SESSION['password'];
+$profile_picture = getvalfield($conn, "adminlogin", "profile_picture", "username='$username'");
 ?>
 <!-- Content Start -->
 <div class="content">
@@ -83,7 +82,7 @@ $username=$_SESSION['username'];
             </div> -->
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img class="rounded-circle me-lg-2" src="../img/user.png" alt="" style="width: 40px; height: 40px;">
+                    <img class="rounded-circle me-lg-2" src="../dash/uploads/<?=$profile_picture?>" alt="" style="width: 40px; height: 40px;">
                     <span class="d-none d-lg-inline-flex"><?=$username;?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">

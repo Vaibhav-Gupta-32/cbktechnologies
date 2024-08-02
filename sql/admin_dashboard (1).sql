@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2024 at 03:15 PM
+-- Generation Time: Aug 02, 2024 at 11:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -83,6 +83,8 @@ CREATE TABLE `aavedan` (
   `a_application_date` date DEFAULT NULL,
   `a_file_upload_2` varchar(255) DEFAULT NULL,
   `a_mantri_comment` text DEFAULT NULL,
+  `a_punah_prapth` varchar(200) NOT NULL,
+  `a_punah_prapth_date` date DEFAULT NULL,
   `v_aavak_vibhag` varchar(50) DEFAULT NULL,
   `v_subject` varchar(100) DEFAULT NULL,
   `v_reference` varchar(100) DEFAULT NULL,
@@ -94,6 +96,8 @@ CREATE TABLE `aavedan` (
   `v_aadesh_date` date DEFAULT NULL,
   `v_file_upload_2` varchar(255) DEFAULT NULL,
   `v_mantri_comment` text DEFAULT NULL,
+  `v_punah_prapth` varchar(200) NOT NULL,
+  `v_punah_prapth_date` date DEFAULT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -101,28 +105,9 @@ CREATE TABLE `aavedan` (
 -- Dumping data for table `aavedan`
 --
 
-INSERT INTO `aavedan` (`id`, `file_no`, `date`, `aavak_no`, `choose_aavedak_vibhag`, `a_phone_number`, `a_aavedak_name`, `a_district_id`, `a_vidhansabha_id`, `a_vikaskhand_id`, `a_sector_id`, `a_gram_panchayat_id`, `a_gram_id`, `a_subject`, `a_reference`, `a_file_upload_1`, `a_office_name`, `a_jaavak_vibhag`, `a_kisko_presit`, `a_jaavak_date`, `a_application_date`, `a_file_upload_2`, `a_mantri_comment`, `v_aavak_vibhag`, `v_subject`, `v_reference`, `v_file_upload_1`, `v_office_name`, `v_jaavak_vibhag`, `v_kisko_presit`, `v_jaavak_date`, `v_aadesh_date`, `v_file_upload_2`, `v_mantri_comment`, `status`) VALUES
-(1, 1, '2024-07-30', 1, 1, '9301323211', 'vaibhav ', 10, 1, 3, 6, 4, 5, 'job', 'sir', 'a.pdf', 'टेक्नोलॉजी 1', '2', 'lomash', '2024-07-30', '2024-07-30', 'download (1).htm', '1- माननीय मंत्री जी की सुरक्षा श्रेणी \"Z\" है।\r\n2- माननीय मंत्री जी का ब्लडगुप \"AB Positive\" रिपीट \" AB Positive\" है।', 'विभाग चुनें', '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-30', '2024-07-30', '', '', 0),
-(2, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(3, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(4, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(5, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(6, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(7, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(8, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(9, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(10, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-08-01', '2024-08-01', 'download (1).htm', 'bbbbb', 0),
-(11, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'download (1).htm', 'cccc', 0),
-(12, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'download (1).htm', 'cccc', 0),
-(13, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'a.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'download (1).htm', 'cccc', 0),
-(14, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'dummy-pdf_1.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'cccc', 0),
-(15, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'dummy-pdf_1.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'cccc', 0),
-(16, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'dummy-pdf_1.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'cccc', 0),
-(17, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'dummy-pdf_1.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'cccc', 0),
-(18, 3, '2024-07-31', 3, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'bb', 'dummy-pdf_1.pdf', 'टेक्नोलॉजी 2', '2', 'bb', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'cccc', 0),
-(19, 4, '2024-07-31', 4, 2, '9301323211', 'vaibhav ', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'dd', '', 'टेक्नोलॉजी 2', '1', 'dd', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'dddd', 0),
-(20, 4, '2024-07-31', 4, 2, '9301323211', 'vaibhav ', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'dd', '', 'टेक्नोलॉजी 2', '1', 'dd', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'dddd', 0),
-(21, 4, '2024-07-31', 4, 2, '9301323211', 'vaibhav ', 0, 0, 0, 0, 0, 0, '', '', '', 'ऑफिस का नाम चुनें', 'जावक विभाग का नाम चुनें', '', '2024-07-31', '2024-07-31', '', '', '1', 'bb', 'dd', '', 'टेक्नोलॉजी 2', '1', 'dd', '2024-07-31', '2024-07-31', 'dummy-pdf_2.pdf', 'dddd', 0);
+INSERT INTO `aavedan` (`id`, `file_no`, `date`, `aavak_no`, `choose_aavedak_vibhag`, `a_phone_number`, `a_aavedak_name`, `a_district_id`, `a_vidhansabha_id`, `a_vikaskhand_id`, `a_sector_id`, `a_gram_panchayat_id`, `a_gram_id`, `a_subject`, `a_reference`, `a_file_upload_1`, `a_office_name`, `a_jaavak_vibhag`, `a_kisko_presit`, `a_jaavak_date`, `a_application_date`, `a_file_upload_2`, `a_mantri_comment`, `a_punah_prapth`, `a_punah_prapth_date`, `v_aavak_vibhag`, `v_subject`, `v_reference`, `v_file_upload_1`, `v_office_name`, `v_jaavak_vibhag`, `v_kisko_presit`, `v_jaavak_date`, `v_aadesh_date`, `v_file_upload_2`, `v_mantri_comment`, `v_punah_prapth`, `v_punah_prapth_date`, `status`) VALUES
+(29, 1, '2024-08-01', 1, 1, '9301323211', 'vaibhav ', 10, 1, 3, 6, 4, 5, 'job', '', 'dummy-pdf_1.pdf', 'टेक्नोलॉजी 1', '1', 'lomash', '2024-08-01', '2024-08-01', 'dummy-pdf_2.pdf', '1111111111', 'aavedak form', '2024-08-02', ' ', '', '', '', ' ', ' ', '', '0000-00-00', '0000-00-00', '', '', '', NULL, 3),
+(30, 2, '2024-08-01', 2, 2, '', '', 0, 0, 0, 0, 0, 0, '', '', '', ' ', ' ', '', '2024-08-01', '2024-08-01', '', '', '', '0000-00-00', '1', 'job2', 'sir2', 'dummy-pdf_3.pdf', 'टेक्नोलॉजी 2', '2', 'lomash', '2024-08-01', '2024-08-01', 'dummy-pdf_4.pdf', '2222222222222', 'vibhag form', '2024-08-02', 4);
 
 -- --------------------------------------------------------
 
@@ -137,15 +122,16 @@ CREATE TABLE `adminlogin` (
   `email` varchar(100) NOT NULL,
   `mobile_no` varchar(20) NOT NULL,
   `salt` varchar(200) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `profile_picture` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `adminlogin`
 --
 
-INSERT INTO `adminlogin` (`id`, `username`, `password`, `email`, `mobile_no`, `salt`, `created_at`) VALUES
-(1, 'admin', '$2y$10$CVmzaGo8EKt0A5ToFhkGYOKZ8zYPbe1LI1/hVks4Lt1CGIOXrnDCS', 'admin@gmail.com', '9301323211', '123', '2024-07-05 05:29:29');
+INSERT INTO `adminlogin` (`id`, `username`, `password`, `email`, `mobile_no`, `salt`, `created_at`, `profile_picture`) VALUES
+(1, 'admin', '$2y$10$QrF6pX9viELon/jA4xE0EuXI9hsy75StaLpE3zBwZd/t43SlYIFXW', 'admin@gmail.com', '9301323211', '123', '2024-07-05 05:29:29', 'siberian-2401287_1280.jpg');
 
 -- --------------------------------------------------------
 
@@ -692,6 +678,42 @@ INSERT INTO `sector_master` (`sector_id`, `sector_name`, `district_id`, `vidhans
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sthantran`
+--
+
+CREATE TABLE `sthantran` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `phone_number` varchar(15) NOT NULL,
+  `designation` varchar(100) NOT NULL,
+  `district_id` int(11) NOT NULL,
+  `vidhansabha_id` int(11) NOT NULL,
+  `vikaskhand_id` int(11) NOT NULL,
+  `sector_id` int(11) NOT NULL,
+  `gram_panchayat_id` varchar(100) NOT NULL,
+  `gram_id` varchar(100) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `reference` varchar(100) NOT NULL,
+  `application_date` date NOT NULL,
+  `file_upload` varchar(255) NOT NULL,
+  `comment` text NOT NULL,
+  `c_designation_place` varchar(200) NOT NULL,
+  `f_designation_place` varchar(200) NOT NULL,
+  `anumodit_date` date DEFAULT NULL,
+  `view_comment` text NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '0 = प्राप्त आवेदन\r\n1 = प्रस्तावित आवेदन\r\n2 = स्वीकृत आवेदन \r\n3 = प्रेषित स्वीकृत आवेदन\r\n4 = अस्वीकृत आवेदन '
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sthantran`
+--
+
+INSERT INTO `sthantran` (`id`, `name`, `phone_number`, `designation`, `district_id`, `vidhansabha_id`, `vikaskhand_id`, `sector_id`, `gram_panchayat_id`, `gram_id`, `subject`, `reference`, `application_date`, `file_upload`, `comment`, `c_designation_place`, `f_designation_place`, `anumodit_date`, `view_comment`, `status`) VALUES
+(1, 'Vaibhav Gupta', '1111111111', 'developer', 10, 1, 3, 6, '4', '5', 'Job', 'सर 1', '2024-08-02', 'PREETI RATREY Resume.pdf', 'dasdasdasda', 'developer', 'senior developer', NULL, '', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `swekshanudan`
 --
 
@@ -781,7 +803,10 @@ INSERT INTO `userlogin` (`id`, `username`, `password`, `email`, `mobile_no`, `sa
 (17, '9301323211', '', '', '9301323211', '', '2024-07-31 08:00:00'),
 (18, '9301323211', '', '', '9301323211', '', '2024-07-31 08:00:37'),
 (19, '9301323211', '', '', '9301323211', '', '2024-07-31 08:24:55'),
-(20, '9301323211', '', '', '9301323211', '', '2024-07-31 08:38:34');
+(20, '9301323211', '', '', '9301323211', '', '2024-07-31 08:38:34'),
+(21, '9301323211', '', '', '9301323211', '', '2024-08-02 13:22:14'),
+(22, '9301323211', '', '', '9301323211', '', '2024-08-02 13:23:21'),
+(23, '9301323211', '', '', '9301323211', '', '2024-08-02 13:24:00');
 
 -- --------------------------------------------------------
 
@@ -969,6 +994,13 @@ ALTER TABLE `sector_master`
   ADD PRIMARY KEY (`sector_id`);
 
 --
+-- Indexes for table `sthantran`
+--
+ALTER TABLE `sthantran`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_district_id` (`district_id`);
+
+--
 -- Indexes for table `swekshanudan`
 --
 ALTER TABLE `swekshanudan`
@@ -1019,7 +1051,7 @@ ALTER TABLE `aamantran`
 -- AUTO_INCREMENT for table `aavedan`
 --
 ALTER TABLE `aavedan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `adminlogin`
@@ -1094,6 +1126,12 @@ ALTER TABLE `sector_master`
   MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `sthantran`
+--
+ALTER TABLE `sthantran`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `swekshanudan`
 --
 ALTER TABLE `swekshanudan`
@@ -1103,7 +1141,7 @@ ALTER TABLE `swekshanudan`
 -- AUTO_INCREMENT for table `userlogin`
 --
 ALTER TABLE `userlogin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `vibhag_master`
