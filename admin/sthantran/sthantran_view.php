@@ -70,7 +70,7 @@ if ($id) {
         <hr class="text-danger p-2 rounded">
         <div class="row">
             <!--For ID-->
-            <input type="hidden"  name="id" id="id" value="<?=$id ?>">
+            <input type="hidden" name="id" id="id" value="<?= $id ?>">
             <!-- ID -->
             <div class="col-lg-4">
                 <div class="form-group shadow">
@@ -89,9 +89,6 @@ if ($id) {
 
                 </div>
             </div>
-        
-
-
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -149,7 +146,6 @@ if ($id) {
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -177,24 +173,6 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="c_designation_place" placeholder="द्वारा" required name="c_designation_place" readonly value="<?=$c_designation_place?>">
-                        <label for="c_designation_place">वर्तमान पद एवं स्थान <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="f_designation_place" placeholder="द्वारा" required name="f_designation_place" readonly value="<?=$f_designation_place?>">
-                        <label for="f_designation_place">प्रस्तावित पद एवं स्थान <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-    
-            <!--  -->
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -223,7 +201,6 @@ if ($id) {
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -242,8 +219,6 @@ if ($id) {
                     <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                 </div>
             </div>
-
-            <!--  -->
         </div>
     </div>
 </form>

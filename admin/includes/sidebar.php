@@ -68,7 +68,7 @@
                      <a href="../sthantran/new_sthantran.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
                      <a href="../sthantran/sthantran_list.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a>
                      <a href="../sthantran/sveekrt_sthantran.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../sthantran/asveekrt_sthantran.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                     <a href="../sthantran/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
 
