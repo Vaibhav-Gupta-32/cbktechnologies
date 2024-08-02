@@ -6,7 +6,7 @@ $tblkey = "id";
 $pagename = "विवरण ";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
-    $id = $_REQUEST['id'];
+$id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
     $sql = "SELECT 
@@ -97,6 +97,7 @@ ORDER BY
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
+        <hr class="text-danger p-2 rounded">
         <div class="row mt-5">
             <div class="col-lg-6 align-content-center">
                 <div class="form-group shadow">
@@ -146,6 +147,7 @@ ORDER BY
                 <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
+                            <input type="hidden" class="form-control " name="id" id="id" placeholder=" " value="<?= $id ?>">
                             <input type="text" class="form-control " maxlength="10" name="a_phone_number" id="a_phone_number" placeholder=" " value="<?= $a_phone_number ?>" readonly>
                             <label for="a_phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
                         </div>
@@ -326,9 +328,14 @@ ORDER BY
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-6 text-center mb-3">
                     <div class="form-group">
-                        <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                        <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center mb-3">
+                    <div class="form-group">
+                        <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                     </div>
                 </div>
                 <!--  -->
@@ -338,6 +345,7 @@ ORDER BY
         <div class="container-fluid px-4 " id="vibhag_form">
             <div class="row">
                 <!-- विभाग का form  -->
+                <input type="hidden" class="form-control " name="id" id="id" placeholder=" " value="<?= $id ?>">
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
@@ -467,9 +475,14 @@ ORDER BY
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-6 text-center mb-3">
                     <div class="form-group">
-                        <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                        <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center mb-3">
+                    <div class="form-group">
+                        <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                     </div>
                 </div>
             </div>

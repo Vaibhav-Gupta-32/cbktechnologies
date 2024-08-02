@@ -1,0 +1,273 @@
+<?php include('../config/dbconnection.php') ?>
+<?php include('../config/session_check.php') ?>
+<?php
+$tblname = "sthantran";
+$tblkey = "id";
+$pagename = "नया स्थान्तरण आवेदन भरे";
+
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    // Collect form data
+    $phone_number = mysqli_real_escape_string($conn, trim($_POST['phone_number']));
+    $name = mysqli_real_escape_string($conn, trim($_POST['name']));
+    $designation = mysqli_real_escape_string($conn, trim($_POST['designation']));
+    $district_id = intval($_POST['district_id']); // Ensure district_id is an integer
+    $vidhansabha_id = intval($_POST['vidhansabha_id']); // Ensure vidhansabha_id is an integer
+    $vikaskhand_id = intval($_POST['vikaskhand_id']); // Ensure vikaskhand_id is an integer
+    $sector_id = intval($_POST['sector_id']); // Ensure sector_id is an integer
+    $gram_panchayat_id = mysqli_real_escape_string($conn, trim($_POST['gram_panchayat_id']));
+    $gram_id = mysqli_real_escape_string($conn, trim($_POST['gram_id']));
+    $subject = mysqli_real_escape_string($conn, trim($_POST['subject']));
+    $reference = mysqli_real_escape_string($conn, trim($_POST['reference']));
+    $c_designation_place = mysqli_real_escape_string($conn, trim($_POST['c_designation_place']));
+    $f_designation_place = mysqli_real_escape_string($conn, trim($_POST['f_designation_place']));
+    $application_date = mysqli_real_escape_string($conn, trim($_POST['application_date']));
+    $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
+
+    // print_r($_POST);
+    //    ======================================File upload handling=======================================
+    $uploadOk = "";
+    $target_dir = "uploads/";
+    $maxSize = 5000000; // 5 MB
+    $allowedTypes = ["jpg", "png", "pdf"];
+
+    // Initialize variables
+    $file_upload = ['success' => false, 'filePath' => ''];
+
+    // Call the function for each file upload if the file is set
+    if (isset($_FILES['file_upload']) && !empty($_FILES['file_upload']['name']))
+        $file_upload = handleFileUpload('file_upload', $target_dir, $maxSize, $allowedTypes);
+
+
+    // Debug information for file paths
+    // echo "<pre>";
+    // print_r($file_upload);
+    // echo "</pre>";
+    // die;
+
+    if (!empty($file_upload['success'])) {
+        // echo "At least one file was uploaded successfully.";
+        $uploadOk = 1;
+        $file1_path = $file_upload['filePath'];
+    } else {
+        // echo "File upload failed.";
+        $uploadOk = 0;
+    }
+    // die;
+    //    ===================================================================================
+
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 1) {
+        $sql = "INSERT INTO $tblname 
+        (name, phone_number, designation, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, subject, reference, application_date, file_upload, comment, c_designation_place, f_designation_place) 
+        VALUES 
+        ('$name', '$phone_number', '$designation', $district_id, $vidhansabha_id, $vikaskhand_id, $sector_id, '$gram_panchayat_id', '$gram_id', '$subject', '$reference', '$application_date', '$file1_path', '$comment', '$c_designation_place', '$f_designation_place')";
+        // echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            $msg = "<div class='msg-container'><b class='alert alert-success msg'>Data inserted successfully.</b></div>";
+        } else {
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Error: " . $sql . "<br>" . mysqli_error($conn) . "</b></div>";
+        }
+    } else {
+        $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file was not uploaded.</b></div>";
+    }
+}
+?>
+
+
+<!-- Staring page -->
+<?php include('../includes/header.php') ?>
+<?php include('../includes/sidebar.php') ?>
+<?php include('../includes/navbar.php') ?>
+
+<style>
+    input[type="file"]::file-selector-button {
+        color: #00698f;
+        /* change the text color to blue */
+        background-color: white;
+        /* change the background color to light gray */
+        border: none;
+    }
+</style>
+<!-- Start New Swekshanudan Form -->
+<form action="" method="POST" enctype="multipart/form-data">
+    <div class="container-fluid pt-4 px-4 ">
+        <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
+        <div class="row mt-5">
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                        <label for="phone_number">आवेदक का फ़ोन नंबर <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="name" id="aavedak" placeholder="आवेदक का नाम" required>
+                        <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="designation" id="designation" placeholder="पद का नाम" required>
+                        <label for="designation">पद का नाम <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="district_id" id="districtSelect" class="form-select form-control bg-white" required>
+                            <?php
+                            // Fetch districts for dropdown
+                            $district_query = "SELECT * FROM district_master";
+                            $district_result = mysqli_query($conn, $district_query);
+                            ?>
+
+                            <option selected>जिले का नाम चुनें</option>
+                            <?php
+                            while ($district_row = mysqli_fetch_assoc($district_result)) {
+                                echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="districtSelect">जिले का नाम चुनें <span class="text-danger">*</span></label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white " required>
+                            <option selected>विधानसभा का नाम चुनें</option>
+                            <!-- Options for vidhansabha will go here -->
+                        </select>
+                        <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white" required>
+                            <option selected>विकासखंड का नाम चुनें</option>
+                            <!-- Option Load By AJAX -->
+
+                        </select>
+                        <label for="vikaskhand">विकासखंड का नाम चुनें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white" required>
+                            <option selected>सेक्टर का नाम चुनें</option>
+                            <!-- Options for sectors will go here -->
+                        </select>
+                        <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white" required>
+                            <option selected>ग्राम पंचायत का नाम चुनें</option>
+                            <!-- Options for panchayat will go here -->
+                        </select>
+                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="gramSelect" name="gram_id" required>
+                            <option selected>ग्राम का नाम चुनें</option>
+                            <!-- by load ajax -->
+                        </select>
+                        <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject">
+                        <label for="subject">विषय का नाम <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference">
+                        <label for="reference">द्वारा <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="c_designation_place" placeholder="द्वारा" required name="c_designation_place">
+                        <label for="c_designation_place">वर्तमान पद एवं स्थान <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="f_designation_place" placeholder="द्वारा" required name="f_designation_place">
+                        <label for="f_designation_place">प्रस्तावित पद एवं स्थान <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <?php
+                        // Set default current date
+                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
+                        ?>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="आवेदन दिनांक" required name="application_date">
+                        <label for="application_date">आवेदन की तिथि <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3 ">
+                        <input type="file" class="form-control bg-white" id="file_upload" placeholder="फाइल अपलोड करें" required name="file_upload">
+                        <label for="file_upload">फाइल अपलोड करें <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 150px;" name="comment"></textarea>
+                        <label for="comment">विशेष टिप्पणी <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 text-center">
+                <div class="form-group">
+                    <button class="col-12 text-white btn  text-center shadow" type="submit" style="background-color:#4ac387;" name="submit"><b>Submit</b></button>
+                </div>
+            </div>
+
+            <!--  -->
+        </div>
+    </div>
+</form>
+<!-- New Swekshanudan close -->
+
+<?php include('../includes/footer.php'); ?>

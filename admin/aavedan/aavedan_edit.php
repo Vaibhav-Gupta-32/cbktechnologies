@@ -94,6 +94,7 @@ WHERE
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
+        <hr class="text-danger p-2 rounded">
         <div class="row mt-5">
             <div class="col-lg-6 align-content-center">
                 <div class="form-group shadow">
@@ -303,6 +304,7 @@ WHERE
                         <div class="form-floating mb-3 input-group">
                             <input type="file" class="form-control" id="a_file_upload_1" name="a_file_upload_1" value="<?= $a_file_upload_1 ?>">
                             <label for="a_file_upload_1"> अपलोडेड फाइल </label>
+                            <input type="hidden" class="form-control" id="a_existing_file_1" name="a_existing_file_1" value="<?= $a_file_upload_1 ?>">
                             <span class="input-group-text bg-">
                                 <a href="uploads/<?= $a_file_upload_1 ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
                             </span>
@@ -371,6 +373,7 @@ WHERE
                         <div class="form-floating mb-3 input-group">
                             <input type="file" class="form-control" id="a_file_upload_2" name="a_file_upload_2" value="<?= $a_file_upload_2 ?>">
                             <label for="a_file_upload_2"> अपलोडेड फाइल </label>
+                            <input type="hidden" class="form-control" id="a_existing_file_2" name="a_existing_file_2" value="<?= $a_file_upload_2 ?>">
                             <span class="input-group-text bg-">
                                 <a href="uploads/<?= $a_file_upload_2 ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
                             </span>

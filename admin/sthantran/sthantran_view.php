@@ -1,9 +1,9 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "swekshanudan";
+$tblname = "sthantran";
 $tblkey = "id";
-$pagename = "विवरण";
+$pagename = "विवरण ";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
@@ -17,32 +17,39 @@ if ($id) {
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=1
+    WHERE a.status=0
     ORDER BY a.$tblkey DESC";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
-    $id = $fetch['id'];
-    $name = $fetch['name'];
+    // $id = $fetch['id'];
     $phone_number = $fetch['phone_number'];
+    $name = $fetch['name'];
     $designation = $fetch['designation'];
+    $district_id = $fetch['district_id']; // Ensure district_id is an integer
+    $vidhansabha_id = $fetch['vidhansabha_id']; // Ensure vidhansabha_id is an integer
+    $vikaskhand_id = $fetch['vikaskhand_id']; // Ensure vikaskhand_id is an integer
+    $sector_id = $fetch['sector_id']; // Ensure sector_id is an integer
+    $gram_panchayat_id = $fetch['gram_panchayat_id'];
+    $gram_id = $fetch['gram_id'];
     $district_name = $fetch['district_name'];
     $vidhansabha_name = $fetch['vidhansabha_name'];
     $vikaskhand_name = $fetch['vikaskhand_name'];
     $sector_name = $fetch['sector_name'];
     $gram_panchayat_name = $fetch['gram_panchayat_name'];
     $gram_name = $fetch['gram_name'];
+    $file_upload = $fetch['file_upload'];
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
-    $expectations_amount = $fetch['expectations_amount'];
+    $c_designation_place = $fetch['c_designation_place'];
+    $f_designation_place = $fetch['f_designation_place'];
     $application_date = $fetch['application_date'];
     $comment = $fetch['comment'];
-    $file_upload = $fetch['file_upload'];
-    $anumodit_amount = $fetch['anumodit_amount'];
-    $aadesh_no = $fetch['aadesh_no'];
-    $anumodit_date = $fetch['anumodit_date'];
-    $view_comment = $fetch['view_comment'];
 }
 // Close For Buinding Db To form Data 
 
+
+// Close For Approve By Admin
+
+// If Delete By Admin
 ?>
 
 <!-- Start New Swekshanudan Form -->
@@ -63,8 +70,16 @@ if ($id) {
         <hr class="text-danger p-2 rounded">
         <div class="row">
             <!--For ID-->
-            <input type="hidden"  name="vid" id="vid" value="<?=$id ?>">
+            <input type="hidden"  name="id" id="id" value="<?=$id ?>">
             <!-- ID -->
+            <div class="col-lg-4">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" value="<?= $phone_number ?>" readonly>
+                        <label for="phone_number">आवेदक का फ़ोन नंबर </label>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -74,14 +89,7 @@ if ($id) {
 
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" value="<?= $phone_number ?>" readonly>
-                        <label for="phone_number">आवेदक का फ़ोन नंबर </label>
-                    </div>
-                </div>
-            </div>
+        
 
 
             <div class="col-lg-4">
@@ -164,17 +172,34 @@ if ($id) {
                         <input type="text" class="form-control" id="file_upload" name="file_upload" value="<?= $file_upload ?>" readonly>
                         <label for="file_upload"> अपलोडेड फाइल </label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                 </div>
             </div>
-            <!--  -->
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?= $expectations_amount ?>" readonly>
-                        <label for="expectations_amount">आपेक्षित राशि </label>
+                        <input type="text" class="form-control" id="c_designation_place" placeholder="द्वारा" required name="c_designation_place" readonly value="<?=$c_designation_place?>">
+                        <label for="c_designation_place">वर्तमान पद एवं स्थान <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="f_designation_place" placeholder="द्वारा" required name="f_designation_place" readonly value="<?=$f_designation_place?>">
+                        <label for="f_designation_place">प्रस्तावित पद एवं स्थान <span class="text-danger">*</span> </label>
+                    </div>
+                </div>
+            </div>
+    
+            <!--  -->
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <textarea type="text" class="form-control" id="comment" style="height: 60px;" name="comment" value="" readonly><?= $comment ?></textarea>
+                        <label for="comment">विशेष टिप्पणी </label>
                     </div>
                 </div>
             </div>
@@ -182,83 +207,7 @@ if ($id) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="application_date" name="application_date" value="<?= $application_date ?>" readonly>
-                        <label for="application_date">आवेदन दिनांक</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <textarea type="text" class="form-control" id="comment" style="height: 60px;" name="comment" value="" readonly><?= $comment ?></textarea>
-                        <label for="comment">टिप्पणी </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" readonly value="<?= $anumodit_amount?>" name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="anumodit_amount">अनुमोदित राशि </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" readonly value="<?= $aadesh_no?>" name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="aadesh_no">आदेश क्रमांक  </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="anumodit_date"value="<?= $anumodit_date?>" placeholder="अनुमोदित दिनांक" readonly name="anumodit_date">
-                        <label for="anumodit_date">अनुमोदित दिनांक </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="view_comment" style="height: 60px;" name="view_comment" readonly><?= $view_comment?></textarea>
-                        <label for="view_comment">टिप्पणी </label>
-                    </div>
-                </div>
-            </div>
-            <!-- Add Update -->
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="sveekrt_amount" placeholder="स्वीकृत राशि" required name="sveekrt_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="sveekrt_amount">स्वीकृत राशि <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="sveekrt_no" placeholder="स्वीकृत क्रमांक" required name="sveekrt_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="sveekrt_no">स्वीकृत क्रमांक <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center mb-3">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="yojna_id" id="selectYojna" class="form-select form-control bg-white" required>
-                            <option selected>योजना का नाम चुनें</option>
-                            <?php
-                    // Fetch districts for dropdown
-                    $yojna_query = "SELECT * FROM yojna_master";
-                    $yojna_result = mysqli_query($conn, $yojna_query);
-                    while ($yojna_row = mysqli_fetch_assoc($yojna_result)) {
-                        echo "<option value='" . $yojna_row['yojna_id'] . "'>" . $yojna_row['yojna_name'] . "</option>";
-                    }
-                    ?>
-                        </select>
-                        <label for="districtSelect">योजना का नाम चुनें <span class="text-danger">*</span></label>
+                        <label for="application_date">आवेदन की तिथि</label>
                     </div>
                 </div>
             </div>
@@ -269,8 +218,8 @@ if ($id) {
                         // Set default current date
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
-                        <input type="date" class="form-control" id="sveekrt_date" value="<?= $currentDate ?>" placeholder="स्वीकृत दिनांक" required name="sveekrt_date" readonly>
-                        <label for="sveekrt_date">स्वीकृत दिनांक <span class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="application_date" value="<?= $currentDate ?>" placeholder="अनुमोदित दिनांक" required name="anumodit_date">
+                        <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
             </div>
@@ -278,8 +227,8 @@ if ($id) {
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="sveekrt_comment" style="height: 110px;" name="sveekrt_comment" required></textarea>
-                        <label for="sveekrt_comment">टिप्पणी <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="view_comment" style="height: 110px;" name="view_comment" required></textarea>
+                        <label for="view_comment">टिप्पणी <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>

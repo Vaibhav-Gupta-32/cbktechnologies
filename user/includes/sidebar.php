@@ -15,6 +15,7 @@
          </div>
          <div class="navbar-nav w-100">
              <a href="../dash" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>डैशबोर्ड</a>
+             <a href="../aavedan/aavedan_form.php" class="nav-item nav-link"><i class="fa-solid fa-envelope-open-text me-2"></i>आवेदन</a>
              <a href="../swekshanudan/swekshanudan_form.php" class="nav-item nav-link"><i class="fa-solid fa-hand-holding-dollar me-2"></i>स्वेच्छानुदान</a>
              <a href="../nirmaan/nirmaan_form.php" class="nav-item nav-link"><i class="fa-solid fa-bridge-circle-check me-2"></i>निर्माण </a>
              <a href="../chikitsa/chikitsa_form.php" class="nav-item nav-link"><i class="fa fa-medkit me-2"></i>चिकित्सा अनुदान </a>

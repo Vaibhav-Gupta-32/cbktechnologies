@@ -3,7 +3,7 @@
 <?php
 $tblname = "aavedan";
 $tblkey = "id";
-$pagename = "प्राप्त आवेदन";
+$pagename = "पूर्ण आवेदन";
 
 // Update Form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
@@ -134,7 +134,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
-    $sql = "UPDATE $tblname SET status='1' WHERE $tblkey='$vid'";
+   
+
+    $sql = "UPDATE $tblname SET status='3' WHERE $tblkey='$vid'";
     // echo $sql,'----'.$id;die;
     //    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
@@ -147,7 +149,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
 
 // If Reject By Admin
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['UnApprove'])) {
-    $id = $_REQUEST['id'];
+    $id = $_POST['id'];
+    // echo 'dasd'.$id;die;
     $sql = "UPDATE $tblname SET status='4' WHERE $tblkey='$id'";
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='msg-container'><b class='alert alert-success msg'>Unapprove Successfully</b></div>";
@@ -232,7 +235,7 @@ FROM
   LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm4.vibhag_id
 
 WHERE 
-  a.status = '0'
+  a.status = '3'
 ORDER BY 
   $tblkey DESC;";
 }
@@ -442,9 +445,10 @@ $fetch = mysqli_query($conn, $sql);
 
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
+                                    <!-- &nbsp; -->
                                     &nbsp;
-                                    &nbsp;
-                                    <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
+                                    <!-- <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a> -->
+                                    <a href="aavedan_print.php?id=<?=$row['id'];?>" target='_blank' ><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
                                     &nbsp;
                                     &nbsp;
                                     <a class="text-danger " href="" onclick="confirmDelete(<?= $row['id']; ?>, '<?php echo $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
@@ -499,7 +503,7 @@ $fetch = mysqli_query($conn, $sql);
         //  alert(v_id);
         $.ajax({
             type: 'POST',
-            url: 'aavedan_view.php',
+            url: 'purna_view.php',
             data: {
                 id: v_id
             },

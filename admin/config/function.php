@@ -115,11 +115,11 @@ function generateEnquiryNumber($conn, $tblname, $prefix)
             } else {
                 // Try to upload file
                 if (move_uploaded_file($file["tmp_name"], $target_file)) {
-                    echo "<script>alert('The file " . basename($file["name"]) . " has been uploaded.')</script>";
+                    // echo "<script>alert('The file " . basename($file["name"]) . " has been uploaded.')</script>";
                     // return true;
                     return ['success' => true, 'filePath' => basename($file["name"])];
                 } else {
-                    echo "<script>alert('Sorry, there was an error uploading your file.')</script>";
+                    // echo "<script>alert('Sorry, there was an error uploading your file.')</script>";
                     // return false;
                     return ['success' => false, 'filePath' => ''];
                 

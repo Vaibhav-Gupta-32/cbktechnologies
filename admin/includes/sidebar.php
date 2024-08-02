@@ -18,8 +18,8 @@
                      <a href="../aavedan/new_aavedan.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
                      <a href="../aavedan/aavedan_list.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a>
                      <a href="../aavedan/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../aavedan/prastavit_aavedan.php" class="dropdown-item"><b>पुन्ह्प्राप्त आवेदन</b></a>
-                     <a href="../aavedan/presit_aavedan.php" class="dropdown-item"><b>पूर्ण आवेदन</b></a>
+                     <a href="../aavedan/punah_prapth_aavedan.php" class="dropdown-item"><b>पुन्ह्प्राप्त आवेदन</b></a>
+                     <a href="../aavedan/purna_aavedan.php" class="dropdown-item"><b>पूर्ण आवेदन</b></a>
                      <a href="../aavedan/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
@@ -63,14 +63,12 @@
 
              <!-- For स्थानातरण -->
              <div class="nav-item dropdown">
-                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-money-bill-transfer me-2"></i>स्थानातरण</a>
+                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-money-bill-transfer me-2"></i>स्थान्तरण</a>
                  <div class="dropdown-menu bg-transparent border-0">
-                     <a href="../chikitsa/new_chikitsa.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
-                     <a href="../nchikitsa/chikitsa_aavedan.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a>
-                     <a href="../chikitsa/prastavit_aavedan.php" class="dropdown-item"><b>प्रस्तावित आवेदन</b></a>
-                     <a href="../chikitsa/sveekrt_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
-                     <a href="../chikitsa/presit_aavedan.php" class="dropdown-item"><b>स्वीकृत आवेदन ( प्रेषित )</b></a>
-                     <a href="../chikitsa/asveekrt_aavedan.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
+                     <a href="../sthantran/new_sthantran.php" class="dropdown-item"><b>नया आवेदन जोड़ें </b></a>
+                     <a href="../sthantran/sthantran_list.php" class="dropdown-item"><b>प्राप्त आवेदन</b></a>
+                     <a href="../sthantran/sveekrt_sthantran.php" class="dropdown-item"><b>स्वीकृत आवेदन</b></a>
+                     <a href="../sthantran/asveekrt_sthantran.php" class="dropdown-item"><b>अस्वीकृत आवेदन</b></a>
                  </div>
              </div>
 

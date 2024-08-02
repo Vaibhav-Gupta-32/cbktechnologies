@@ -1,124 +1,82 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "aavedan";
+$tblname = "sthantran";
 $tblkey = "id";
 $pagename = "प्राप्त आवेदन";
+// $msg="";
 
 // Update Form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
-
-    // Ensure all POST variables are set
-    $file_no = isset($_POST['file_no']) ? $_POST['file_no'] : '';
-    $date = isset($_POST['date']) ? $_POST['date'] : '';
-    $aavak_no = isset($_POST['aavak_no']) ? $_POST['aavak_no'] : '';
-    $a_phone_number = isset($_POST['a_phone_number']) ? $_POST['a_phone_number'] : '';
-    $a_aavedak_name = isset($_POST['a_aavedak_name']) ? $_POST['a_aavedak_name'] : '';
-    $a_district_id = isset($_POST['a_district_id']) ? $_POST['a_district_id'] : '';
-    $a_vidhansabha_id = isset($_POST['a_vidhansabha_id']) ? $_POST['a_vidhansabha_id'] : '';
-    $a_vikaskhand_id = isset($_POST['a_vikaskhand_id']) ? $_POST['a_vikaskhand_id'] : '';
-    $a_sector_id = isset($_POST['a_sector_id']) ? $_POST['a_sector_id'] : '';
-    $a_gram_panchayat_id = isset($_POST['a_gram_panchayat_id']) ? $_POST['a_gram_panchayat_id'] : '';
-    $a_gram_id = isset($_POST['a_gram_id']) ? $_POST['a_gram_id'] : '';
-    $a_subject = isset($_POST['a_subject']) ? $_POST['a_subject'] : '';
-    $a_reference = isset($_POST['a_reference']) ? $_POST['a_reference'] : '';
-    $a_office_name = isset($_POST['a_office_name']) ? $_POST['a_office_name'] : '';
-    $a_jaavak_vibhag = isset($_POST['a_jaavak_vibhag']) ? $_POST['a_jaavak_vibhag'] : '';
-    $a_kisko_presit = isset($_POST['a_kisko_presit']) ? $_POST['a_kisko_presit'] : '';
-    $a_jaavak_date = isset($_POST['a_jaavak_date']) ? $_POST['a_jaavak_date'] : '';
-    $a_application_date = isset($_POST['a_application_date']) ? $_POST['a_application_date'] : '';
-    $a_mantri_comment = isset($_POST['a_mantri_comment']) ? $_POST['a_mantri_comment'] : '';
-
-    $v_mantri_comment = isset($_POST['v_mantri_comment']) ? $_POST['v_mantri_comment'] : '';
-    $v_aavak_vibhag = isset($_POST['v_aavak_vibhag']) ? $_POST['v_aavak_vibhag'] : '';
-    $v_subject = isset($_POST['v_subject']) ? $_POST['v_subject'] : '';
-    $v_reference = isset($_POST['v_reference']) ? $_POST['v_reference'] : '';
-    $v_office_name = isset($_POST['v_office_name']) ? $_POST['v_office_name'] : '';
-    $v_jaavak_vibhag = isset($_POST['v_jaavak_vibhag']) ? $_POST['v_jaavak_vibhag'] : '';
-    $v_kisko_presit = isset($_POST['v_kisko_presit']) ? $_POST['v_kisko_presit'] : '';
-    $v_jaavak_date = isset($_POST['v_jaavak_date']) ? $_POST['v_jaavak_date'] : '';
-    $v_aadesh_date = isset($_POST['v_aadesh_date']) ? $_POST['v_aadesh_date'] : '';
-
-    // $a_file_upload_1 = $_POST['a_file_upload_1'];
-    // $a_file_upload_2 = $_POST['a_file_upload_2'];
-    // $v_file_upload_1 = $_POST['v_file_upload_1'];
-    // $v_file_upload_2 = $_POST['v_file_upload_2'];
-
-
+    $phone_number = mysqli_real_escape_string($conn, trim($_POST['phone_number']));
+    $name = mysqli_real_escape_string($conn, trim($_POST['name']));
+    $designation = mysqli_real_escape_string($conn, trim($_POST['designation']));
+    $district_id = intval($_POST['district_id']); // Ensure district_id is an integer
+    $vidhansabha_id = intval($_POST['vidhansabha_id']); // Ensure vidhansabha_id is an integer
+    $vikaskhand_id = intval($_POST['vikaskhand_id']); // Ensure vikaskhand_id is an integer
+    $sector_id = intval($_POST['sector_id']); // Ensure sector_id is an integer
+    $gram_panchayat_id = mysqli_real_escape_string($conn, trim($_POST['gram_panchayat_id']));
+    $gram_id = mysqli_real_escape_string($conn, trim($_POST['gram_id']));
+    $subject = mysqli_real_escape_string($conn, trim($_POST['subject']));
+    $reference = mysqli_real_escape_string($conn, trim($_POST['reference']));
+    $c_designation_place = mysqli_real_escape_string($conn, trim($_POST['c_designation_place']));
+    $f_designation_place = mysqli_real_escape_string($conn, trim($_POST['f_designation_place']));
+    $application_date = mysqli_real_escape_string($conn, trim($_POST['application_date']));
+    $comment = mysqli_real_escape_string($conn, trim($_POST['comment']));
+    $existing_file = mysqli_real_escape_string($conn, trim($_POST['existing_file']));
+    // $file_upload = $_FILES['file_upload']['name'];
+    // echo 'vaibhav';die;
     if (isset($_POST['edit_id']) && !empty($_POST['edit_id'])) {
         $s_id = $_POST['edit_id'];
 
-        // Check if a new file was uploaded
         if (!empty($file_upload)) {
-            // File upload handling
             $uploadOk = "";
             $target_dir = "uploads/";
             $maxSize = 5000000; // 5 MB
             $allowedTypes = ["jpg", "png", "pdf"];
 
             // Initialize variables
-            $a_file_upload1 = $a_file_upload2 = $v_file_upload1 = $v_file_upload2 = ['success' => false, 'filePath' => ''];
+            $file_upload = ['success' => false, 'filePath' => ''];
 
             // Call the function for each file upload if the file is set
-            if (isset($_FILES['a_file_upload_1']) && !empty($_FILES['a_file_upload_1']['name']))
-                $a_file_upload1 = handleFileUpload('a_file_upload_1', $target_dir, $maxSize, $allowedTypes);
-            if (isset($_FILES['a_file_upload_2']) && !empty($_FILES['a_file_upload_2']['name']))
-                $a_file_upload2 = handleFileUpload('a_file_upload_2', $target_dir, $maxSize, $allowedTypes);
-            if (isset($_FILES['v_file_upload_1']) && !empty($_FILES['v_file_upload_1']['name']))
-                $v_file_upload1 = handleFileUpload('v_file_upload_1', $target_dir, $maxSize, $allowedTypes);
-            if (isset($_FILES['v_file_upload_2']) && !empty($_FILES['v_file_upload_2']['name']))
-                $v_file_upload2 = handleFileUpload('v_file_upload_2', $target_dir, $maxSize, $allowedTypes);
-
-
-            if (!empty($a_file_upload1['success']) || !empty($a_file_upload2['success']) || !empty($v_file_upload1['success']) || !empty($v_file_upload2['success'])) {
+            if (isset($_FILES['file_upload']) && !empty($_FILES['file_upload']['name']))
+                $file_upload = handleFileUpload('file_upload', $target_dir, $maxSize, $allowedTypes);
+            if (!empty($file_upload['success'])) {
                 // echo "At least one file was uploaded successfully.";
                 $uploadOk = 1;
-                $a_file1_path = $a_file_upload1['filePath'];
-                $a_file2_path = $a_file_upload2['filePath'];
-                $v_file1_path = $v_file_upload1['filePath'];
-                $v_file2_path = $v_file_upload2['filePath'];
+                $uploaded_file_path = $file_upload['filePath'];
             } else {
                 // echo "File upload failed.";
                 $uploadOk = 0;
             }
         } else {
             // No new file uploaded, use the existing file
-            $uploaded_file_path = $_POST['existing_file'];
+            $uploaded_file_path = $existing_file;
+            $uploadOk = 1;
         }
 
         if ($uploadOk == 1) {
-            // Prepare the update query
-            $update_query = "UPDATE aavedan SET 
-                date = '$date', 
-                aavak_no = '$aavak_no', 
-                a_phone_number = '$a_phone_number', 
-                a_aavedak_name = '$a_aavedak_name', 
-                a_district_id = '$a_district_id', 
-                a_vidhansabha_id = '$a_vidhansabha_id', 
-                a_vikaskhand_id = '$a_vikaskhand_id', 
-                a_sector_id = '$a_sector_id', 
-                a_gram_panchayat_id = '$a_gram_panchayat_id', 
-                a_gram_id = '$a_gram_id', 
-                a_subject = '$a_subject', 
-                a_reference = '$a_reference', 
-                a_office_name = '$a_office_name', 
-                a_jaavak_vibhag = '$a_jaavak_vibhag', 
-                a_kisko_presit = '$a_kisko_presit', 
-                a_jaavak_date = '$a_jaavak_date', 
-                a_application_date = '$a_application_date', 
-                a_mantri_comment = '$a_mantri_comment',
-                v_mantri_comment = '$v_mantri_comment', 
-                v_aavak_vibhag = '$v_aavak_vibhag', 
-                v_subject = '$v_subject', 
-                v_reference = '$v_reference', 
-                v_office_name = '$v_office_name', 
-                v_jaavak_vibhag = '$v_jaavak_vibhag', 
-                v_kisko_presit = '$v_kisko_presit', 
-                v_jaavak_date = '$v_jaavak_date', 
-                v_aadesh_date = '$v_aadesh_date'
-                WHERE $tblkey = '$s_id'";
-            echo $update_query;
-            die;
+            // Save the form data along with the file path to the database
+            $update_query = "UPDATE $tblname SET 
+                        name = '$name', 
+                        phone_number = '$phone_number', 
+                        designation = '$designation', 
+                        district_id = '$district_id', 
+                        vidhansabha_id = '$vidhansabha_id', 
+                        vikaskhand_id = '$vikaskhand_id', 
+                        sector_id = '$sector_id', 
+                        gram_panchayat_id = '$gram_panchayat_id', 
+                        gram_id = '$gram_id', 
+                        subject = '$subject', 
+                        reference = '$reference', 
+                        c_designation_place = '$c_designation_place', 
+                        f_designation_place = '$f_designation_place', 
+                        application_date = '$application_date', 
+                        comment = '$comment', 
+                        file_upload = '$uploaded_file_path' 
+                    WHERE $tblkey = '$s_id'";
+            // echo $update_query;
+            // die;
 
             if (mysqli_query($conn, $update_query)) {
                 $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Update Successfully</b></div>";
@@ -126,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
                 $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Update Not Successfully!!</b></div>";
             }
         } else {
-            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Sorry, your file was not uploaded.</b></div>";
+            $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Somthing Went Wrong!!</b></div>";
         }
     }
 }
@@ -134,8 +92,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
-    $sql = "UPDATE $tblname SET status='1' WHERE $tblkey='$vid'";
-    // echo $sql,'----'.$id;die;
+    $anumodit_date = $_POST['anumodit_date'];
+    $view_comment = $_POST['view_comment'];
+
+    $sql = "UPDATE $tblname SET status='1', anumodit_date='$anumodit_date',view_comment='$view_comment' WHERE $tblkey='$vid'";
     //    echo $sql;die;
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
@@ -207,36 +167,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     $sql .= " ORDER BY id DESC";
     // echo $sql;die;
 } else {
-    $sql = "SELECT 
-  a.*,
-  vm.vibhag_name AS a_vibhag_name,
-  dm.district_name AS a_district_name,
-  vm2.vidhansabha_name AS a_vidhansabha_name,
-  vm3.vikaskhand_name AS a_vikaskhand_name,
-  sm.sector_name AS a_sector_name,
-  gpm.gram_panchayat_name AS a_gram_panchayat_name,
-  gm.gram_name AS a_gram_name,
-  vm4.vibhag_name AS v_vibhag_name,
-  vm5.vibhag_name AS v_aavak_vibhag
-
-FROM 
-  $tblname a
-  LEFT JOIN vibhag_master vm ON a.a_jaavak_vibhag = vm.vibhag_id
-  LEFT JOIN district_master dm ON a.a_district_id = dm.district_id
-  LEFT JOIN vidhansabha_master vm2 ON a.a_vidhansabha_id = vm2.vidhansabha_id
-  LEFT JOIN vikaskhand_master vm3 ON a.a_vikaskhand_id = vm3.vikaskhand_id
-  LEFT JOIN sector_master sm ON a.a_sector_id = sm.sector_id
-  LEFT JOIN gram_panchayat_master gpm ON a.a_gram_panchayat_id = gpm.gram_panchayat_id
-  LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
-  LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
-  LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm4.vibhag_id
-
-WHERE 
-  a.status = '0'
-ORDER BY 
-  $tblkey DESC;";
+    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
+    FROM $tblname a 
+    LEFT JOIN district_master d ON a.district_id = d.district_id
+    LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
+    LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
+    LEFT JOIN sector_master s ON a.sector_id = s.sector_id
+    LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
+    LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+    WHERE a.status=0
+    ORDER BY a.$tblkey DESC";
 }
-// echo $sql;
+
 $fetch = mysqli_query($conn, $sql);
 //  Close Search
 
@@ -364,7 +306,7 @@ $fetch = mysqli_query($conn, $sql);
             <!-- btn -->
             <!-- 1 -->
             <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='new_aavedan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
+                <a name="Add_New" onclick="location.href='swekshanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
             </div>
             <!-- 2 -->
             <div class="col-lg-4 text-center mb-3">
@@ -389,16 +331,14 @@ $fetch = mysqli_query($conn, $sql);
 
                 <table class="table table-striped border shadow">
                     <thead class=" head">
-                        <tr class="text-center text-nowrap">
+                        <tr class="text-center">
                             <th scope="col">क्रमांक</th>
-                            <th scope="col">फाइल क्र</th>
-                            <th scope="col">आवक क्र</th>
-                            <th scope="col">आवक विभाग/आवेदक</th>
+                            <th scope="col">आवेदक का नाम</th>
                             <th scope="col">विषय</th>
-                            <th scope="col">आदेश दिनांक</th>
-                            <th scope="col">जावक क्र</th>
-                            <th scope="col">किसे प्रेषित किया गया </th>
-                            <th scope="col">जावक दिनांक</th>
+                            <th scope="col">विधानसभा</th>
+                            <th scope="col">वर्त्तमान पद</th>
+                            <th scope="col">प्रस्तावित पद</th>
+                            <th scope="col">आवेदन दिनांक</th>
                             <th scope="col">Action</th>
 
                         </tr>
@@ -407,45 +347,21 @@ $fetch = mysqli_query($conn, $sql);
                         <?php
                         $i = 1;
                         while ($row = mysqli_fetch_array($fetch)) {
-                            $choose_aavedak_vibhag = $row['choose_aavedak_vibhag'];
                         ?>
                             <tr class=" text-center">
                                 <th scope="row"><?= $i++ ?></th>
-                                <td><?= $row['file_no'] ?></td>
-                                <td><?= $row['aavak_no'] ?></td>
-                                <td><?php if ($choose_aavedak_vibhag == 1) {
-                                        echo $row['a_vibhag_name'];
-                                    } else {
-                                        echo $row['v_vibhag_name'];
-                                    } ?></td>
-                                <td><?php if ($choose_aavedak_vibhag == 1) {
-                                        echo $row['a_subject'];
-                                    } else {
-                                        echo $row['v_subject'];
-                                    } ?></td>
-                                <td><?php if ($choose_aavedak_vibhag == 1) {
-                                        echo date('d-m-Y', strtotime($row['a_application_date']));
-                                    } else {
-                                        echo date('d-m-Y', strtotime($row['v_aadesh_date']));
-                                    } ?></td>
-                                <td>null </td>
-                                <td><?php if ($choose_aavedak_vibhag == 1) {
-                                        echo $row['a_kisko_presit'];
-                                    } else {
-                                        echo $row['v_kisko_presit'];
-                                    } ?></td>
-                                <td><?php if ($choose_aavedak_vibhag == 1) {
-                                        echo date('d-m-Y', strtotime($row['a_jaavak_date']));
-                                    } else {
-                                        echo date('d-m-Y', strtotime($row['v_jaavak_date']));
-                                    } ?></td>
-
+                                <td><?= $row['name'] ?></td>
+                                <td><?= $row['subject'] ?></td>
+                                <td><?= $row['vidhansabha_name'] ?></td>
+                                <td><?= $row['c_designation_place'] ?></td>
+                                <td><?= $row['f_designation_place'] ?></td>
+                                <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
                                 <td class="action">
                                     <a href="#" onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
-                                    &nbsp;
+                                    <!-- &nbsp; -->
                                     &nbsp;
                                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
-                                    &nbsp;
+                                    <!-- &nbsp; -->
                                     &nbsp;
                                     <a class="text-danger " href="" onclick="confirmDelete(<?= $row['id']; ?>, '<?php echo $tblname; ?>', '<?= $tblkey ?>')"><i class="fas fa-trash-alt me-2 " title="Delete"></i></a>
                                 </td>
@@ -499,7 +415,7 @@ $fetch = mysqli_query($conn, $sql);
         //  alert(v_id);
         $.ajax({
             type: 'POST',
-            url: 'aavedan_view.php',
+            url: 'sthantran_view.php',
             data: {
                 id: v_id
             },
@@ -514,7 +430,7 @@ $fetch = mysqli_query($conn, $sql);
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'aavedan_edit.php',
+            url: 'sthantran_edit.php',
             data: {
                 edit_id: e_id
             },

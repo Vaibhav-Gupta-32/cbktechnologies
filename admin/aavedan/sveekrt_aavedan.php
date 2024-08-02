@@ -54,13 +54,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
 }
 
 // If Presit For Print Data By Admin 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['presit_summit'])) {
-    $presit_id = $_POST['presit_id'];
-    $ptr_sender = $_POST['ptr_sender'];
-    $presit_date = $_POST['presit_date'];
-    $anudan_prapt_add = $_POST['anudan_prapt_add'];
-
-    $sql = "UPDATE $tblname SET status='3', ptr_sender='$ptr_sender', presit_date='$presit_date', anudan_prapt_add='$anudan_prapt_add' WHERE $tblkey ='$presit_id'";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
+    $id = $_REQUEST['id'];
+    $a_punah_prapth = isset($_REQUEST['a_punah_prapth']) ? $_REQUEST['a_punah_prapth'] : '';
+    $a_punah_prapth_date = isset($_REQUEST['a_punah_prapth_date']) ? $_REQUEST['a_punah_prapth_date'] : '';
+    $v_punah_prapth = isset($_REQUEST['v_punah_prapth']) ? $_REQUEST['v_punah_prapth'] : '';
+    $v_punah_prapth_date = isset($_REQUEST['v_punah_prapth_date']) ? $_REQUEST['v_punah_prapth_date'] : '' ;
+    $sql = "UPDATE $tblname SET status='2', a_punah_prapth='$a_punah_prapth',a_punah_prapth_date='$a_punah_prapth_date', v_punah_prapth='$v_punah_prapth',v_punah_prapth_date='$v_punah_prapth_date' WHERE $tblkey ='$id'";
     // echo $sql; die;
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='msg-container'><b class='alert alert-success msg'>Approved Successfully</b></div>";
@@ -132,16 +132,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
     $sql .= " ORDER BY id DESC";
     // echo $sql;die;
 } else {
-    $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM $tblname a 
-    LEFT JOIN district_master d ON a.district_id = d.district_id
-    LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
-    LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
-    LEFT JOIN sector_master s ON a.sector_id = s.sector_id
-    LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
-    LEFT JOIN gram_master g ON a.gram_id = g.gram_id
-    WHERE a.status=2
-    ORDER BY a.$tblkey  DESC";
+    $sql = "SELECT 
+    a.*,
+    vm.vibhag_name AS a_vibhag_name,
+    dm.district_name AS a_district_name,
+    vm2.vidhansabha_name AS a_vidhansabha_name,
+    vm3.vikaskhand_name AS a_vikaskhand_name,
+    sm.sector_name AS a_sector_name,
+    gpm.gram_panchayat_name AS a_gram_panchayat_name,
+    gm.gram_name AS a_gram_name,
+    vm4.vibhag_name AS v_vibhag_name,
+    vm5.vibhag_name AS v_aavak_vibhag
+  
+  FROM 
+    $tblname a
+    LEFT JOIN vibhag_master vm ON a.a_jaavak_vibhag = vm.vibhag_id
+    LEFT JOIN district_master dm ON a.a_district_id = dm.district_id
+    LEFT JOIN vidhansabha_master vm2 ON a.a_vidhansabha_id = vm2.vidhansabha_id
+    LEFT JOIN vikaskhand_master vm3 ON a.a_vikaskhand_id = vm3.vikaskhand_id
+    LEFT JOIN sector_master sm ON a.a_sector_id = sm.sector_id
+    LEFT JOIN gram_panchayat_master gpm ON a.a_gram_panchayat_id = gpm.gram_panchayat_id
+    LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
+    LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
+    LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm4.vibhag_id
+  
+  WHERE 
+    a.status = '1'
+  ORDER BY 
+    $tblkey DESC;";
 }
 
 $fetch = mysqli_query($conn, $sql);
@@ -295,15 +313,15 @@ $fetch = mysqli_query($conn, $sql);
                 <table class="table table-striped border shadow">
                     <thead class=" head">
                         <tr class="text-center">
-                            <th scope="col">क्रमांक</th>
-                            <th scope="col">आवेदक का नाम</th>
-                            <th scope="col">मोबाइल नंबर</th>
+                        <th scope="col">क्रमांक</th>
+                            <th scope="col">फाइल क्र</th>
+                            <th scope="col">आवक क्र</th>
+                            <th scope="col">आवक विभाग/आवेदक</th>
                             <th scope="col">विषय</th>
-                            <th scope="col">आपेक्षित राशि</th>
-                            <th scope="col">आवेदन दिनांक</th>
-                            <th scope="col">टिप्पणी</th>
-                            <th scope="col">विधानसभा</th>
-                            <th scope="col">जिला</th>
+                            <th scope="col">आदेश दिनांक</th>
+                            <th scope="col">जावक क्र</th>
+                            <th scope="col">किसे प्रेषित किया गया </th>
+                            <th scope="col">जावक दिनांक</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -311,23 +329,44 @@ $fetch = mysqli_query($conn, $sql);
         <?php
         $i = 1;
         while ($row = mysqli_fetch_array($fetch)) {
-        ?>
-            <tr class=" text-center">
-                <th scope="row"><?= $i++ ?></th>
-                <td><?= $row['name'] ?></td>
-                <td><?= $row['phone_number'] ?></td>
-                <td><?= $row['subject'] ?></td>
-                <td><?= $row['expectations_amount'] ?></td>
-                <td><?= date("d-m-Y", strtotime($row['application_date'])) ?></td>
-                <td><?= $row['comment'] ?></td>
-                <td><?= $row['vidhansabha_name'] ?></td>
-                <td><?= $row['district_name'] ?></td>
+            $choose_aavedak_vibhag = $row['choose_aavedak_vibhag'];
+            ?>
+                <tr class=" text-center">
+                    <th scope="row"><?= $i++ ?></th>
+                    <td><?= $row['file_no'] ?></td>
+                    <td><?= $row['aavak_no'] ?></td>
+                    <td><?php if ($choose_aavedak_vibhag == 1) {
+                            echo $row['a_vibhag_name'];
+                        } else {
+                            echo $row['v_vibhag_name'];
+                        } ?></td>
+                    <td><?php if ($choose_aavedak_vibhag == 1) {
+                            echo $row['a_subject'];
+                        } else {
+                            echo $row['v_subject'];
+                        } ?></td>
+                    <td><?php if ($choose_aavedak_vibhag == 1) {
+                            echo date('d-m-Y', strtotime($row['a_application_date']));
+                        } else {
+                            echo date('d-m-Y', strtotime($row['v_aadesh_date']));
+                        } ?></td>
+                    <td>null </td>
+                    <td><?php if ($choose_aavedak_vibhag == 1) {
+                            echo $row['a_kisko_presit'];
+                        } else {
+                            echo $row['v_kisko_presit'];
+                        } ?></td>
+                    <td><?php if ($choose_aavedak_vibhag == 1) {
+                            echo date('d-m-Y', strtotime($row['a_jaavak_date']));
+                        } else {
+                            echo date('d-m-Y', strtotime($row['v_jaavak_date']));
+                        } ?></td>
                 <td class="action">
                     <a href="#"  onclick="view(<?= $row['id'] ?>)"><i class="fas fa-eye me-2 " title="View"></i></a>
                     <!-- &nbsp; -->
-                    &nbsp;
-                    <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a>
-                    &nbsp;
+                    <!-- &nbsp; -->
+                    <!-- <a href="#" onclick="presit(<?= $row['id'] ?>)"><i class=" fa fa-solid fa-print" title="प्रेषित स्वीकृत आवेदन "></i></a> -->
+                    <!-- &nbsp; -->
                     <!-- &nbsp;
                     <a href="#" onclick="edit(<?= $row['id'] ?>)"><i class="fas fa-pen me-2 " title="Edit"></i></a>
                     &nbsp; -->
@@ -411,26 +450,26 @@ $fetch = mysqli_query($conn, $sql);
         });
     }
 //   presit print ajax
-    function presit(p_id) {
-        //  alert(v_id);
-        $.ajax({
-            type: 'POST',
-            url: 'presit_print.php',
-            data: {
-                id: p_id
-            },
-            success: function(data) {
-                $('#myModal-presit').find('.modal-body').html(data);
-                $('#myModal-presit').modal('show');
-            }
-        });
-    }
+    // function presit(p_id) {
+    //     //  alert(v_id);
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: 'presit_print.php',
+    //         data: {
+    //             id: p_id
+    //         },
+    //         success: function(data) {
+    //             $('#myModal-presit').find('.modal-body').html(data);
+    //             $('#myModal-presit').modal('show');
+    //         }
+    //     });
+    // }
 
     function edit(e_id) {
         // alert('dsa');
         $.ajax({
             type: 'POST',
-            url: 'sveekrt_aavedan_edit.php',
+            url: 'sveekrt_edit.php',
             data: {
                 edit_id: e_id
             },

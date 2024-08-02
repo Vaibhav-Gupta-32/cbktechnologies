@@ -34,7 +34,7 @@ FROM
   LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm5.vibhag_id
 
 WHERE 
-  a.status = '1' and a.$tblkey='$id'
+  a.status = '4' and a.$tblkey='$id'
 ORDER BY 
   a.$tblkey DESC";
     // echo 'id :'.$id.'----'. $sql; 
@@ -68,7 +68,9 @@ ORDER BY
     $a_application_date = $fetch['a_application_date'];
     $a_file_upload_2 = $fetch['a_file_upload_2'];
     $a_mantri_comment = $fetch['a_mantri_comment'];
-
+    $a_punah_prapth = $fetch['a_punah_prapth'];
+    $a_punah_prapth_date = $fetch['a_punah_prapth_date'];
+    
     $v_mantri_comment = $fetch['v_mantri_comment'];
     $v_aavak_vibhag = $fetch['v_aavak_vibhag'];
     $v_subject = $fetch['v_subject'];
@@ -80,6 +82,8 @@ ORDER BY
     $v_jaavak_date = $fetch['v_jaavak_date'];
     $v_aadesh_date = $fetch['v_aadesh_date'];
     $v_file_upload_2 = $fetch['v_file_upload_2'];
+    $v_punah_prapth = $fetch['v_punah_prapth'];
+    $v_punah_prapth_date = $fetch['v_punah_prapth_date'];
 }
 
 ?>
@@ -97,7 +101,7 @@ ORDER BY
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
-        <hr class="text-success p-2 rounded">
+        <hr class="text-danger p-2 rounded">
         <div class="row mt-5">
             <div class="col-lg-6 align-content-center">
                 <div class="form-group shadow">
@@ -331,7 +335,7 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="a_punah_prapth" placeholder=" " name="a_punah_prapth">
+                            <input type="text" class="form-control" id="a_punah_prapth" placeholder=" " value="<?=$a_punah_prapth?>" name="a_punah_prapth" readonly>
                             <label for="a_punah_prapth">पुनः प्राप्त<span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -339,12 +343,12 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="a_punah_prapth_date" placeholder=" " name="a_punah_prapth_date">
+                            <input type="date" class="form-control" id="a_punah_prapth_date" placeholder=" " value="<?=$a_punah_prapth_date?>" name="a_punah_prapth_date" readonly>
                             <label for="a_punah_prapth_date">पुनः प्राप्त दिनांक<span class="text-danger">*</span> </label>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center mb-3">
+                <!-- <div class="col-lg-6 text-center mb-3">
                     <div class="form-group">
                         <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
                     </div>
@@ -353,7 +357,7 @@ ORDER BY
                     <div class="form-group">
                         <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                     </div>
-                </div>
+                </div> -->
                 <!--  -->
             </div>
         </div>
@@ -361,7 +365,7 @@ ORDER BY
         <div class="container-fluid px-4 " id="vibhag_form">
             <div class="row">
                 <!-- विभाग का form  -->
-                <input type="hidden" class="form-control " name="id" id="id" placeholder=" " value="<?= $id ?>">
+                 <input type="hidden" name="id" id="id" value="<?=$id?>">
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
@@ -494,7 +498,7 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="v_punah_prapth" placeholder=" " required name="v_punah_prapth">
+                            <input type="text" class="form-control" id="v_punah_prapth" placeholder=" " value="<?=$v_punah_prapth?>" name="v_punah_prapth" readonly>
                             <label for="v_punah_prapth">पुनः प्राप्त<span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -502,12 +506,12 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="v_punah_prapth_date" placeholder=" " required name="v_punah_prapth_date">
+                            <input type="date" class="form-control" id="v_punah_prapth_date" placeholder=" " value="<?=$v_punah_prapth_date?>" name="v_punah_prapth_date" readonly>
                             <label for="v_punah_prapth_date">पुनः प्राप्त दिनांक<span class="text-danger">*</span> </label>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center mb-3">
+                <!-- <div class="col-lg-6 text-center mb-3">
                     <div class="form-group">
                         <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
                     </div>
@@ -516,7 +520,7 @@ ORDER BY
                     <div class="form-group">
                         <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     <?php } ?>
