@@ -1,11 +1,10 @@
 <?php
-
 include('config/dbconnection.php');
 session_start();
 
 $msg = "";
 $otp = "";
-
+// echo $hashed_password = password_hash('Test@123', PASSWORD_DEFAULT);
 if (isset($_POST['login_otp'])) {
     $otp       = trim(htmlspecialchars($_POST['amdin_otp']));
     $mobile_no = trim(htmlspecialchars($_POST['mobile_no']));
@@ -20,7 +19,7 @@ if (isset($_POST['login_otp'])) {
         $stmt->close();
 
         if ($stored_otp > 0) {
-             // Securely fetch username and password
+            // Securely fetch username and password
             $stmt = $conn->prepare("SELECT username, password FROM adminlogin WHERE mobile_no = ?");
             $stmt->bind_param("s", $mobile_no);
             $stmt->execute();
@@ -31,7 +30,7 @@ if (isset($_POST['login_otp'])) {
             // Set session variables
             $_SESSION['role'] = 'admin';
             $_SESSION['username'] = $username;
-            
+
 
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. Admin Login Successfully!..</b></div>";
             echo "<script>
@@ -142,22 +141,86 @@ if (isset($_POST['login'])) {
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .waves {
+            position: relative;
+            width: 100%;
+            height: 15vh;
+            margin-bottom: -7px;
+            min-height: 100px;
+            max-height: 150px;
+        }
+
+        .parallax>use {
+            animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+        }
+
+        .parallax>use:nth-child(1) {
+            animation-delay: -2s;
+            animation-duration: 7s;
+        }
+
+        .parallax>use:nth-child(2) {
+            animation-delay: -3s;
+            animation-duration: 10s;
+        }
+
+        .parallax>use:nth-child(3) {
+            animation-delay: -4s;
+            animation-duration: 13s;
+        }
+
+        .parallax>use:nth-child(4) {
+            animation-delay: -5s;
+            animation-duration: 20s;
+        }
+
+        @keyframes move-forever {
+            0% {
+                transform: translate3d(-90px, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(85px, 0, 0);
+            }
+        }
+
+        @media (max-width: 340px) {
+            .waves {
+                height: 40px;
+                min-height: 40px;
+            }
+
+            .content {
+                height: 30vh;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div id="form-main-wrapper">
         <div class="form-container">
             <div class="container-fluid">
-                <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                <div class="row align-items-center justify-content-center" style="min-height: 85vh;">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                         <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                             <?php if (isset($msg)) echo $msg; ?>
-                            <!-- Spinner Start -->
-                            <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div> -->
+
                             <!-- Spinner End -->
                             <form action="" method="POST" id="usernamePasswordForm">
                                 <div class="d-flex align-items-center justify-content-center mb-3">
@@ -223,7 +286,25 @@ if (isset($_POST['login'])) {
             </div>
         </div>
     </div>
-
+    <div class="header">
+        <div>
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+                </g>
+            </svg>
+        </div>
+        <div class="" style="display: flex;align-items: center;justify-content: center;width: 100%;position: relative;bottom: 15px;height: 7px;">
+            <small> <span style="color: black;">&copy; Copyright 2024  </span> <a href="https://cbktechnologies.com/" target="_blank">CBK Technologies</a> <span style="color: black;">| All Rights Reserved</span></small>
+            <!-- © Copyright 2024 CBK Technologies  | All Rights Reserved -->
+        </div>
+    </div>
     <script>
         document.getElementById('switchToOTP').addEventListener('click', function(event) {
             event.preventDefault();
@@ -273,7 +354,7 @@ if (isset($_POST['login'])) {
                     $('#aa_container').show();
                     $('#aa').append(data.message);
 
-                    if (data.status === 'success') {
+                    if(data.status === 'success') {
                         startCountdown(); // Call startCountdown if the OTP was sent successfully
                     } else {
                         console.error(data.message);

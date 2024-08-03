@@ -13,7 +13,7 @@ $profile_picture = getvalfield($conn, $tblname, "profile_picture", "username='$u
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     // Get form inputs
     $username = $_POST['username'];
-    $confirm_password = $_POST['confirm_password']; // Raw password input
+    $confirm_password =  isset($_POST['confirm_password']) ? $_POST['confirm_password'] : ''; // Raw password input
     // $profile_picture = $_FILES['profile_picture'];
     $existing_file = isset($_POST['existing_file']) ? $_POST['existing_file'] : '';
 
@@ -23,6 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $target_dir = "uploads/";
         $maxSize = 5000000; // 5 MB
         $allowedTypes = ["jpg", "png", "jpeg"];
+
+        $existing_file=$target_dir.$existing_file;
+        
+        // Delete existing file
+        delete_existing_file($existing_file);
 
         // Initialize variables
         $profile_picture1 = ['success' => false, 'filePath' => ''];

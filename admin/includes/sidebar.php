@@ -1,12 +1,31 @@
+<style>
+        .glow {
+            animation: glow 1s infinite alternate;
+            
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00, 0 0 25px #00ff00, 0 0 30px #00ff00, 0 0 35px #00ff00;
+            }
+            to {
+                text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 60px #00ff00, 0 0 70px #00ff00;
+            }
+        }
+    </style>
  <!-- Sidebar Start -->
  <div class="sidebar pe-4 pb-3">
      <nav class="navbar bg-light navbar-light">
          <a href="../dash" class="navbar-brand mx-4 mb-3">
-             <h3 class="text-black fw-bold">CBK-Dash</h3>
+             <h3 class="text-black fw-bold">Dashboard</h3>
          </a>
-         <div class="d-flex align-items-center ms-4 mb-4">
+         <div class="d-flex align-items-center ms-4 mb-4" style="
+    height: 50px;
+    width: 185px;
+    justify-content: center;
+">
              <div class="ms-3">
-                 <h5 class="mb-0 text-info">Admin <sup class="text-success">Online</sup></h5>
+                 <h5 class="mb-0 text-info">Admin <sup class="text-success"><i class="fas fa-circle fa-sm glow"></i></sup></h5>
              </div>
          </div>
          <div class="navbar-nav w-100">
@@ -151,12 +170,12 @@
              </div>
 
              <!-- सेटिंग्स -->
-             <div class="nav-item dropdown">
+             <!-- <div class="nav-item dropdown">
                  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-cog me-2"></i>सेटिंग्स</a>
                  <div class="dropdown-menu bg-transparent border-0">
                      <a href="../dash/profile.php" class="dropdown-item">प्रोफाइल सेटिंग्स </a>
                  </div>
-             </div>
+             </div> -->
 
              <!-- हेल्प -->
              <a href="widget.html" class="nav-item nav-link"><i class="fa-regular fa-circle-question me-2"></i>Help?..</a>

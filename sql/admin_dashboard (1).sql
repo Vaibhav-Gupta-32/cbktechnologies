@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2024 at 11:41 PM
+-- Generation Time: Aug 03, 2024 at 12:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -131,7 +131,7 @@ CREATE TABLE `adminlogin` (
 --
 
 INSERT INTO `adminlogin` (`id`, `username`, `password`, `email`, `mobile_no`, `salt`, `created_at`, `profile_picture`) VALUES
-(1, 'admin', '$2y$10$QrF6pX9viELon/jA4xE0EuXI9hsy75StaLpE3zBwZd/t43SlYIFXW', 'admin@gmail.com', '9301323211', '123', '2024-07-05 05:29:29', 'siberian-2401287_1280.jpg');
+(1, 'admin', '$2y$10$2JbAL2HvFT3eqTVsNZIWuuOnV8ydFrsinsfnQllx8Jy0CuLOCHRbm', 'admin@gmail.com', '9301323211', 'Test@123', '2024-07-05 05:29:29', 'iceberg-8618870_1280.jpg');
 
 -- --------------------------------------------------------
 
