@@ -69,6 +69,7 @@ if (isset($_GET['edit_id'])) {
 <!-- End Main Php For This Page  -->
 <!-- Includes -->
 <?php include('../includes/header.php') ?>
+<?php //echo 'vaibhav' ;die;?>
 <?php include('../includes/sidebar.php') ?>
 <?php include('../includes/navbar.php') ?>
 
@@ -181,11 +182,9 @@ if (isset($_GET['edit_id'])) {
                             </tr>
                         <?php } ?>
                     </tbody>
-
                 </table>
             </div>
         </div>
     </div>
 </div>
-
-<?php include('includes/footer.php'); ?>
+<?php include('../includes/footer.php'); ?>

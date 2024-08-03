@@ -15,16 +15,24 @@ if (!empty($phoneNumber) && isset($_REQUEST['mobile_no'])) {
         $length = 6;
         $otp = generateOTP($length);
         $otpResponse = sendOTP($phoneNumber, $otp);
-        
+
+        // Debugging output
+        file_put_contents('debug.log', "Raw OTP Response: " . print_r($otpResponse, true) . "\n", FILE_APPEND);
+
         if ($otpResponse) {
-            if (is_object($otpResponse)) {
-                echo $phoneNumber;die;
-                if (isset($otpResponse->status) && $otpResponse->status == 'success') {
+            // Assuming the response is JSON and decoding it
+            $otpResponseDecoded = json_decode($otpResponse);
+
+            // Log the decoded response for inspection
+            file_put_contents('debug.log', "Decoded OTP Response: " . print_r($otpResponseDecoded, true) . "\n", FILE_APPEND);
+
+            if (is_object($otpResponseDecoded)) {
+                if (isset($otpResponseDecoded->status) && strtolower($otpResponseDecoded->status) === 'success') {
                     storeOTP($conn, $phoneNumber, $otp, 1);
                     $response['status'] = 'success';
                     $response['message'] = "OTP has been sent to your number.";
                 } else {
-                    $response['message'] = "Failed to send OTP. Reason: " . $otpResponse->description;
+                    $response['message'] = "Failed to send OTP. Reason: " . (isset($otpResponseDecoded->description) ? $otpResponseDecoded->description : "Unknown error");
                 }
             } else {
                 $response['message'] = "Unexpected response format.";

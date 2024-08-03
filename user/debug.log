@@ -1,0 +1,14 @@
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjM4Mjk4ODA=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+

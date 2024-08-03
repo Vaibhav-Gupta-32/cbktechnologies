@@ -1,0 +1,28 @@
+stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjM4Mjk4MjY=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+{"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjM4Mjk4MzY=","totnumber":1,"totalcredit":1}}Raw OTP Response: {"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjM4Mjk4NDQ=","totnumber":1,"totalcredit":1}}
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjM4Mjk4NDQ=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+

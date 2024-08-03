@@ -4,14 +4,21 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phoneNumber = $_POST['mobile_no'];
 
-    if (!empty($phoneNumber)) {
+    if (!empty($phoneNumber) && isset($_POST['mobile_no'])) {
         $length = 6;
         $otp = generateOTP($length);
-        $response = sendOTP($phoneNumber, $otp);
+        $otpResponse = sendOTP($phoneNumber, $otp);
 
-        if ($response) {
-            if (is_object($response)) {
-                if (isset($response->status) && $response->status == 'success') {
+        if ($otpResponse) {
+            // Assuming the response is JSON and decoding it
+            $otpResponseDecoded = json_decode($otpResponse);
+
+
+            // Log the decoded response for inspection
+            file_put_contents('debug.log', "Decoded OTP Response: " . print_r($otpResponseDecoded, true) . "\n", FILE_APPEND);
+
+            if (is_object($otpResponseDecoded)) {
+                if (isset($otpResponseDecoded->status) && strtolower($otpResponseDecoded->status) === 'success') {
                     storeOTP($conn, $phoneNumber, $otp, 1);
                     echo "OTP has been sent to your number.";
                 } else {

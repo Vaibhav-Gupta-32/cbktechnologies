@@ -81,7 +81,75 @@ $conn->close();
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
+        }
 
+        .header {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .waves {
+            position: relative;
+            width: 100%;
+            height: 15vh;
+            margin-bottom: -7px;
+            min-height: 100px;
+            max-height: 150px;
+        }
+
+        .parallax>use {
+            animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+        }
+
+        .parallax>use:nth-child(1) {
+            animation-delay: -2s;
+            animation-duration: 7s;
+        }
+
+        .parallax>use:nth-child(2) {
+            animation-delay: -3s;
+            animation-duration: 10s;
+        }
+
+        .parallax>use:nth-child(3) {
+            animation-delay: -4s;
+            animation-duration: 13s;
+        }
+
+        .parallax>use:nth-child(4) {
+            animation-delay: -5s;
+            animation-duration: 20s;
+        }
+
+        @keyframes move-forever {
+            0% {
+                transform: translate3d(-90px, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(85px, 0, 0);
+            }
+        }
+
+        @media (max-width: 340px) {
+            .waves {
+                height: 40px;
+                min-height: 40px;
+            }
+
+            .content {
+                height: 30vh;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -92,7 +160,7 @@ $conn->close();
         <div class="form-container">
             <!-- Sign In Start -->
             <div class="container-fluid">
-                <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                <div class="row h-100 align-items-center justify-content-center" style="min-height: 85vh;">
                     <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                         <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
 
@@ -136,21 +204,40 @@ $conn->close();
                 </div>
             </div>
         </div>
-        <!-- Sign In End -->
-
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/chart/chart.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/waypoints/waypoints.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-        <script src="lib/tempusdominus/js/moment.min.js"></script>
-        <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-        <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-        <script src="js/custom.js"></script>
-        <hr>
     </div>
+    <div class="header">
+        <div>
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+                </g>
+            </svg>
+        </div>
+        <div class="" style="display: flex;align-items: center;justify-content: center;width: 100%;position: relative;bottom: 15px;height: 7px;">
+            <small> <span style="color: black;">&copy; Copyright 2024  </span> <a href="https://cbktechnologies.com/" target="_blank">CBK Technologies</a> <span style="color: black;">| All Rights Reserved</span></small>
+            <!-- © Copyright 2024 CBK Technologies  | All Rights Reserved -->
+        </div>
+    </div>
+    <!-- Sign In End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="js/custom.js"></script>
+    <hr>
 
 
 </body>
