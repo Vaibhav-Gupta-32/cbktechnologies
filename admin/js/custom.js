@@ -63,15 +63,46 @@ $(document).ready(function() {
     });
 });
 
-// For Vikaskhand
+// For Area Select
 $(document).ready(function() {
     $('#vidhansabhaSelect').change(function() {
         var vidhansabha_id = $(this).val();
         //alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
+            url: '../ajax/get_area.php',
+            type: 'POST',
+            data: {
+                vidhansabha_id: vidhansabha_id
+            },
+            success: function(data) {
+                // console.log(data);
+                var areas  = JSON.parse(data);
+                $('#areaSelect').empty();
+                $('#areaSelect').append('<option selected>क्षेत्र का नाम चुनें</option>');
+                $.each(areas, function(index, areas) {
+                    $('#areaSelect').append('<option value="' + areas.area_id + '">' + areas.area_name + '</option>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + status + ' - ' + error);
+            }
+        });
+    });
+});
+
+// For vikashkhand
+$(document).ready(function() {
+    $('#areaSelect').change(function() {
+        var area_id = $(this).val();
+        var vidhansabha_id = $('#vidhansabhaSelect').val();
+        // alert(vidhansabha_id);
+        // var vidhansabha_id  = document.getElementById('vidhansabha_id').value;
+        //alert("Selected Vidhansabha ID: " + vidhansabha_id);
+        $.ajax({
             url: '../ajax/get_vikaskhand.php',
             type: 'POST',
             data: {
+                area_id : area_id,
                 vidhansabha_id: vidhansabha_id
             },
             success: function(data) {
@@ -88,21 +119,24 @@ $(document).ready(function() {
         });
     });
 });
+
 // For Sector Load 
 $(document).ready(function() {
     $('#vikaskhandSelect').change(function() {
         var vikaskhand_id = $(this).val();
-        //alert("Selected Vikaskhand ID: " + vikaskhand_id);
+        var area_id = $('#areaSelect').val();
+        // alert(vikaskhand_id);
         $.ajax({
             url: '../ajax/get_sector.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
-                vikaskhand_id: vikaskhand_id
+                vikaskhand_id: vikaskhand_id,
+                area_id : area_id
             },
             success: function(data) {
                 var sectors = JSON.parse(data);
                 $('#sectorSelect').empty();
-                $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
+                $('#sectorSelect').append('<option>सेक्टर का नाम चुनें</option>');
                 $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
                     $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
                 });
@@ -113,16 +147,19 @@ $(document).ready(function() {
         });
     });
 });
+
 // For Gram Panchayat From Sector id 
 $(document).ready(function() {
     $('#sectorSelect').change(function() {
         var sector_id = $(this).val();
+        var area_id = $('#areaSelect').val();
         //alert("Selected Sector ID: " + sector_id);
         $.ajax({
             url: '../ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
             type: 'POST',
             data: {
-                sector_id: sector_id
+                sector_id: sector_id,
+                area_id : area_id
             },
             success: function(data) {
                 var gram_panchayats = JSON.parse(data);
@@ -143,12 +180,14 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#gramPanchayatSelect').change(function() {
         var gram_panchayat_id = $(this).val();
+        var area_id = $('#areaSelect').val();
         //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
         $.ajax({
             url: '../ajax/get_gram.php', // Replace with your PHP file to fetch gram
             type: 'POST',
             data: {
-                gram_panchayat_id: gram_panchayat_id
+                gram_panchayat_id: gram_panchayat_id,
+                area_id : area_id
             },
             success: function(data) {
                 var grams = JSON.parse(data);
