@@ -28,7 +28,7 @@ function confirmDelete(id, tableName, tablekey) {
                 // document.getElementById('msg').append(response);
                 // $('#msg').html(response);
                 // Reload the page after a short delay
-                setTimeout(function() {
+                setTimeout(function () {
                     location.reload();
                 }, 100); // 100-milisecond delay
 
@@ -41,8 +41,8 @@ function confirmDelete(id, tableName, tablekey) {
 }
 
 // For Vidhansabha
-$(document).ready(function() {
-    $('#districtSelect').change(function() {
+$(document).ready(function () {
+    $('#districtSelect').change(function () {
         var district_id = $(this).val();
         //  alert("Selected District ID: " + district_id);
         $.ajax({
@@ -51,11 +51,11 @@ $(document).ready(function() {
             data: {
                 district_id: district_id
             },
-            success: function(data) {
+            success: function (data) {
                 var vidhansabha = JSON.parse(data);
                 $('#vidhansabhaSelect').empty();
                 $('#vidhansabhaSelect').append('<option value="">विधानसभा का नाम चुनें</option>');
-                $.each(vidhansabha, function(index, vidhansabha) {
+                $.each(vidhansabha, function (index, vidhansabha) {
                     $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
                 });
             }
@@ -64,8 +64,8 @@ $(document).ready(function() {
 });
 
 // For Area Select
-$(document).ready(function() {
-    $('#vidhansabhaSelect').change(function() {
+$(document).ready(function () {
+    $('#vidhansabhaSelect').change(function () {
         var vidhansabha_id = $(this).val();
         //alert("Selected Vidhansabha ID: " + vidhansabha_id);
         $.ajax({
@@ -74,16 +74,16 @@ $(document).ready(function() {
             data: {
                 vidhansabha_id: vidhansabha_id
             },
-            success: function(data) {
+            success: function (data) {
                 // console.log(data);
-                var areas  = JSON.parse(data);
+                var areas = JSON.parse(data);
                 $('#areaSelect').empty();
-                $('#areaSelect').append('<option selected>क्षेत्र का नाम चुनें</option>');
-                $.each(areas, function(index, areas) {
+                $('#areaSelect').append('<option value="">क्षेत्र का नाम चुनें</option>');
+                $.each(areas, function (index, areas) {
                     $('#areaSelect').append('<option value="' + areas.area_id + '">' + areas.area_name + '</option>');
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error: ' + status + ' - ' + error);
             }
         });
@@ -91,8 +91,8 @@ $(document).ready(function() {
 });
 
 // For vikashkhand
-$(document).ready(function() {
-    $('#areaSelect').change(function() {
+$(document).ready(function () {
+    $('#areaSelect').change(function () {
         var area_id = $(this).val();
         var vidhansabha_id = $('#vidhansabhaSelect').val();
         // alert(vidhansabha_id);
@@ -102,18 +102,18 @@ $(document).ready(function() {
             url: '../ajax/get_vikaskhand.php',
             type: 'POST',
             data: {
-                area_id : area_id,
+                area_id: area_id,
                 vidhansabha_id: vidhansabha_id
             },
-            success: function(data) {
+            success: function (data) {
                 var vikaskhand = JSON.parse(data);
                 $('#vikaskhandSelect').empty();
                 $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                $.each(vikaskhand, function(index, vikaskhand) {
+                $.each(vikaskhand, function (index, vikaskhand) {
                     $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error: ' + status + ' - ' + error);
             }
         });
@@ -121,8 +121,8 @@ $(document).ready(function() {
 });
 
 // For Sector Load 
-$(document).ready(function() {
-    $('#vikaskhandSelect').change(function() {
+$(document).ready(function () {
+    $('#vikaskhandSelect').change(function () {
         var vikaskhand_id = $(this).val();
         var area_id = $('#areaSelect').val();
         // alert(vikaskhand_id);
@@ -131,17 +131,17 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 vikaskhand_id: vikaskhand_id,
-                area_id : area_id
+                area_id: area_id
             },
-            success: function(data) {
+            success: function (data) {
                 var sectors = JSON.parse(data);
                 $('#sectorSelect').empty();
                 $('#sectorSelect').append('<option>सेक्टर का नाम चुनें</option>');
-                $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
+                $.each(sectors, function (index, sector) { // Changed variable name to 'sector' to avoid conflict
                     $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error: ' + status + ' - ' + error);
             }
         });
@@ -149,8 +149,8 @@ $(document).ready(function() {
 });
 
 // For Gram Panchayat From Sector id 
-$(document).ready(function() {
-    $('#sectorSelect').change(function() {
+$(document).ready(function () {
+    $('#sectorSelect').change(function () {
         var sector_id = $(this).val();
         var area_id = $('#areaSelect').val();
         //alert("Selected Sector ID: " + sector_id);
@@ -159,17 +159,17 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 sector_id: sector_id,
-                area_id : area_id
+                area_id: area_id
             },
-            success: function(data) {
+            success: function (data) {
                 var gram_panchayats = JSON.parse(data);
                 $('#gramPanchayatSelect').empty();
                 $('#gramPanchayatSelect').append('<option selected>ग्राम पंचायत का नाम चुनें</option>');
-                $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
+                $.each(gram_panchayats, function (index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
                     $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error: ' + status + ' - ' + error);
             }
         });
@@ -177,8 +177,8 @@ $(document).ready(function() {
 });
 
 //   For Grams  By Panchayat
-$(document).ready(function() {
-    $('#gramPanchayatSelect').change(function() {
+$(document).ready(function () {
+    $('#gramPanchayatSelect').change(function () {
         var gram_panchayat_id = $(this).val();
         var area_id = $('#areaSelect').val();
         //   alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
@@ -187,17 +187,17 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 gram_panchayat_id: gram_panchayat_id,
-                area_id : area_id
+                area_id: area_id
             },
-            success: function(data) {
+            success: function (data) {
                 var grams = JSON.parse(data);
                 $('#gramSelect').empty();
                 $('#gramSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
+                $.each(grams, function (index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
                     $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error: ' + status + ' - ' + error);
             }
         });

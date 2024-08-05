@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit_vikaskhand'])) {
         // Receive Data From Form
         $vikaskhand_name = ucfirst($_POST['vikaskhand_name']);
+        // echo $vikaskhand_name;die;
         $vidhansabha_id = $_POST['vidhansabha_id'];
         $district_id = $_POST['district_id'];
         $area_id = $_POST['area_id'];
@@ -68,7 +69,7 @@ if (isset($_GET['edit_id'])) {
         $vikaskhand_name = $row['vikaskhand_name'];
         $vidhansabha_id = $row['vidhansabha_id'];
         $district_id = $row['district_id'];
-        $area_id = $row['area_id'];
+        $area_idd = $row['area_id'];
     }
 }
 ?>
@@ -83,7 +84,7 @@ if (isset($_GET['edit_id'])) {
         <div class="row text-center align-items-center">
             <h5 class="text-center fw-bolder text-primary mb-3">नया विकासखंड का नाम जोड़ें</h5>
             <div class="col-lg-6 text-center mb-3">
-                <select name="district_id" id="districtSelect" class="form-select form-control border-success" required>
+                <select name="district_id" id="districtSelect" class="form-select form-control bg-white" required>
                     <option selected>जिले का नाम चुनें</option>
                     <?php
                     mysqli_data_seek($district_result, 0); // Reset pointer to fetch districts again
@@ -95,7 +96,7 @@ if (isset($_GET['edit_id'])) {
                 </select>
             </div>
             <div class="col-lg-6 text-center mb-3">
-                <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control border-success" required>
+                <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white" required>
                     <option selected>विधानसभा का नाम चुनें</option>
                     <?php
                     if (isset($vidhansabha_id) && !empty($vidhansabha_id)) {
@@ -110,14 +111,14 @@ if (isset($_GET['edit_id'])) {
                 </select>
             </div>
             <div class="col-lg-6 text-center mb-3">
-            <select name="area_id" id="areaSelect" class="form-select form-control border-success" required>
-                    <option selected>विधानसभा का नाम चुनें</option>
+                <select name="area_id" id="areaSelect" class="form-select form-control bg-white" required>
+                    <option selected>क्षेत्र का नाम चुनें</option>
                     <?php
-                    if (isset($area_id) && !empty($area_id)) {
+                    if (isset($area_idd) && !empty($area_idd)) {
                         $area_query = "SELECT * FROM area_master WHERE 1";
                         $area_result = mysqli_query($conn, $area_query);
                         while ($area_row = mysqli_fetch_assoc($area_result)) {
-                            $selected = ($area_row['area_id'] == $area_id) ? 'selected' : '';
+                            $selected = ($area_row['area_id'] == $area_idd) ? 'selected' : '';
                             echo "<option value='" . $area_row['area_id'] . "' $selected>" . $area_row['area_name'] . "</option>";
                         }
                     }
@@ -125,13 +126,13 @@ if (isset($_GET['edit_id'])) {
                 </select>
             </div>
             <div class="col-lg-6 text-center mb-3">
-                <input type="text" name="vikaskhand_id" class="form-control border-success" placeholder="विकासखंड का नाम" value="<?= $vikaskhand_name ?>" required>
+                <input type="text" name="vikaskhand_name" class="form-control bg-white" placeholder="विकासखंड का नाम" value="<?= $vikaskhand_name ?>" required>
             </div>
             <input type="hidden" name="vikaskhand_id" value="<?= $vikaskhand_id ?>">
-            <div class="col-lg-3 text-center mb-3">
+            <div class="col-lg-6 text-center mb-3">
                 <button name="submit_vikaskhand" class="form-control text-center text-white btn text-center shadow" type="submit" style="background-color:#4ac387;"><b>Save</b></button>
             </div>
-            <div class="col-lg-3 text-center mb-3">
+            <div class="col-lg-6 text-center mb-3">
                 <button name="cancel_vikaskhand" class="form-control text-center text-white btn text-center shadow" type="reset" style="background-color:#57c2fc;"><b>Cancel</b></button>
             </div>
         </div>
@@ -146,6 +147,7 @@ if (isset($_GET['edit_id'])) {
                         <tr>
                             <th scope="col">क्रमांक</th>
                             <th scope="col">विकासखंड का नाम</th>
+                            <th scope="col">क्षेत्र</th>
                             <th scope="col">विधानसभा</th>
                             <th scope="col">जिला</th>
                             <th scope="col">Action</th>
@@ -154,10 +156,11 @@ if (isset($_GET['edit_id'])) {
                     <tbody>
                         <?php
                         $i = 1;
-                        $sql = "SELECT v.*, v.vikaskhand_name, vs.vidhansabha_name, d.district_name 
+                        $sql = "SELECT v.*, v.vikaskhand_name, vs.vidhansabha_name, d.district_name ,a.area_name
                                 FROM vikaskhand_master v 
                                 JOIN vidhansabha_master vs ON v.vidhansabha_id = vs.vidhansabha_id 
                                 JOIN district_master d ON v.district_id = d.district_id 
+                                JOIN area_master a ON v.area_id = a.area_id 
                                 ORDER BY v.vikaskhand_id DESC";
                         $fetch = mysqli_query($conn, $sql);
                         while ($row = mysqli_fetch_array($fetch)) {
@@ -165,6 +168,7 @@ if (isset($_GET['edit_id'])) {
                             <tr>
                                 <th scope="row"><?= $i++ ?></th>
                                 <td><?= $row['vikaskhand_name'] ?></td>
+                                <td><?= $row['area_name'] ?></td>
                                 <td><?= $row['vidhansabha_name'] ?></td>
                                 <td><?= $row['district_name'] ?></td>
                                 <td class="d-flex justify-content-center flex-row action">

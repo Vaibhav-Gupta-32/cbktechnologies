@@ -75,7 +75,7 @@ if (isset($_GET['edit_id'])) {
         <form method="post" class="row text-center align-items-center">
             <h5 class="text-center fw-bolder text-primary mb-3">नया विधानसभा का नाम जोड़ें</h5>
             <div class="col-lg-6 text-center mb-3">
-                <select name="district_id" class="form-select form-control border-success" required>
+                <select name="district_id" class="form-select form-control bg-white" required>
                     <option selected>जिले का नाम चुनें</option>
                     <?php
                     while ($district_row = mysqli_fetch_assoc($district_result)) {
@@ -87,7 +87,7 @@ if (isset($_GET['edit_id'])) {
             </div>
 
             <div class="col-lg-6 text-center mb-3">
-                <input type="text" name="vidhansabha_name" class="form-control border-success" placeholder="विधानसभा का नाम" value="<?= $vidhansabha_name ?>" required>
+                <input type="text" name="vidhansabha_name" class="form-control bg-white" placeholder="विधानसभा का नाम" value="<?= $vidhansabha_name ?>" required>
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <button name="submit_vidhansabha" class="form-control text-center text-white btn text-center shadow" type="submit" style="background-color:#4ac387;"><b>Save</b></button>
