@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $vidhansabha_id = mysqli_real_escape_string($conn, $vidhansabha_id);
         $district_id = mysqli_real_escape_string($conn, $district_id);
 
+        print_r($_POST); die;
         if (isset($_POST['sector_id']) && !empty($_POST['sector_id'])) {
             // echo 'vaibhav';die;
             // Update existing record
@@ -53,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $district_query = "SELECT * FROM district_master";
 $district_result = mysqli_query($conn, $district_query);
 
+// $editId=$_GET['edit_id'];
 // Handle edit request
 if (isset($_GET['edit_id'])) {
     $sector_id = $_GET['edit_id'];
@@ -128,7 +130,9 @@ if (isset($_GET['edit_id'])) {
 
             <div class="col-lg-4 text-center mb-3">
                 <input type="text" name="sector_name" class="form-control border-success" placeholder="सेक्टर का नाम" required value="<?= $sector_name ?>">
-                <input type="hidden" name="sector_id" value="<?= $sector_id ?>">
+                <?php if(isset($sector_id )> 0){?>
+                    <input type="hidden" name="sector_id" value="<?= $sector_id ?>">
+                <?php }?>
             </div>
 
             <div class="col-lg-4 text-center mb-3">

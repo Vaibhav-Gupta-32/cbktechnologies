@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$timeout_duration = 1800; // 30 minutes in seconds
+$timeout_duration = 10800; // 3 hours in seconds
 
 // Check if the session has expired
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $timeout_duration) {
