@@ -10,6 +10,7 @@ $vikaskhand_name = "";
 $vidhansabha_id = "";
 $district_id = "";
 $vikaskhand_id = "";
+$area_id = "";
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,14 +19,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $vikaskhand_name = ucfirst($_POST['vikaskhand_name']);
         $vidhansabha_id = $_POST['vidhansabha_id'];
         $district_id = $_POST['district_id'];
+        $area_id = $_POST['area_id'];
         $vikaskhand_name = mysqli_real_escape_string($conn, $vikaskhand_name);
         $vidhansabha_id = mysqli_real_escape_string($conn, $vidhansabha_id);
         $district_id = mysqli_real_escape_string($conn, $district_id);
+        $area_id = mysqli_real_escape_string($conn, $area_id);
 
         if (isset($_POST['vikaskhand_id']) && !empty($_POST['vikaskhand_id'])) {
             // Update existing record
             $vikaskhand_id = $_POST['vikaskhand_id'];
-            $update_query = "UPDATE $tblname SET vikaskhand_name='$vikaskhand_name', vidhansabha_id='$vidhansabha_id', district_id='$district_id' WHERE $tblkey='$vikaskhand_id'";
+            $update_query = "UPDATE $tblname SET vikaskhand_name='$vikaskhand_name', vidhansabha_id='$vidhansabha_id', district_id='$district_id', area_id='$area_id' WHERE $tblkey='$vikaskhand_id'";
             if (mysqli_query($conn, $update_query)) {
                 $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Vikaskhand Update Successfully</b></div>";
             } else {
@@ -34,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Insert new record
             // Check if vikaskhand_name already exists for the selected district and vidhansabha
-            $check_query = "SELECT * FROM $tblname WHERE vikaskhand_name = '$vikaskhand_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id'";
+            $check_query = "SELECT * FROM $tblname WHERE vikaskhand_name = '$vikaskhand_name' AND district_id = '$district_id' AND vidhansabha_id = '$vidhansabha_id' AND area_id='$area_id'";
             $check_result = mysqli_query($conn, $check_query);
 
             if (mysqli_num_rows($check_result) > 0) {
@@ -42,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Vikaskhand already Exists!!</b></div>";
             } else {
                 // Vikaskhand name does not exist, proceed with insertion
-                $insert_query = "INSERT INTO $tblname (vikaskhand_name, vidhansabha_id, district_id) VALUES ('$vikaskhand_name', '$vidhansabha_id', '$district_id')";
+                $insert_query = "INSERT INTO $tblname (vikaskhand_name, vidhansabha_id, district_id, area_id) VALUES ('$vikaskhand_name', '$vidhansabha_id', '$district_id', '$area_id')";
                 if (mysqli_query($conn, $insert_query)) {
                     $msg = "<div class='msg-container'><b class='alert alert-success msg'>Vikaskhand Added Successfully</b></div>";
                 } else {
@@ -65,6 +68,7 @@ if (isset($_GET['edit_id'])) {
         $vikaskhand_name = $row['vikaskhand_name'];
         $vidhansabha_id = $row['vidhansabha_id'];
         $district_id = $row['district_id'];
+        $area_id = $row['area_id'];
     }
 }
 ?>
@@ -106,7 +110,22 @@ if (isset($_GET['edit_id'])) {
                 </select>
             </div>
             <div class="col-lg-6 text-center mb-3">
-                <input type="text" name="vikaskhand_name" class="form-control border-success" placeholder="विकासखंड का नाम" value="<?= $vikaskhand_name ?>" required>
+            <select name="area_id" id="areaSelect" class="form-select form-control border-success" required>
+                    <option selected>विधानसभा का नाम चुनें</option>
+                    <?php
+                    if (isset($area_id) && !empty($area_id)) {
+                        $area_query = "SELECT * FROM area_master WHERE 1";
+                        $area_result = mysqli_query($conn, $area_query);
+                        while ($area_row = mysqli_fetch_assoc($area_result)) {
+                            $selected = ($area_row['area_id'] == $area_id) ? 'selected' : '';
+                            echo "<option value='" . $area_row['area_id'] . "' $selected>" . $area_row['area_name'] . "</option>";
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-lg-6 text-center mb-3">
+                <input type="text" name="vikaskhand_id" class="form-control border-success" placeholder="विकासखंड का नाम" value="<?= $vikaskhand_name ?>" required>
             </div>
             <input type="hidden" name="vikaskhand_id" value="<?= $vikaskhand_id ?>">
             <div class="col-lg-3 text-center mb-3">

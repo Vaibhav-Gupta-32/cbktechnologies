@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 03, 2024 at 12:09 PM
+-- Generation Time: Aug 05, 2024 at 03:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `admin_dashboard`
+-- Database: `health_db`
 --
 
 -- --------------------------------------------------------
@@ -132,6 +132,26 @@ CREATE TABLE `adminlogin` (
 
 INSERT INTO `adminlogin` (`id`, `username`, `password`, `email`, `mobile_no`, `salt`, `created_at`, `profile_picture`) VALUES
 (1, 'admin', '$2y$10$2JbAL2HvFT3eqTVsNZIWuuOnV8ydFrsinsfnQllx8Jy0CuLOCHRbm', 'admin@gmail.com', '9301323211', 'Test@123', '2024-07-05 05:29:29', 'iceberg-8618870_1280.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `area_master`
+--
+
+CREATE TABLE `area_master` (
+  `area_id` int(11) NOT NULL,
+  `vidhansabha_id` int(11) NOT NULL,
+  `area_name` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `area_master`
+--
+
+INSERT INTO `area_master` (`area_id`, `vidhansabha_id`, `area_name`) VALUES
+(1, 1, 'शहरी क्षेत्र'),
+(2, 1, 'ग्रामीण क्षेत्र');
 
 -- --------------------------------------------------------
 
@@ -334,7 +354,8 @@ INSERT INTO `district_master` (`district_id`, `district_name`) VALUES
 (27, 'Raipur / रायपुर'),
 (28, 'Rajnandgaon / राजनांदगांव'),
 (29, 'Sakti / शक्ति'),
-(30, 'Sarangarh-Bilaigarh / सारंगढ़-बिलाईगढ़');
+(30, 'Sarangarh-Bilaigarh / सारंगढ़-बिलाईगढ़'),
+(52, 'Bilaspur');
 
 -- --------------------------------------------------------
 
@@ -349,19 +370,20 @@ CREATE TABLE `gram_master` (
   `district_id` int(11) NOT NULL,
   `vidhansabha_id` int(11) NOT NULL,
   `vikaskhand_id` int(11) NOT NULL,
-  `sector_id` int(11) NOT NULL
+  `sector_id` int(11) NOT NULL,
+  `area_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `gram_master`
 --
 
-INSERT INTO `gram_master` (`gram_id`, `gram_name`, `gram_panchayat_id`, `district_id`, `vidhansabha_id`, `vikaskhand_id`, `sector_id`) VALUES
-(2, 'Loharsi', 0, 10, 1, 3, 4),
-(3, 'Mujagahan', 0, 10, 1, 3, 5),
-(4, 'Loharsi', 3, 10, 2, 4, 5),
-(5, 'Abcd', 4, 10, 1, 3, 6),
-(6, '', 0, 0, 0, 0, 0);
+INSERT INTO `gram_master` (`gram_id`, `gram_name`, `gram_panchayat_id`, `district_id`, `vidhansabha_id`, `vikaskhand_id`, `sector_id`, `area_id`) VALUES
+(2, 'Loharsi', 0, 10, 1, 3, 4, 0),
+(3, 'Mujagahan', 0, 10, 1, 3, 5, 0),
+(4, 'Loharsi', 3, 10, 2, 4, 5, 0),
+(5, 'Abcd', 4, 10, 1, 3, 1, 1),
+(6, 'wwww', 6, 10, 1, 3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -375,19 +397,20 @@ CREATE TABLE `gram_panchayat_master` (
   `vikaskhand_id` int(11) NOT NULL,
   `vidhansabha_id` int(11) NOT NULL,
   `district_id` int(11) NOT NULL,
-  `sector_id` int(11) NOT NULL
+  `sector_id` int(11) NOT NULL,
+  `area_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `gram_panchayat_master`
 --
 
-INSERT INTO `gram_panchayat_master` (`gram_panchayat_id`, `gram_panchayat_name`, `vikaskhand_id`, `vidhansabha_id`, `district_id`, `sector_id`) VALUES
-(1, 'Hii', 3, 1, 10, 0),
-(2, 'Qswd', 0, 0, 0, 0),
-(3, 'Semra', 4, 2, 10, 5),
-(4, 'Mujgahan', 3, 1, 10, 6),
-(6, 'Loharsi', 3, 1, 10, 4);
+INSERT INTO `gram_panchayat_master` (`gram_panchayat_id`, `gram_panchayat_name`, `vikaskhand_id`, `vidhansabha_id`, `district_id`, `sector_id`, `area_id`) VALUES
+(1, 'Hii', 3, 1, 10, 0, 0),
+(2, 'Qswd', 0, 0, 0, 0, 0),
+(3, 'Semra', 4, 2, 10, 5, 0),
+(4, 'Mujgahan', 3, 1, 10, 1, 1),
+(6, 'Loharsi', 3, 1, 10, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -605,7 +628,11 @@ INSERT INTO `otps` (`id`, `phone_number`, `otp`, `created_at`, `valid_time`, `ot
 (75, '9301323211', '078158', '2024-07-20 13:02:34', '2024-07-20 18:37:34', 0),
 (76, '9301323211', '354907', '2024-07-20 13:05:10', '2024-07-20 18:40:10', 0),
 (77, '9301323211', '611921', '2024-07-20 13:05:40', '2024-07-20 18:40:40', 0),
-(78, '9301323211', '948285', '2024-07-20 13:06:53', '2024-07-20 18:41:53', 1);
+(78, '9301323211', '948285', '2024-07-20 13:06:53', '2024-07-20 18:41:53', 1),
+(79, '9301323211', '408215', '2024-08-03 18:48:15', '2024-08-04 00:23:15', 1),
+(80, '9301323211', '959138', '2024-08-03 18:51:29', '2024-08-04 00:26:29', 1),
+(81, '9301323211', '294555', '2024-08-03 19:18:41', '2024-08-04 00:53:41', 1),
+(82, '9301323211', '005477', '2024-08-05 05:52:48', '2024-08-05 11:27:48', 1);
 
 -- --------------------------------------------------------
 
@@ -659,21 +686,22 @@ CREATE TABLE `sector_master` (
   `sector_name` varchar(200) NOT NULL,
   `district_id` int(11) NOT NULL,
   `vidhansabha_id` int(11) NOT NULL,
-  `vikaskhand_id` int(11) NOT NULL
+  `vikaskhand_id` int(11) NOT NULL,
+  `area_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sector_master`
 --
 
-INSERT INTO `sector_master` (`sector_id`, `sector_name`, `district_id`, `vidhansabha_id`, `vikaskhand_id`) VALUES
-(1, 'C-23', 10, 1, 3),
-(2, 'C-23', 27, 3, 0),
-(3, 'C-23', 0, 0, 0),
-(4, 'C-24', 10, 1, 3),
-(5, 'CBK-25', 10, 2, 4),
-(6, 'CBK-25', 10, 1, 3),
-(7, 'CBK-50', 10, 1, 3);
+INSERT INTO `sector_master` (`sector_id`, `sector_name`, `district_id`, `vidhansabha_id`, `vikaskhand_id`, `area_id`) VALUES
+(1, 'C-23', 10, 1, 3, 1),
+(2, 'C-23', 27, 3, 0, 0),
+(3, 'C-23', 0, 0, 0, 0),
+(4, 'C-24', 10, 1, 3, 0),
+(5, 'CBK-25', 10, 2, 4, 0),
+(6, 'CBK-25', 10, 1, 3, 0),
+(7, 'CBK-50', 10, 1, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -806,7 +834,9 @@ INSERT INTO `userlogin` (`id`, `username`, `password`, `email`, `mobile_no`, `sa
 (20, '9301323211', '', '', '9301323211', '', '2024-07-31 08:38:34'),
 (21, '9301323211', '', '', '9301323211', '', '2024-08-02 13:22:14'),
 (22, '9301323211', '', '', '9301323211', '', '2024-08-02 13:23:21'),
-(23, '9301323211', '', '', '9301323211', '', '2024-08-02 13:24:00');
+(23, '9301323211', '', '', '9301323211', '', '2024-08-02 13:24:00'),
+(24, '9301323211', '', '', '9301323211', '', '2024-08-03 19:19:24'),
+(25, '9301323211', '', '', '9301323211', '', '2024-08-05 05:53:06');
 
 -- --------------------------------------------------------
 
@@ -848,7 +878,10 @@ INSERT INTO `vidhansabha_master` (`vidhansabha_id`, `vidhansabha_name`, `distric
 (1, 'Dhamtari', 10),
 (2, 'Kurud', 10),
 (3, 'Arang', 27),
-(4, 'Dharsiva', 27);
+(4, 'Dharsiva', 27),
+(5, 'Raipur', 27),
+(6, 'Sahri', 52),
+(7, 'Gramin', 52);
 
 -- --------------------------------------------------------
 
@@ -860,19 +893,25 @@ CREATE TABLE `vikaskhand_master` (
   `vikaskhand_id` int(11) NOT NULL,
   `vikaskhand_name` varchar(200) NOT NULL,
   `vidhansabha_id` int(11) NOT NULL,
-  `district_id` int(11) NOT NULL
+  `district_id` int(11) NOT NULL,
+  `area_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `vikaskhand_master`
 --
 
-INSERT INTO `vikaskhand_master` (`vikaskhand_id`, `vikaskhand_name`, `vidhansabha_id`, `district_id`) VALUES
-(1, 'Hii', 0, 0),
-(2, 'Dhamtari', 10, 10),
-(3, 'Dhamtari', 1, 10),
-(4, 'Kurud', 2, 10),
-(5, 'Bhakhara', 2, 10);
+INSERT INTO `vikaskhand_master` (`vikaskhand_id`, `vikaskhand_name`, `vidhansabha_id`, `district_id`, `area_id`) VALUES
+(1, 'Hii', 0, 0, 1),
+(2, 'Dhamtari', 10, 10, 1),
+(3, 'Dhamtari', 1, 10, 1),
+(4, 'Kurud', 2, 10, 1),
+(5, 'Bhakhara', 2, 10, 2),
+(6, 'Arang', 3, 27, 0),
+(7, 'Gramin', 5, 27, 0),
+(8, 'Shahariya', 5, 27, 0),
+(9, 'Kurud', 6, 52, 0),
+(10, 'Kurud2', 7, 52, 0);
 
 -- --------------------------------------------------------
 
@@ -914,6 +953,12 @@ ALTER TABLE `aavedan`
 --
 ALTER TABLE `adminlogin`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `area_master`
+--
+ALTER TABLE `area_master`
+  ADD PRIMARY KEY (`area_id`);
 
 --
 -- Indexes for table `charcha`
@@ -1060,6 +1105,12 @@ ALTER TABLE `adminlogin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `area_master`
+--
+ALTER TABLE `area_master`
+  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `chikitsa`
 --
 ALTER TABLE `chikitsa`
@@ -1075,7 +1126,7 @@ ALTER TABLE `chikitsa_seva`
 -- AUTO_INCREMENT for table `district_master`
 --
 ALTER TABLE `district_master`
-  MODIFY `district_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `district_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `gram_master`
@@ -1111,7 +1162,7 @@ ALTER TABLE `nirmaan`
 -- AUTO_INCREMENT for table `otps`
 --
 ALTER TABLE `otps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `protocol_details`
@@ -1141,7 +1192,7 @@ ALTER TABLE `swekshanudan`
 -- AUTO_INCREMENT for table `userlogin`
 --
 ALTER TABLE `userlogin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `vibhag_master`
@@ -1153,13 +1204,13 @@ ALTER TABLE `vibhag_master`
 -- AUTO_INCREMENT for table `vidhansabha_master`
 --
 ALTER TABLE `vidhansabha_master`
-  MODIFY `vidhansabha_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `vidhansabha_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `vikaskhand_master`
 --
 ALTER TABLE `vikaskhand_master`
-  MODIFY `vikaskhand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `vikaskhand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `yojna_master`

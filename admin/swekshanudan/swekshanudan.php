@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             $district_result = mysqli_query($conn, $district_query);
                             ?>
 
-                            <option selected>जिले का नाम चुनें</option>
+                            <option>जिले का नाम चुनें</option>
                             <?php
                             while ($district_row = mysqli_fetch_assoc($district_result)) {
                                 echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
@@ -139,13 +139,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white " required>
-                            <option selected>विधानसभा का नाम चुनें</option>
+                            <option>विधानसभा का नाम चुनें</option>
                             <!-- Options for vidhansabha will go here -->
                         </select>
                         <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <select name="area_id" id="areaSelect" class="form-select form-control bg-white" required>
+                            <option >क्षेत्र का नाम चुनें</option>
+                            <!-- Options for area will go here -->
+                             
+                        </select>
+                        <label for="areaSelect">क्षेत्र का नाम चुनें <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
@@ -163,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white" required>
-                            <option selected>सेक्टर का नाम चुनें</option>
+                            <option>सेक्टर का नाम चुनें</option>
                             <!-- Options for sectors will go here -->
                         </select>
                         <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span> </label>
@@ -193,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 ">
