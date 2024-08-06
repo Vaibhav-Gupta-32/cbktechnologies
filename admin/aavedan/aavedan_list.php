@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
     $a_jaavak_date = isset($_POST['a_jaavak_date']) ? $_POST['a_jaavak_date'] : '';
     $a_application_date = isset($_POST['a_application_date']) ? $_POST['a_application_date'] : '';
     $a_mantri_comment = isset($_POST['a_mantri_comment']) ? $_POST['a_mantri_comment'] : '';
+    $area_id = isset($_POST['area_id']) ? $_POST['area_id'] : '';
 
     $v_mantri_comment = isset($_POST['v_mantri_comment']) ? $_POST['v_mantri_comment'] : '';
     $v_aavak_vibhag = isset($_POST['v_aavak_vibhag']) ? $_POST['v_aavak_vibhag'] : '';
@@ -107,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
                 a_jaavak_date = '$a_jaavak_date', 
                 a_application_date = '$a_application_date', 
                 a_mantri_comment = '$a_mantri_comment',
+                area_id = '$area_id',
                 v_mantri_comment = '$v_mantri_comment', 
                 v_aavak_vibhag = '$v_aavak_vibhag', 
                 v_subject = '$v_subject', 
@@ -251,7 +253,7 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-4 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
 

@@ -83,12 +83,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
             }
         } else {
             // No new file uploaded, use the existing file
-            $uploaded_file_path = $_POST['existing_file'];
+            $a_uploaded_file_path_1 = isset($_POST['a_existing_file_1']) ? $_POST['a_existing_file_1'] : "" ;
+            $a_uploaded_file_path_2 = isset($_POST['a_existing_file_2']) ? $_POST['a_existing_file_2'] : "" ;
+            $v_uploaded_file_path_1 = isset($_POST['v_existing_file_1']) ? $_POST['v_existing_file_1'] : "" ;
+            $v_uploaded_file_path_2 = isset($_POST['v_existing_file_2']) ? $_POST['v_existing_file_2'] : "" ;
+
+            if($a_uploaded_file_path_1 > 0 || $a_uploaded_file_path_2 > 0 || $v_uploaded_file_path_1 > 0 || $v_uploaded_file_path_2 > 0){
+                $uploadOk = 1;
+            }
         }
 
         if ($uploadOk == 1) {
             // Prepare the update query
-            $update_query = "UPDATE aavedan SET 
+            $update_query = "UPDATE $tblname SET 
                 date = '$date', 
                 aavak_no = '$aavak_no', 
                 a_phone_number = '$a_phone_number', 
@@ -115,10 +122,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
                 v_jaavak_vibhag = '$v_jaavak_vibhag', 
                 v_kisko_presit = '$v_kisko_presit', 
                 v_jaavak_date = '$v_jaavak_date', 
-                v_aadesh_date = '$v_aadesh_date'
+                v_aadesh_date = '$v_aadesh_date',
+                a_file_upload_1 = '$a_uploaded_file_path_1',
+                a_file_upload_2 = '$a_uploaded_file_path_2',
+                v_file_upload_1 = '$v_uploaded_file_path_1',
+                v_file_upload_2 = '$v_uploaded_file_path_2'
+
                 WHERE $tblkey = '$s_id'";
-            echo $update_query;
-            die;
+            // echo $update_query;
+            // die;
 
             if (mysqli_query($conn, $update_query)) {
                 $msg = "<div class='msg-container'><b class='alert alert-warning msg'>Update Successfully</b></div>";
@@ -253,7 +265,7 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-            <div class="col-lg-4 text-center mb-3">
+            <div class="col-lg-4 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
 

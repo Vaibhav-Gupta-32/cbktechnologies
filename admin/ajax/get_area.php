@@ -20,4 +20,5 @@ if (isset($_POST['vidhansabha_id'])) {
     // Encode the result as JSON
     echo json_encode($areas);
 }
+
 ?>

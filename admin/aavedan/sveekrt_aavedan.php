@@ -175,7 +175,7 @@ $fetch = mysqli_query($conn, $sql);
     <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
     <form action="" method="post">
         <div class="row">
-        <div class="col-lg-4 text-center mb-3">
+        <div class="col-lg-4 text-center">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
  

@@ -316,3 +316,6 @@
     height: 100%;
 }
 
+.shadow{
+    border-radius: 5px;
+}

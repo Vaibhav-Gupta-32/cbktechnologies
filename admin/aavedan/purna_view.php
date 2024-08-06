@@ -6,7 +6,7 @@ $tblkey = "id";
 $pagename = "विवरण ";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
-$id = $_REQUEST['id'];
+    $id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
     $sql = "SELECT 
@@ -19,7 +19,8 @@ if ($id) {
   gpm.gram_panchayat_name AS a_gram_panchayat_name,
   gm.gram_name AS a_gram_name,
   vm4.vibhag_name AS v_vibhag_name,
-  vm5.vibhag_name AS v_aavak_vibhag
+  vm5.vibhag_name AS v_aavak_vibhag,
+    am.area_name AS area_name
 
 FROM 
   $tblname a
@@ -32,7 +33,7 @@ FROM
   LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
   LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
   LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm5.vibhag_id
-
+ LEFT JOIN area_master am ON a.area_id = am.area_id
 WHERE 
   a.status = '3' and a.$tblkey='$id'
 ORDER BY 
@@ -70,7 +71,8 @@ ORDER BY
     $a_mantri_comment = $fetch['a_mantri_comment'];
     $a_punah_prapth = $fetch['a_punah_prapth'];
     $a_punah_prapth_date = $fetch['a_punah_prapth_date'];
-    
+    $area_name = $fetch['area_name'];
+
     $v_mantri_comment = $fetch['v_mantri_comment'];
     $v_aavak_vibhag = $fetch['v_aavak_vibhag'];
     $v_subject = $fetch['v_subject'];
@@ -200,6 +202,14 @@ ORDER BY
                 <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
+                            <input type="text" name="area_id" id="areaSelect" class=" form-control " value="<?= $area_name ?>" readonly>
+                            <label for="vikaskhand">क्षेत्र का नाम </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group shadow">
+                        <div class="form-floating mb-3">
                             <input type="text" name="a_vikaskhand_id" id="vikaskhandSelect" class=" form-control " value="<?= $a_vikaskhand_name ?>" readonly>
                             <label for="vikaskhand">विकासखंड का नाम </label>
                         </div>
@@ -305,7 +315,7 @@ ORDER BY
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="a_application_date" value="<?= $a_application_date ?>" placeholder="आवेदन दिनांक" name="a_application_date" readonly>
@@ -313,7 +323,7 @@ ORDER BY
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3 input-group">
                             <input type="text" class="form-control" id="a_file_upload_2" name="a_file_upload_2" value="<?= $a_file_upload_2 ?>" readonly>
@@ -335,15 +345,15 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="a_punah_prapth" placeholder=" " value="<?=$a_punah_prapth?>" name="a_punah_prapth" readonly>
+                            <input type="text" class="form-control" id="a_punah_prapth" placeholder=" " value="<?= $a_punah_prapth ?>" name="a_punah_prapth" readonly>
                             <label for="a_punah_prapth">पुनः प्राप्त<span class="text-danger">*</span> </label>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="a_punah_prapth_date" placeholder=" " value="<?=$a_punah_prapth_date?>" name="a_punah_prapth_date" readonly>
+                            <input type="date" class="form-control" id="a_punah_prapth_date" placeholder=" " value="<?= $a_punah_prapth_date ?>" name="a_punah_prapth_date" readonly>
                             <label for="a_punah_prapth_date">पुनः प्राप्त दिनांक<span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -365,7 +375,7 @@ ORDER BY
         <div class="container-fluid px-4 " id="vibhag_form">
             <div class="row">
                 <!-- विभाग का form  -->
-                 <input type="hidden" name="id" id="id" value="<?=$id?>">
+                <input type="hidden" name="id" id="id" value="<?= $id ?>">
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
@@ -498,15 +508,15 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="v_punah_prapth" placeholder=" " value="<?=$v_punah_prapth?>" name="v_punah_prapth" readonly>
+                            <input type="text" class="form-control" id="v_punah_prapth" placeholder=" " value="<?= $v_punah_prapth ?>" name="v_punah_prapth" readonly>
                             <label for="v_punah_prapth">पुनः प्राप्त<span class="text-danger">*</span> </label>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="v_punah_prapth_date" placeholder=" " value="<?=$v_punah_prapth_date?>" name="v_punah_prapth_date" readonly>
+                            <input type="date" class="form-control" id="v_punah_prapth_date" placeholder=" " value="<?= $v_punah_prapth_date ?>" name="v_punah_prapth_date" readonly>
                             <label for="v_punah_prapth_date">पुनः प्राप्त दिनांक<span class="text-danger">*</span> </label>
                         </div>
                     </div>

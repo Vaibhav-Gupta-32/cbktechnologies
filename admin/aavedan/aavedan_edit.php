@@ -19,8 +19,8 @@ if (isset($_REQUEST['edit_id'])) {
   gpm.gram_panchayat_name AS a_gram_panchayat_name,
   gm.gram_name AS a_gram_name,
   vm4.vibhag_name AS v_vibhag_name,
-  vm5.vibhag_name AS v_aavak_vibhag
-
+  vm5.vibhag_name AS v_aavak_vibhag,
+am.area_name AS area_name
 FROM 
   $tblname a
   LEFT JOIN vibhag_master vm ON a.a_jaavak_vibhag = vm.vibhag_id
@@ -32,7 +32,7 @@ FROM
   LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
   LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
   LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm4.vibhag_id
-
+  LEFT JOIN area_master am ON a.area_id = am.area_id
 WHERE 
   a.status = '0' and a.$tblkey='$edit_id'
   ");
@@ -65,6 +65,7 @@ WHERE
     $a_application_date = $fetch['a_application_date'];
     $a_file_upload_2 = $fetch['a_file_upload_2'];
     $a_mantri_comment = $fetch['a_mantri_comment'];
+    $area_idd = $fetch['area_id'];
 
     $v_mantri_comment = $fetch['v_mantri_comment'];
     $v_aavak_vibhag = $fetch['v_aavak_vibhag'];
@@ -202,6 +203,28 @@ WHERE
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-4">
+                    <div class="form-group shadow">
+                        <div class="form-floating mb-3">
+                            <select name="area_id" id="areaSelect" class="form-select form-control bg-white">
+                                <option>क्षेत्र का नाम चुनें</option>
+                                <?php
+                                if (isset($area_idd) && !empty($area_idd)) {
+                                    $area_query = "SELECT * FROM area_master WHERE 1";
+                                    $area_result = mysqli_query($conn, $area_query);
+                                    while ($area_row = mysqli_fetch_assoc($area_result)) {
+                                        $selected = ($area_row['area_id'] == $area_idd) ? 'selected' : '';
+                                        echo "<option value='" . $area_row['area_id'] . "' $selected>" . $area_row['area_name'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                            <label for="areaSelect">क्षेत्र का नाम चुनें <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
@@ -360,7 +383,7 @@ WHERE
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="a_application_date" value="<?= $a_application_date ?>" placeholder="आवेदन दिनांक" name="a_application_date">
@@ -368,7 +391,7 @@ WHERE
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3 input-group">
                             <input type="file" class="form-control" id="a_file_upload_2" name="a_file_upload_2" value="<?= $a_file_upload_2 ?>">
