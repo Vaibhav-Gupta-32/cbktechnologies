@@ -4,32 +4,33 @@
 $tblname = "aavedan";
 $tblkey = "id";
 $pagename = "विवरण ";
+$page_name = basename($_SERVER['PHP_SELF']);
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
-$id = $_REQUEST['id'];
+    $id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
-    $sql = "SELECT 
+    $sql = "SELECT  
   a.*,
   vm.vibhag_name AS a_vibhag_name,
-  dm.district_name AS a_district_name,
-  vm2.vidhansabha_name AS a_vidhansabha_name,
-  vm3.vikaskhand_name AS a_vikaskhand_name,
-  sm.sector_name AS a_sector_name,
-  gpm.gram_panchayat_name AS a_gram_panchayat_name,
-  gm.gram_name AS a_gram_name,
+  dm.district_name AS district_name,
+  vm2.vidhansabha_name AS vidhansabha_name,
+  vm3.vikaskhand_name AS vikaskhand_name,
+  sm.sector_name AS sector_name,
+  gpm.gram_panchayat_name AS gram_panchayat_name,
+  gm.gram_name AS gram_name,
   vm4.vibhag_name AS v_vibhag_name,
   vm5.vibhag_name AS v_aavak_vibhag,
   am.area_name AS area_name
 FROM 
   $tblname a
   LEFT JOIN vibhag_master vm ON a.a_jaavak_vibhag = vm.vibhag_id
-  LEFT JOIN district_master dm ON a.a_district_id = dm.district_id
-  LEFT JOIN vidhansabha_master vm2 ON a.a_vidhansabha_id = vm2.vidhansabha_id
-  LEFT JOIN vikaskhand_master vm3 ON a.a_vikaskhand_id = vm3.vikaskhand_id
-  LEFT JOIN sector_master sm ON a.a_sector_id = sm.sector_id
-  LEFT JOIN gram_panchayat_master gpm ON a.a_gram_panchayat_id = gpm.gram_panchayat_id
-  LEFT JOIN gram_master gm ON a.a_gram_id = gm.gram_id
+  LEFT JOIN district_master dm ON a.district_id = dm.district_id
+  LEFT JOIN vidhansabha_master vm2 ON a.vidhansabha_id = vm2.vidhansabha_id
+  LEFT JOIN vikaskhand_master vm3 ON a.vikaskhand_id = vm3.vikaskhand_id
+  LEFT JOIN sector_master sm ON a.sector_id = sm.sector_id
+  LEFT JOIN gram_panchayat_master gpm ON a.gram_panchayat_id = gpm.gram_panchayat_id
+  LEFT JOIN gram_master gm ON a.gram_id = gm.gram_id
   LEFT JOIN vibhag_master vm4 ON a.v_jaavak_vibhag = vm4.vibhag_id
   LEFT JOIN vibhag_master vm5 ON a.v_aavak_vibhag = vm5.vibhag_id
  LEFT JOIN area_master am ON a.area_id = am.area_id
@@ -47,17 +48,17 @@ ORDER BY
     $choose_aavedak_vibhag = $fetch['choose_aavedak_vibhag'];
     $a_phone_number = $fetch['a_phone_number'];
     $a_aavedak_name = $fetch['a_aavedak_name'];
-    $a_district_id = $fetch['a_district_id'];
-    $a_vidhansabha_id = $fetch['a_vidhansabha_id'];
-    $a_vikaskhand_id = $fetch['a_vikaskhand_id'];
-    $a_sector_id = $fetch['a_sector_id'];
-    $a_gram_panchayat_id = $fetch['a_gram_panchayat_id'];
-    $a_gram_id = $fetch['a_gram_id'];
-    $a_vidhansabha_name = $fetch['a_vidhansabha_name'];
-    $a_vikaskhand_name = $fetch['a_vikaskhand_name'];
-    $a_sector_name = $fetch['a_sector_name'];
-    $a_gram_panchayat_name = $fetch['a_gram_panchayat_name'];
-    $a_gram_name = $fetch['a_gram_name'];
+    $district_id = $fetch['district_id'];
+    $vidhansabha_id = $fetch['vidhansabha_id'];
+    $vikaskhand_id = $fetch['vikaskhand_id'];
+    $sector_id = $fetch['sector_id'];
+    $gram_panchayat_id = $fetch['gram_panchayat_id'];
+    $gram_id = $fetch['gram_id'];
+    $vidhansabha_name = $fetch['vidhansabha_name'];
+    $vikaskhand_name = $fetch['vikaskhand_name'];
+    $sector_name = $fetch['sector_name'];
+    $gram_panchayat_name = $fetch['gram_panchayat_name'];
+    $gram_name = $fetch['gram_name'];
     $a_subject = $fetch['a_subject'];
     $a_reference = $fetch['a_reference'];
     $a_file_upload_1 = $fetch['a_file_upload_1'];
@@ -71,7 +72,7 @@ ORDER BY
     $a_punah_prapth = $fetch['a_punah_prapth'];
     $a_punah_prapth_date = $fetch['a_punah_prapth_date'];
     $area_name = $fetch['area_name'];
-    
+
     $v_mantri_comment = $fetch['v_mantri_comment'];
     $v_aavak_vibhag = $fetch['v_aavak_vibhag'];
     $v_subject = $fetch['v_subject'];
@@ -167,77 +168,10 @@ ORDER BY
 
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <select name="a_district_id" id="districtSelect" class="form-select form-control" disabled>
-                                <?php
-                                // Fetch districts for dropdown
-                                $district_query = "SELECT * FROM district_master";
-                                $district_result = mysqli_query($conn, $district_query);
-                                ?>
 
-                                <option selected>जिला का नाम चुनें</option>
-                                <?php
-                                while ($district_row = mysqli_fetch_assoc($district_result)) {
-                                    $selected = ($district_row['district_id'] == $a_district_id) ? 'selected' : '';
-                                    echo "<option value='" . $district_row['district_id'] . "' $selected>" . $district_row['district_name'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                            <label for="districtSelect">जिला <span class="text-danger">*</span></label>
+                <!-- for location view -->
+                <?php include('../location/location_view.php') ?>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="a_vidhansabha_id" id="vidhansabhaSelect" class="form-control" value="<?= $a_vidhansabha_name ?>" readonly>
-                            <label for="vidhansabha">विधानसभा का नाम </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="area_id" id="areaSelect" class=" form-control " value="<?= $area_name ?>" readonly>
-                            <label for="vikaskhand">क्षेत्र का नाम </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="a_vikaskhand_id" id="vikaskhandSelect" class=" form-control " value="<?= $a_vikaskhand_name ?>" readonly>
-                            <label for="vikaskhand">विकासखंड का नाम </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="a_sector_id" id="sectorSelect" class=" form-control " value="<?= $a_sector_name ?>" readonly>
-                            <label for="sector">सेक्टर का नाम </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="a_gram_panchayat_id" id="gramPanchayatSelect" class=" form-control" value="<?= $a_gram_panchayat_name ?>" readonly>
-                            <label for="gram_panchayt">ग्राम पंचायत का नाम </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group shadow">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="gramSelect" name="a_gram_id" value="<?= $a_gram_name ?>" readonly>
-                            <label for="gram">ग्राम का नाम </label>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-lg-4">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
@@ -344,15 +278,15 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="a_punah_prapth" placeholder=" " value="<?=$a_punah_prapth?>" name="a_punah_prapth" readonly>
+                            <input type="text" class="form-control" id="a_punah_prapth" placeholder=" " value="<?= $a_punah_prapth ?>" name="a_punah_prapth" readonly>
                             <label for="a_punah_prapth">पुनः प्राप्त<span class="text-danger">*</span> </label>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="a_punah_prapth_date" placeholder=" " value="<?=$a_punah_prapth_date?>" name="a_punah_prapth_date" readonly>
+                            <input type="date" class="form-control" id="a_punah_prapth_date" placeholder=" " value="<?= $a_punah_prapth_date ?>" name="a_punah_prapth_date" readonly>
                             <label for="a_punah_prapth_date">पुनः प्राप्त दिनांक<span class="text-danger">*</span> </label>
                         </div>
                     </div>
@@ -507,15 +441,15 @@ ORDER BY
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="v_punah_prapth" placeholder=" " value="<?=$v_punah_prapth?>" name="v_punah_prapth" readonly>
+                            <input type="text" class="form-control" id="v_punah_prapth" placeholder=" " value="<?= $v_punah_prapth ?>" name="v_punah_prapth" readonly>
                             <label for="v_punah_prapth">पुनः प्राप्त<span class="text-danger">*</span> </label>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <div class="col-lg-6">
                     <div class="form-group shadow">
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control" id="v_punah_prapth_date" placeholder=" " value="<?=$v_punah_prapth_date?>" name="v_punah_prapth_date" readonly>
+                            <input type="date" class="form-control" id="v_punah_prapth_date" placeholder=" " value="<?= $v_punah_prapth_date ?>" name="v_punah_prapth_date" readonly>
                             <label for="v_punah_prapth_date">पुनः प्राप्त दिनांक<span class="text-danger">*</span> </label>
                         </div>
                     </div>
