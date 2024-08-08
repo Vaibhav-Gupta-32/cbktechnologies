@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
     $sector_id = $_POST['sector_id'];
     $gram_panchayat_id = $_POST['gram_panchayat_id'];
     $gram_id = $_POST['gram_id'];
+    $area_id = $_POST['area_id'];
     $subject = $_POST['subject'];
     $reference = $_POST['reference'];
     $expectations_hospital_id = $_POST['expectations_hospital_id'];
@@ -59,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Update'])) {
                         sector_id = '$sector_id', 
                         gram_panchayat_id = '$gram_panchayat_id', 
                         gram_id = '$gram_id', 
+                        area_id = '$area_id', 
                         subject = '$subject', 
                         reference = '$reference', 
                         expectations_hospital_id = '$expectations_hospital_id', 

@@ -3,10 +3,10 @@
 <?php
 $tblname = "chikitsa";
 $tblkey = "id";
-$pagename = "स्वीकृत आवेदन";
+$pagename = "विवरण";
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
-    $id = $_REQUEST['id'];
+$id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name, y.yojna_name
@@ -20,6 +20,7 @@ if ($id) {
     LEFT JOIN yojna_master y ON a.yojna_id = y.yojna_id
     WHERE a.status=2
     ORDER BY a.id DESC";
+    // echo $sql;die;
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
     $id = $fetch['id'];
     $name = $fetch['name'];
@@ -46,6 +47,9 @@ if ($id) {
     $yojna_name = $fetch['yojna_name'];
     $sveekrt_date = $fetch['sveekrt_date'];
     $sveekrt_comment = $fetch['sveekrt_comment'];
+    $ptr_sender = $fetch['ptr_sender'];
+    $presit_date = $fetch['presit_date'];
+    $anudan_prapt_add = $fetch['anudan_prapt_add'];
 }
 // Close For Buinding Db To form Data 
 
@@ -98,55 +102,9 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-center">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="district_id" id="districtSelect" class=" form-control " value="<?= $district_name ?>" readonly>
-                        <label for="districtSelect">जिले का नाम</label>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="vidhansabha_id" id="vidhansabhaSelect" class="form-control" value="<?= $vidhansabha_name ?>" readonly>
-                        <label for="vidhansabha">विधानसभा का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="vikaskhand_id" id="vikaskhandSelect" class=" form-control " value="<?= $vikaskhand_name ?>" readonly>
-                        <label for="vikaskhand">विकासखंड का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="sector_id" id="sectorSelect" class=" form-control " value="<?= $sector_name ?>" readonly>
-                        <label for="sector">सेक्टर का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="gram_panchayat_id" id="gramPanchayatSelect" class=" form-control" value="<?= $gram_panchayat_name ?>" readonly>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="gramSelect" name="gram_id" value="<?= $gram_name ?>" readonly>
-                        <label for="gram">ग्राम का नाम </label>
-                    </div>
-                </div>
-            </div>
+            <!-- for location view -->
+            <?php include('../location/location_view.php') ?>
 
             <div class="col-lg-4">
                 <div class="form-group shadow">
@@ -170,13 +128,13 @@ if ($id) {
                         <input type="text" class="form-control" id="file_upload" name="file_upload" value="<?= $file_upload ?>" readonly>
                         <label for="file_upload"> अपलोडेड फाइल </label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/<?= $file_upload ?>" target="_blank" class=" p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                 </div>
             </div>
             <!--  -->
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?= $expectations_amount ?>" readonly>
@@ -184,7 +142,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="application_date" name="application_date" value="<?= $application_date ?>" readonly>
@@ -274,7 +232,31 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 text-center mb-3">
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ptr_sender" style="height: 60px;" name="ptr_sender" value="<?=$ptr_sender?>" readonly>
+                        <label for="ptr_sender">पत्र भेजने वाले का नाम  </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input type="date"  class="form-control" id="presit_date" style="height: 60px;" value="<?=$presit_date?>" name="presit_date" readonly>
+                        <label for="presit_date">स्वीकृत प्रेषित दिनांक </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group shadow">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="anudan_prapt_add" style="height: 60px;" value="<?=$anudan_prapt_add?>" name="anudan_prapt_add" readonly>
+                        <label for="anudan_prapt_add">स्थान जहाँ से स्वेच्छानुदान प्राप्त करना हैं !</label>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
                     <button class="col-12 text-white btn  text-center shadow" id="approve" type="submit" style="background-color:#4ac387;" name="approve"><b>Approve</b></button>
                 </div>
@@ -283,141 +265,9 @@ if ($id) {
                 <div class="form-group">
                     <button class="col-12 text-white btn  text-center shadow btn-danger" id="UnApprove" type="submit" name="UnApprove"><b>UnApprove</b></button>
                 </div>
-            </div>
+            </div> -->
 
             <!--  -->
         </div>
     </div>
 </form>
-<!-- New Swekshanudan close -->
-
-<!-- Script -->
-
-<script>
-    // For Vidhansabha
-    $(document).ready(function() {
-        $('#districtSelect').change(function() {
-            var district_id = $(this).val();
-            // alert("Selected District ID: " + district_id);
-            $.ajax({
-                url: 'ajax/get_vidhansabha.php',
-                type: 'POST',
-                data: {
-                    district_id: district_id
-                },
-                success: function(data) {
-                    var vidhansabha = JSON.parse(data);
-                    $('#vidhansabhaSelect').empty();
-                    $('#vidhansabhaSelect').append('<option selected>विधानसभा का नाम चुनें</option>');
-                    $.each(vidhansabha, function(index, vidhansabha) {
-                        $('#vidhansabhaSelect').append('<option value="' + vidhansabha.vidhansabha_id + '">' + vidhansabha.vidhansabha_name + '</option>');
-                    });
-                }
-            });
-        });
-    });
-
-    // For Vikaskhand
-    $(document).ready(function() {
-        $('#vidhansabhaSelect').change(function() {
-            var vidhansabha_id = $(this).val();
-            // alert("Selected Vidhansabha ID: " + vidhansabha_id);
-            $.ajax({
-                url: 'ajax/get_vikaskhand.php',
-                type: 'POST',
-                data: {
-                    vidhansabha_id: vidhansabha_id
-                },
-                success: function(data) {
-                    var vikaskhand = JSON.parse(data);
-                    $('#vikaskhandSelect').empty();
-                    $('#vikaskhandSelect').append('<option selected>विकासखंड का नाम चुनें</option>');
-                    $.each(vikaskhand, function(index, vikaskhand) {
-                        $('#vikaskhandSelect').append('<option value="' + vikaskhand.vikaskhand_id + '">' + vikaskhand.vikaskhand_name + '</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-    // For Sector Load 
-    $(document).ready(function() {
-        $('#vikaskhandSelect').change(function() {
-            var vikaskhand_id = $(this).val();
-            // alert("Selected Vikaskhand ID: " + vikaskhand_id);
-            $.ajax({
-                url: 'ajax/get_sector.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    vikaskhand_id: vikaskhand_id
-                },
-                success: function(data) {
-                    var sectors = JSON.parse(data);
-                    $('#sectorSelect').empty();
-                    $('#sectorSelect').append('<option selected>सेक्टर का नाम चुनें</option>');
-                    $.each(sectors, function(index, sector) { // Changed variable name to 'sector' to avoid conflict
-                        $('#sectorSelect').append('<option value="' + sector.sector_id + '">' + sector.sector_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-    // For Gram Panchayat From Sector id 
-    $(document).ready(function() {
-        $('#sectorSelect').change(function() {
-            var sector_id = $(this).val();
-            //  alert("Selected Sector ID: " + sector_id);
-            $.ajax({
-                url: 'ajax/get_gram_panchayat.php', // Replace with your PHP file to fetch sectors
-                type: 'POST',
-                data: {
-                    sector_id: sector_id
-                },
-                success: function(data) {
-                    var gram_panchayats = JSON.parse(data);
-                    $('#gramPanchayatSelect').empty();
-                    $('#gramPanchayatSelect').append('<option selected>ग्राम पंचायत का नाम चुनें</option>');
-                    $.each(gram_panchayats, function(index, gram_panchayat) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                        $('#gramPanchayatSelect').append('<option value="' + gram_panchayat.gram_panchayat_id + '">' + gram_panchayat.gram_panchayat_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-
-    //   For Grams  By Panchayat
-    $(document).ready(function() {
-        $('#gramPanchayatSelect').change(function() {
-            var gram_panchayat_id = $(this).val();
-            // alert("Selected Gram Panchayat ID: " + gram_panchayat_id);
-            $.ajax({
-                url: 'ajax/get_gram.php', // Replace with your PHP file to fetch gram
-                type: 'POST',
-                data: {
-                    gram_panchayat_id: gram_panchayat_id
-                },
-                success: function(data) {
-                    var grams = JSON.parse(data);
-                    $('#gramSelect').empty();
-                    $('#gramSelect').append('<option selected>ग्राम का नाम चुनें</option>');
-                    $.each(grams, function(index, gram) { // Changed variable name to ', gram_panchayat_name' to avoid conflict
-                        $('#gramSelect').append('<option value="' + gram.gram_id + '">' + gram.gram_name + '</option>'); // Corrected selector
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + status + ' - ' + error);
-                }
-            });
-        });
-    });
-</script>
-
-<!--  -->
