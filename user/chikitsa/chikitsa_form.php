@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 <!-- Start New Swekshanudan Form -->
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="container-fluid pt-4 px-4 ">
-    <?php if(isset($msg))echo $msg;?>
+
         <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
         <div class="row mt-5">
             <div class="col-lg-6 col-md-12 col-sm-12 align-content-center">

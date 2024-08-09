@@ -81,7 +81,72 @@ $swekshanudan_status=getvalfield($conn,'swekshanudan','status',"phone_number='$m
      </div> -->
     <!-- Status Code End -->
       
+<!-- For Update Profile Modal -->
+ <!-- The View Modal -->
+<div class="modal fade" id="myModal-view" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">User Profile Update</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- This will be replaced with the content from view.php -->
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+
+<?php
+$mobile_no = $_SESSION['mobile_no'] ?? null; // Fetch from session, or set to null if not set
+
+if (!empty($mobile_no)) {
+    $user_count = getvalfield($conn, "userlogin", "count(*)", "username = '$mobile_no' and status = 0");
+} else {
+    $user_count = 0; // Handle the case where $mobile_no is not set
+}
+?>
+
+<script>
+  $(document).ready(function() {
+    if (<?= $user_count ?> == 0) {
+      function handleUserProfile(u_id) {
+        $.ajax({
+          type: 'POST',
+          url: 'user_profile_updtate.php', // Ensure this path is correct
+          data: { id: u_id },
+          success: function(data) {
+            $('#myModal-view').find('.modal-body').html(data);
+            $('#myModal-view').modal('show');
+
+            var checkStatus = setInterval(function() {
+              $.post('check_profile_status.php', { username: u_id }, function(response) {
+                if (response.status == 1) {
+                  $('#myModal-view').modal('hide');
+                  clearInterval(checkStatus);
+                }
+              }, 'json');
+            }, 5000);
+          },
+          error: function(xhr) {
+            alert('Error: ' + xhr.statusText);
+          }
+        });
+      }
+
+      // Call the function on page load
+      handleUserProfile(<?= json_encode($mobile_no) ?>);
+    }
+  });
+</script>
 
 
+
+
+
+    <!--  -->
 
 <?php include('../includes/footer.php'); ?>

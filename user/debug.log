@@ -47,7 +47,7 @@ Decoded OTP Response: stdClass Object
     [description] => Message submitted successfully
     [data] => stdClass Object
         (
-            [messageid] => MjQwMzQ3MTU=
+            [messageid] => MjQwNDYwMjg=
             [totnumber] => 1
             [totalcredit] => 1
         )
@@ -61,7 +61,7 @@ Decoded OTP Response: stdClass Object
     [description] => Message submitted successfully
     [data] => stdClass Object
         (
-            [messageid] => MjQwMzQ3NDg=
+            [messageid] => MjQwNDYxMzg=
             [totnumber] => 1
             [totalcredit] => 1
         )
@@ -75,7 +75,7 @@ Decoded OTP Response: stdClass Object
     [description] => Message submitted successfully
     [data] => stdClass Object
         (
-            [messageid] => MjQwMzQ4MTI=
+            [messageid] => MjQwNDYxNjQ=
             [totnumber] => 1
             [totalcredit] => 1
         )
@@ -89,7 +89,7 @@ Decoded OTP Response: stdClass Object
     [description] => Message submitted successfully
     [data] => stdClass Object
         (
-            [messageid] => MjQwMzQ5MTU=
+            [messageid] => MjQwNDc3ODQ=
             [totnumber] => 1
             [totalcredit] => 1
         )
@@ -103,63 +103,7 @@ Decoded OTP Response: stdClass Object
     [description] => Message submitted successfully
     [data] => stdClass Object
         (
-            [messageid] => MjQwMzQ5ODU=
-            [totnumber] => 1
-            [totalcredit] => 1
-        )
-
-)
-
-Decoded OTP Response: stdClass Object
-(
-    [status] => Success
-    [code] => 011
-    [description] => Message submitted successfully
-    [data] => stdClass Object
-        (
-            [messageid] => MjQwMzUxMTQ=
-            [totnumber] => 1
-            [totalcredit] => 1
-        )
-
-)
-
-Decoded OTP Response: stdClass Object
-(
-    [status] => Success
-    [code] => 011
-    [description] => Message submitted successfully
-    [data] => stdClass Object
-        (
-            [messageid] => MjQwMzUzMzM=
-            [totnumber] => 1
-            [totalcredit] => 1
-        )
-
-)
-
-Decoded OTP Response: stdClass Object
-(
-    [status] => Success
-    [code] => 011
-    [description] => Message submitted successfully
-    [data] => stdClass Object
-        (
-            [messageid] => MjQwMzY4ODU=
-            [totnumber] => 1
-            [totalcredit] => 1
-        )
-
-)
-
-Decoded OTP Response: stdClass Object
-(
-    [status] => Success
-    [code] => 011
-    [description] => Message submitted successfully
-    [data] => stdClass Object
-        (
-            [messageid] => MjQwMzcyMzY=
+            [messageid] => MjQwNTU2ODU=
             [totnumber] => 1
             [totalcredit] => 1
         )
