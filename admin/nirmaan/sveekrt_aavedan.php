@@ -294,7 +294,7 @@ $fetch = mysqli_query($conn, $sql);
             <div class=" rounded" style="overflow-y: scroll;">     
                 <table class="table table-striped border shadow">
                     <thead class=" head">
-                        <tr class="text-center">
+                        <tr class="text-center text-nowrap">
                             <th scope="col">क्रमांक</th>
                             <th scope="col">आवेदक का नाम</th>
                             <th scope="col">मोबाइल नंबर</th>

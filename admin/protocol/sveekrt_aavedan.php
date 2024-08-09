@@ -178,7 +178,7 @@ $fetch = mysqli_query($conn, $sql);
 
                 <table class="table table-striped border shadow">
                     <thead class=" head">
-                        <tr class="text-center">
+                        <tr class="text-center text-nowrap">
                             <th>सि. नं.</th>
                             <th scope="col">क्रमांक नं.</th>
                             <th scope="col">प्रोटोकॉल तारीख</th>

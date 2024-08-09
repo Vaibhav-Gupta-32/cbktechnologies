@@ -4,7 +4,7 @@
 $tblname = "chikitsa_seva";
 $tblkey = "id";
 $pagename = "अस्वीकृत आवेदन";
-
+$page_name=basename($_SERVER['PHP_SELF']);
 // If Approve By Admin 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve'])) {
     $vid = $_POST['id'];
@@ -110,139 +110,8 @@ $fetch = mysqli_query($conn, $sql);
 <?php include('../includes/header.php') ?>
 <?php include('../includes/sidebar.php') ?>
 <?php include('../includes/navbar.php') ?>
+<?php include('../location/search.php') ?>
 
-<!-- aavedak search start -->
-<div class="container-fluid pt-4 px-4">
-    <h4 class="text-center fw-bolder text-primary mb-3"><?= $pagename; ?></h4>
-    <form action="" method="post">
-        <div class="row">
-            <div class="col-lg-4 text-center mb-3">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-
-                        <select name="district_id" id="districtSelect" class="form-select form-control bg-white">
-                            <?php
-                            // Fetch districts for dropdown
-                            $district_query = "SELECT * FROM district_master";
-                            $district_result = mysqli_query($conn, $district_query);
-                            ?>
-                            <option value="" selected>जिले का नाम चुनें</option>
-                            <?php
-                            while ($district_row = mysqli_fetch_assoc($district_result)) {
-                                echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                        <label for="districtSelect">जिले का नाम चुनें </label>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                            <option value="" selected>विधानसभा का नाम चुनें</option>
-                            <!-- Options for vidhansabha will go here -->
-                        </select>
-                        <label for="vidhansabha">विधानसभा का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
-                            <option value="" selected disabled>विकासखंड का नाम चुनें</option>
-                            <!-- Option Load By AJAX -->
-
-                        </select>
-                        <label for="vikaskhand">विकासखंड का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                            <option value="" selected>सेक्टर का नाम चुनें</option>
-                            <!-- Options for sectors will go here -->
-                        </select>
-                        <label for="sector">सेक्टर का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                            <option value="" selected>ग्राम पंचायत का नाम चुनें</option>
-                            <!-- Options for panchayat will go here -->
-                        </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram_id">
-                            <option value="" selected>ग्राम का नाम चुनें</option>
-                            <!-- by load ajax -->
-                        </select>
-                        <label for="gram">ग्राम का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="आवेदक का फ़ोन नंबर" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                        <label for="mobile">आवेदक का फ़ोन नंबर </label>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="date" name="from_date" class="form-control" id="from_date" placeholder="कब से ">
-                        <label for="from_date">कब से</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <?php
-                        // Set default current date
-                        $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
-                        ?>
-                        <input type="date" name="to_date" value="<?= $currentDate ?>" class="form-control" id="to_date" placeholder="कब तक ">
-                        <label for="to_date">कब तक</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- btn -->
-            <!-- 1 -->
-            <div class="col-lg-4 text-center mb-3">
-                <a name="Add_New" onclick="location.href='swechanudan.php';" class="form-control text-center text-white btn text-center shadow bg-primary" style="background-color:#4ac387;"><b>Add New</b></a>
-            </div>
-            <!-- 2 -->
-            <div class="col-lg-4 text-center mb-3">
-                <div name="PrintList" onclick="" class="form-control text-center text-white btn text-center shadow" style="background-color:#4ac387;"><b>Print List</b></div>
-            </div>
-            <!-- 3 -->
-            <div class="col-lg-4 text-center mb-3">
-                <button name="search" class="form-control text-center text-white btn text-center shadow bg-info" type="submit"><b>Search</b></button>
-            </div>
-        </div>
-    </form>
-</div>
-<!-- aavedak search End -->
 
 <!-- Table Start -->
 <!-- Table Start -->

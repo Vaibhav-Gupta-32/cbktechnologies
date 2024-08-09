@@ -2,8 +2,9 @@
 <?php include('../config/session_check.php') ?>
 <?php
 $tblname = "aavedan";
-$tblkey = "id";
+$tblkey = "id"; 
 $pagename = "नया आवेदन भरे";
+$page_name = basename($_SERVER['PHP_SELF']);
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -14,12 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $choose_aavedak_vibhag = mysqli_real_escape_string($conn, $_POST['choose_aavedak_vibhag']);
     $a_phone_number = mysqli_real_escape_string($conn, $_POST['a_phone_number']);
     $a_aavedak_name = mysqli_real_escape_string($conn, $_POST['a_aavedak_name']);
-    $a_district_id = mysqli_real_escape_string($conn, $_POST['a_district_id']);
-    $a_vidhansabha_id = mysqli_real_escape_string($conn, $_POST['a_vidhansabha_id']);
-    $a_vikaskhand_id = mysqli_real_escape_string($conn, $_POST['a_vikaskhand_id']);
-    $a_sector_id = mysqli_real_escape_string($conn, $_POST['a_sector_id']);
-    $a_gram_panchayat_id = mysqli_real_escape_string($conn, $_POST['a_gram_panchayat_id']);
-    $a_gram_id = mysqli_real_escape_string($conn, $_POST['a_gram_id']);
+    $district_id = mysqli_real_escape_string($conn, $_POST['district_id']);
+    $vidhansabha_id = mysqli_real_escape_string($conn, $_POST['vidhansabha_id']);
+    $vikaskhand_id = mysqli_real_escape_string($conn, $_POST['vikaskhand_id']);
+    $sector_id = mysqli_real_escape_string($conn, $_POST['sector_id']);
+    $gram_panchayat_id = mysqli_real_escape_string($conn, $_POST['gram_panchayat_id']);
+    $gram_id = mysqli_real_escape_string($conn, $_POST['gram_id']);
     $area_id = mysqli_real_escape_string($conn, $_POST['area_id']);
     $a_subject = mysqli_real_escape_string($conn, $_POST['a_subject']);
     $a_reference = mysqli_real_escape_string($conn, $_POST['a_reference']);
@@ -91,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 1) {
-        $sql = "INSERT INTO $tblname (file_no, date, aavak_no, choose_aavedak_vibhag, a_phone_number, a_aavedak_name, a_district_id, a_vidhansabha_id, a_vikaskhand_id, a_sector_id, a_gram_panchayat_id, a_gram_id, a_subject, a_reference, a_file_upload_1, a_office_name, a_jaavak_vibhag, a_kisko_presit, a_jaavak_date, a_application_date, a_file_upload_2, a_mantri_comment, v_aavak_vibhag, v_subject, v_reference, v_file_upload_1, v_office_name, v_jaavak_vibhag, v_kisko_presit, v_jaavak_date, v_aadesh_date, v_file_upload_2, v_mantri_comment, status, area_id) VALUES ('$file_no', '$date', '$aavak_no', '$choose_aavedak_vibhag', '$a_phone_number', '$a_aavedak_name', '$a_district_id', '$a_vidhansabha_id', '$a_vikaskhand_id', '$a_sector_id', '$a_gram_panchayat_id', '$a_gram_id', '$a_subject', '$a_reference', '$a_file1_path', '$a_office_name', '$a_jaavak_vibhag', '$a_kisko_presit', '$a_jaavak_date', '$a_application_date', '$a_file2_path', '$a_mantri_comment', '$v_aavak_vibhag', '$v_subject', '$v_reference', '$v_file1_path', '$v_office_name', '$v_jaavak_vibhag', '$v_kisko_presit', '$v_jaavak_date', '$v_aadesh_date', '$v_file2_path', '$v_mantri_comment', '0', '$area_id')";
+        $sql = "INSERT INTO $tblname (file_no, date, aavak_no, choose_aavedak_vibhag, a_phone_number, a_aavedak_name, district_id, vidhansabha_id, vikaskhand_id, sector_id, gram_panchayat_id, gram_id, a_subject, a_reference, a_file_upload_1, a_office_name, a_jaavak_vibhag, a_kisko_presit, a_jaavak_date, a_application_date, a_file_upload_2, a_mantri_comment, v_aavak_vibhag, v_subject, v_reference, v_file_upload_1, v_office_name, v_jaavak_vibhag, v_kisko_presit, v_jaavak_date, v_aadesh_date, v_file_upload_2, v_mantri_comment, status, area_id) VALUES ('$file_no', '$date', '$aavak_no', '$choose_aavedak_vibhag', '$a_phone_number', '$a_aavedak_name', '$district_id', '$vidhansabha_id', '$vikaskhand_id', '$sector_id', '$gram_panchayat_id', '$gram_id', '$a_subject', '$a_reference', '$a_file1_path', '$a_office_name', '$a_jaavak_vibhag', '$a_kisko_presit', '$a_jaavak_date', '$a_application_date', '$a_file2_path', '$a_mantri_comment', '$v_aavak_vibhag', '$v_subject', '$v_reference', '$v_file1_path', '$v_office_name', '$v_jaavak_vibhag', '$v_kisko_presit', '$v_jaavak_date', '$v_aadesh_date', '$v_file2_path', '$v_mantri_comment', '0', '$area_id')";
         // echo $sql;
         if (mysqli_query($conn, $sql)) {
             $msg = "<div class='msg-container'><b class='alert alert-success msg'>Data inserted successfully.</b></div>";
@@ -181,101 +182,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         <input type="text" class="form-control" name="a_aavedak_name" id="a_aavedak_name" placeholder="आवेदक का नाम">
                         <label for="a_aavedak_name">आवेदक का नाम <span class="text-danger">*</span> </label>
                     </div>
-
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="a_district_id" id="districtSelect" class="form-select form-control bg-white">
-                            <?php
-                            // Fetch districts for dropdown
-                            $district_query = "SELECT * FROM district_master";
-                            $district_result = mysqli_query($conn, $district_query);
-                            ?>
-
-                            <option value=" ">जिला का नाम चुनें</option>
-                            <?php
-                            while ($district_row = mysqli_fetch_assoc($district_result)) {
-                                echo "<option value='" . $district_row['district_id'] . "'>" . $district_row['district_name'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                        <label for="districtSelect">जिला <span class="text-danger">*</span></label>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="a_vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white ">
-                            <option value=" ">विधानसभा का नाम चुनें</option>
-                            <!-- Options for vidhansabha will go here -->
-                        </select>
-                        <label for="vidhansabha">विधानसभा<span class="text-danger">*</span></label>
-                    </div>
                 </div>
             </div>
 
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="area_id" id="areaSelect" class="form-select form-control bg-white">
-                            <option >क्षेत्र का नाम चुनें</option>
-                            <!-- Options for area will go here -->
-                             
-                        </select>
-                        <label for="areaSelect">क्षेत्र का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
+            <!-- for location select -->
+            <?php include('../location/location_add.php') ?>
 
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="a_vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
-                            <option value=" ">विकासखंड का नाम चुनें</option>
-                            <!-- Option Load By AJAX -->
-
-                        </select>
-                        <label for="vikaskhand">विकासखंड <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="a_sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                            <option value=" ">सेक्टर का नाम चुनें</option>
-                            <!-- Options for sectors will go here -->
-                        </select>
-                        <label for="sector">सेक्टर <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="a_gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                            <option value=" ">ग्राम पंचायत का नाम चुनें</option>
-                            <!-- Options for panchayat will go here -->
-                        </select>
-                        <label for="gram_panchayt">ग्राम पंचायत <span class="text-danger">*</span> </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="a_gram_id">
-                            <option value=" ">ग्राम का नाम चुनें</option>
-                            <!-- by load ajax -->
-                        </select>
-                        <label for="gram">ग्राम <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-6">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">

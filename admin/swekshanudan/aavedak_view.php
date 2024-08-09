@@ -4,19 +4,24 @@
 $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "विवरण ";
+$page_name = basename($_SERVER['PHP_SELF']);
+
 // For Showing data On View If Admin View  
 if (isset($_REQUEST['id']))
     $id = $_REQUEST['id'];
 // View Id Recived
 if ($id) {
     $sql = "SELECT a.*, d.district_name, v.vidhansabha_name, vk.vikaskhand_name, s.sector_name, gp.gram_panchayat_name, g.gram_name 
-    FROM $tblname a 
+    ,   am.area_name AS area_name
+FROM $tblname a 
     LEFT JOIN district_master d ON a.district_id = d.district_id
     LEFT JOIN vidhansabha_master v ON a.vidhansabha_id = v.vidhansabha_id
     LEFT JOIN vikaskhand_master vk ON a.vikaskhand_id = vk.vikaskhand_id
     LEFT JOIN sector_master s ON a.sector_id = s.sector_id
     LEFT JOIN gram_panchayat_master gp ON a.gram_panchayat_id = gp.gram_panchayat_id
     LEFT JOIN gram_master g ON a.gram_id = g.gram_id
+     LEFT JOIN area_master am ON a.area_id = am.area_id
+
     WHERE a.status=0
     ORDER BY a.$tblkey DESC";
     $fetch = mysqli_fetch_array(mysqli_query($conn, $sql));
@@ -36,6 +41,7 @@ if ($id) {
     $application_date = $fetch['application_date'];
     $comment = $fetch['comment'];
     $file_upload = $fetch['file_upload'];
+    $area_name = $fetch['area_name'];
 }
 // Close For Buinding Db To form Data 
 
@@ -63,7 +69,7 @@ if ($id) {
         <hr class="text-danger p-2 rounded">
         <div class="row">
             <!--For ID-->
-            <input type="hidden"  name="id" id="id" value="<?=$id ?>">
+            <input type="hidden" name="id" id="id" value="<?= $id ?>">
             <!-- ID -->
             <div class="col-lg-4 col-md-12 col-sm-12 align-content-center">
                 <div class="form-group shadow">
@@ -92,55 +98,8 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-center">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="district_id" id="districtSelect" class=" form-control " value="<?= $district_name ?>" readonly>
-                        <label for="districtSelect">जिले का नाम</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="vidhansabha_id" id="vidhansabhaSelect" class="form-control" value="<?= $vidhansabha_name ?>" readonly>
-                        <label for="vidhansabha">विधानसभा का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="vikaskhand_id" id="vikaskhandSelect" class=" form-control " value="<?= $vikaskhand_name ?>" readonly>
-                        <label for="vikaskhand">विकासखंड का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="sector_id" id="sectorSelect" class=" form-control " value="<?= $sector_name ?>" readonly>
-                        <label for="sector">सेक्टर का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" name="gram_panchayat_id" id="gramPanchayatSelect" class=" form-control" value="<?= $gram_panchayat_name ?>" readonly>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="gramSelect" name="gram_id" value="<?= $gram_name ?>" readonly>
-                        <label for="gram">ग्राम का नाम </label>
-                    </div>
-                </div>
-            </div>
+            <!-- for location view -->
+            <?php include('../location/location_view.php') ?>
 
             <div class="col-lg-4">
                 <div class="form-group shadow">
@@ -170,7 +129,7 @@ if ($id) {
                 </div>
             </div>
             <!--  -->
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="expectations_amount" name="expectations_amount" value="<?= $expectations_amount ?>" readonly>
@@ -178,7 +137,7 @@ if ($id) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="application_date" name="application_date" value="<?= $application_date ?>" readonly>

@@ -4,6 +4,7 @@
 $tblname = "swekshanudan";
 $tblkey = "id";
 $pagename = "विवरण बदले";
+$page_name = basename($_SERVER['PHP_SELF']);
 
 // $vikaskhand_name = "";
 $vidhansabha_id = "";
@@ -12,14 +13,6 @@ $vikaskhand_id = "";
 $sector_id = "";
 $gram_id = "";
 $gram_panchayat_id = "";
-
-
-
-
-
-// Fetch districts for dropdown
-$district_query = "SELECT * FROM district_master";
-$district_result = mysqli_query($conn, $district_query);
 
 // View Id Received
 if (isset($_REQUEST['edit_id'])) {
@@ -36,6 +29,7 @@ if (isset($_REQUEST['edit_id'])) {
     $sector_id = $fetch['sector_id'];
     $gram_panchayat_id = $fetch['gram_panchayat_id'];
     $gram_id = $fetch['gram_id'];
+    $area_idd = $fetch['area_id'];
     $subject = $fetch['subject'];
     $reference = $fetch['reference'];
     $expectations_amount = $fetch['expectations_amount'];
@@ -74,8 +68,8 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="aavedak" value="<?= $name ?>" placeholder="आवेदक का नाम" required readonly>
-                        <input type="hidden"  name="edit_id" id="id" value="<?=$id ?>">
-                        <label for="aavedak">आवेदक का नाम  </label>
+                        <input type="hidden" name="edit_id" id="id" value="<?= $id ?>">
+                        <label for="aavedak">आवेदक का नाम </label>
                     </div>
 
                 </div>
@@ -94,136 +88,21 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="designation" id="designation" value="<?= $designation ?>" placeholder="पद का नाम" required readonly>
-                        <label for="designation">पद का नाम  </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 text-center ">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3 ">
-                        <select name="district_id" id="districtSelect" class="form-select form-control user-select-none"  required readonly>
-                            <option selected>जिले का नाम चुनें</option>
-                            <?php
-                            mysqli_data_seek($district_result, 0); // Reset pointer to fetch districts again
-                            while ($district_row = mysqli_fetch_assoc($district_result)) {
-                                $selected = ($district_row['district_id'] == $district_id) ? 'selected' : '';
-                                echo "<option value='" . $district_row['district_id'] . "' $selected>" . $district_row['district_name'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                        <label for="districtSelect">जिले का नाम चुनें </label>
+                        <label for="designation">पद का नाम </label>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control " required readonly>
-                            <option>विधानसभा का नाम चुनें</option>
-                            <?php
-                            if (isset($vidhansabha_id) && !empty($vidhansabha_id)) {
-                                $vidhansabha_query = "SELECT * FROM vidhansabha_master WHERE district_id = '$district_id'";
-                                $vidhansabha_result = mysqli_query($conn, $vidhansabha_query);
-                                while ($vidhansabha_row = mysqli_fetch_assoc($vidhansabha_result)) {
-                                    $selected = ($vidhansabha_row['vidhansabha_id'] == $vidhansabha_id) ? 'selected' : '';
-                                    echo "<option value='" . $vidhansabha_row['vidhansabha_id'] . "' $selected>" . $vidhansabha_row['vidhansabha_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="vidhansabha">विधानसभा का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control " readonly>
-                            <option selected>विकासखंड का नाम चुनें</option>
-                            <?php
-                            if (isset($vikaskhand_id) && !empty($vikaskhand_id)) {
-                                $vikaskhand_query = "SELECT * FROM vikaskhand_master WHERE vidhansabha_id = '$vidhansabha_id'";
-                                $vikaskhand_result = mysqli_query($conn, $vikaskhand_query);
-                                while ($vikaskhand_row = mysqli_fetch_assoc($vikaskhand_result)) {
-                                    $selected = ($vikaskhand_row['vikaskhand_id'] == $vikaskhand_id) ? 'selected' : '';
-                                    echo "<option value='" . $vikaskhand_row['vikaskhand_id'] . "' $selected>" . $vikaskhand_row['vikaskhand_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="vikaskhand">विकासखंड का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
+            <!-- for location edit -->
+            <?php include('../location/location_edit.php') ?>
 
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="sector_id" id="sectorSelect" class="form-select form-control " readonly>
-                            <option selected>सेक्टर का नाम चुनें</option>
-                            <?php
-                            if (isset($sector_id) && !empty($sector_id)) {
-                                $sector_query = "SELECT * FROM sector_master WHERE vikaskhand_id = '$vikaskhand_id'";
-                                $sector_result = mysqli_query($conn, $sector_query);
-                                while ($sector_row = mysqli_fetch_assoc($sector_result)) {
-                                    $selected = ($sector_row['sector_id'] == $sector_id) ? 'selected' : '';
-                                    echo "<option value='" . $sector_row['sector_id'] . "' $selected>" . $sector_row['sector_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="sector">सेक्टर का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control " readonly>
-                            <option selected>ग्राम पंचायत का नाम चुनें</option>
-                            <?php
-                            if (isset($gram_panchayat_id) && !empty($gram_panchayat_id)) {
-                                $gram_panchayat_query = "SELECT * FROM gram_panchayat_master WHERE sector_id = '$sector_id'";
-                                $gram_panchayat_result = mysqli_query($conn, $gram_panchayat_query);
-                                while ($gram_panchayat_row = mysqli_fetch_assoc($gram_panchayat_result)) {
-                                    $selected = ($gram_panchayat_row['gram_panchayat_id'] == $gram_panchayat_id) ? 'selected' : '';
-                                    echo "<option value='" . $gram_panchayat_row['gram_panchayat_id'] . "' $selected>" . $gram_panchayat_row['gram_panchayat_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select class="form-select form-control " id="gramSelect" name="gram_id" readonly>
-                            <option selected>ग्राम का नाम चुनें</option>
-                            <?php
-                            if (isset($gram_id) && !empty($gram_id)) {
-                                $gram_query = "SELECT * FROM gram_master WHERE gram_panchayat_id='$gram_panchayat_id'";
-                                $gram_result = mysqli_query($conn, $gram_query);
-                                while ($gram_row = mysqli_fetch_assoc($gram_result)) {
-                                    $selected = ($gram_row['gram_id'] == $gram_id) ? 'selected' : '';
-                                    echo "<option value='" . $gram_row['gram_id'] . "' $selected>" . $gram_row['gram_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="gram">ग्राम का नाम चुनें </label>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 input-group">
                         <input type="file" class="form-control" id="file_upload" name="file_upload" readonly>
                         <label for="file_upload"> अपलोडेड फाइल </label>
                         <span class="input-group-text bg-">
-                            <a href="uploads/swechanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
+                            <a href="uploads/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
                         </span>
                     </div>
                     <input type="hidden" name="existing_file" value="<?= $file_upload ?>">
@@ -233,7 +112,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="subject" placeholder="विषय" required name="subject" value="<?= $subject ?>" readonly>
-                        <label for="subject">विषय का नाम  </label>
+                        <label for="subject">विषय का नाम </label>
                     </div>
                 </div>
             </div>
@@ -241,7 +120,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="reference" placeholder="द्वारा" required name="reference" value="<?= $reference ?>" readonly>
-                        <label for="reference">द्वारा  </label>
+                        <label for="reference">द्वारा </label>
                     </div>
                 </div>
             </div>
@@ -250,7 +129,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="application_date" value="<?= $application_date ?>" placeholder="आवेदन दिनांक" required name="application_date" readonly>
-                        <label for="application_date">आवेदन दिनांक  </label>
+                        <label for="application_date">आवेदन दिनांक </label>
                     </div>
                 </div>
             </div>
@@ -258,7 +137,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="expectations_amount" placeholder="आपेक्षित राशि" required name="expectations_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?= $expectations_amount ?>" readonly>
-                        <label for="expectations_amount">आपेक्षित राशि  </label>
+                        <label for="expectations_amount">आपेक्षित राशि </label>
                     </div>
                 </div>
             </div>
@@ -271,7 +150,7 @@ if (isset($_REQUEST['edit_id'])) {
                         $currentDate = date('Y-m-d'); // Format: YYYY-MM-DD
                         ?>
                         <input type="date" class="form-control" id="update_date" value="<?= $currentDate ?>" placeholder="अपडेट दिनांक" required name="update_date" readonly>
-                        <label for="update_date">अपडेट दिनांक  </label>
+                        <label for="update_date">अपडेट दिनांक </label>
                     </div>
                 </div>
             </div>
@@ -280,7 +159,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="comment" placeholder="टिप्पणी" required style="height: 62px;" name="comment" readonly><?= $comment ?></textarea>
-                        <label for="comment">टिप्पणी  </label>
+                        <label for="comment">टिप्पणी </label>
                     </div>
                 </div>
             </div>
@@ -290,7 +169,7 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?=$anumodit_amount?>">
+                        <input type="text" class="form-control" id="expectations_amount" placeholder="अनुमोदित राशि" required name="anumodit_amount" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?= $anumodit_amount ?>">
                         <label for="anumodit_amount">अनुमोदित राशि <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -298,7 +177,7 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?=$aadesh_no?>">
+                        <input type="text" class="form-control" id="aadesh_no" placeholder="आदेश क्रमांक" required name="aadesh_no" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?= $aadesh_no ?>">
                         <label for="aadesh_no">आदेश क्रमांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -306,7 +185,7 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="application_date" placeholder="अनुमोदित दिनांक" required name="anumodit_date" value="<?=$anumodit_date?>" readonly>
+                        <input type="date" class="form-control" id="application_date" placeholder="अनुमोदित दिनांक" required name="anumodit_date" value="<?= $anumodit_date ?>" readonly>
                         <label for="anumodit_date">अनुमोदित दिनांक <span class="text-danger">*</span> </label>
                     </div>
                 </div>
@@ -315,7 +194,7 @@ if (isset($_REQUEST['edit_id'])) {
             <div class="col-lg-12">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="view_comment" style="height: 62px;" name="view_comment" required><?=$view_comment?></textarea>
+                        <textarea class="form-control" id="view_comment" style="height: 62px;" name="view_comment" required><?= $view_comment ?></textarea>
                         <label for="view_comment">टिप्पणी <span class="text-danger">*</span></label>
                     </div>
                 </div>
@@ -323,7 +202,7 @@ if (isset($_REQUEST['edit_id'])) {
 
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?=$id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
+                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?= $id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">

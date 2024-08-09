@@ -1,10 +1,11 @@
 <?php include('../config/dbconnection.php') ?>
 <?php include('../config/session_check.php') ?>
 <?php
-$tblname = "sthantran";
+$tblname = "sthantran"; 
 $tblkey = "id";
 $pagename = "स्थान्तरण प्रिंट";
 $currentDate = date('Y-m-d');
+$page_name = basename($_SERVER['PHP_SELF']);
 $maananeey_info=getvalfield($conn,'maananeey_master','maananeey_info','1');
 if (isset($_REQUEST['id']))
     $protocol_id = $_REQUEST['id'];

@@ -4,7 +4,7 @@
 $tblname = "chikitsa";
 $tblkey = "id";
 $pagename = "विवरण बदले ";
-
+$page_name = basename($_SERVER['PHP_SELF']);
 // $vikaskhand_name = "";
 $vidhansabha_id = "";
 $district_id = "";
@@ -14,8 +14,8 @@ $gram_id = "";
 $gram_panchayat_id = "";
 
 // Fetch districts for dropdown
-$district_query = "SELECT * FROM district_master";
-$district_result = mysqli_query($conn, $district_query);
+// $district_query = "SELECT * FROM district_master";
+// $district_result = mysqli_query($conn, $district_query);
 
 // View Id Received
 if (isset($_REQUEST['edit_id'])) {
@@ -30,6 +30,7 @@ if (isset($_REQUEST['edit_id'])) {
     $vidhansabha_id = $fetch['vidhansabha_id'];
     $vikaskhand_id = $fetch['vikaskhand_id'];
     $sector_id = $fetch['sector_id'];
+    $area_idd = $fetch['area_id'];
     $gram_panchayat_id = $fetch['gram_panchayat_id'];
     $gram_id = $fetch['gram_id'];
     $subject = $fetch['subject'];
@@ -60,7 +61,7 @@ if (isset($_REQUEST['edit_id'])) {
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="name" id="aavedak" value="<?= $name ?>" placeholder="आवेदक का नाम" required>
-                        <input type="hidden"  name="edit_id" id="id" value="<?=$id ?>">
+                        <input type="hidden" name="edit_id" id="id" value="<?= $id ?>">
                         <label for="aavedak">आवेदक का नाम <span class="text-danger">*</span> </label>
                     </div>
 
@@ -84,129 +85,14 @@ if (isset($_REQUEST['edit_id'])) {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-center mb-3">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="district_id" id="districtSelect" class="form-select form-control bg-white" required>
-                            <option selected>जिले का नाम चुनें</option>
-                            <?php
-                            mysqli_data_seek($district_result, 0); // Reset pointer to fetch districts again
-                            while ($district_row = mysqli_fetch_assoc($district_result)) {
-                                $selected = ($district_row['district_id'] == $district_id) ? 'selected' : '';
-                                echo "<option value='" . $district_row['district_id'] . "' $selected>" . $district_row['district_name'] . "</option>";
-                            }
-                            ?>
-                        </select>
-                        <label for="districtSelect">जिले का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="vidhansabha_id" id="vidhansabhaSelect" class="form-select form-control bg-white" required>
-                            <option>विधानसभा का नाम चुनें</option>
-                            <?php
-                            if (isset($vidhansabha_id) && !empty($vidhansabha_id)) {
-                                $vidhansabha_query = "SELECT * FROM vidhansabha_master WHERE district_id = '$district_id'";
-                                $vidhansabha_result = mysqli_query($conn, $vidhansabha_query);
-                                while ($vidhansabha_row = mysqli_fetch_assoc($vidhansabha_result)) {
-                                    $selected = ($vidhansabha_row['vidhansabha_id'] == $vidhansabha_id) ? 'selected' : '';
-                                    echo "<option value='" . $vidhansabha_row['vidhansabha_id'] . "' $selected>" . $vidhansabha_row['vidhansabha_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="vidhansabha">विधानसभा का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="vikaskhand_id" id="vikaskhandSelect" class="form-select form-control bg-white">
-                            <option selected>विकासखंड का नाम चुनें</option>
-                            <?php
-                            if (isset($vikaskhand_id) && !empty($vikaskhand_id)) {
-                                $vikaskhand_query = "SELECT * FROM vikaskhand_master WHERE vidhansabha_id = '$vidhansabha_id'";
-                                $vikaskhand_result = mysqli_query($conn, $vikaskhand_query);
-                                while ($vikaskhand_row = mysqli_fetch_assoc($vikaskhand_result)) {
-                                    $selected = ($vikaskhand_row['vikaskhand_id'] == $vikaskhand_id) ? 'selected' : '';
-                                    echo "<option value='" . $vikaskhand_row['vikaskhand_id'] . "' $selected>" . $vikaskhand_row['vikaskhand_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="vikaskhand">विकासखंड का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
+            <!-- for location edit -->
+            <?php include('../location/location_edit.php') ?>
 
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="sector_id" id="sectorSelect" class="form-select form-control bg-white">
-                            <option selected>सेक्टर का नाम चुनें</option>
-                            <?php
-                            if (isset($sector_id) && !empty($sector_id)) {
-                                $sector_query = "SELECT * FROM sector_master WHERE vikaskhand_id = '$vikaskhand_id'";
-                                $sector_result = mysqli_query($conn, $sector_query);
-                                while ($sector_row = mysqli_fetch_assoc($sector_result)) {
-                                    $selected = ($sector_row['sector_id'] == $sector_id) ? 'selected' : '';
-                                    echo "<option value='" . $sector_row['sector_id'] . "' $selected>" . $sector_row['sector_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="sector">सेक्टर का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select name="gram_panchayat_id" id="gramPanchayatSelect" class="form-select form-control bg-white">
-                            <option selected>ग्राम पंचायत का नाम चुनें</option>
-                            <?php
-                            if (isset($gram_panchayat_id) && !empty($gram_panchayat_id)) {
-                                $gram_panchayat_query = "SELECT * FROM gram_panchayat_master WHERE sector_id = '$sector_id'";
-                                $gram_panchayat_result = mysqli_query($conn, $gram_panchayat_query);
-                                while ($gram_panchayat_row = mysqli_fetch_assoc($gram_panchayat_result)) {
-                                    $selected = ($gram_panchayat_row['gram_panchayat_id'] == $gram_panchayat_id) ? 'selected' : '';
-                                    echo "<option value='" . $gram_panchayat_row['gram_panchayat_id'] . "' $selected>" . $gram_panchayat_row['gram_panchayat_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="gram_panchayt">ग्राम पंचायत का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group shadow">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="gramSelect" name="gram_id">
-                            <option selected>ग्राम का नाम चुनें</option>
-                            <?php
-                            if (isset($gram_id) && !empty($gram_id)) {
-                                $gram_query = "SELECT * FROM gram_master WHERE gram_panchayat_id='$gram_panchayat_id'";
-                                $gram_result = mysqli_query($conn, $gram_query);
-                                while ($gram_row = mysqli_fetch_assoc($gram_result)) {
-                                    $selected = ($gram_row['gram_id'] == $gram_id) ? 'selected' : '';
-                                    echo "<option value='" . $gram_row['gram_id'] . "' $selected>" . $gram_row['gram_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                        <label for="gram">ग्राम का नाम चुनें <span class="text-danger">*</span></label>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3 input-group">
-                        <input type="file" class="form-control" id="file_upload" name="file_upload">
+                        <input type="file" class="form-control bg-white" id="file_upload" name="file_upload">
                         <label for="file_upload"> अपलोडेड फाइल <span class="text-danger">*</span></label>
                         <span class="input-group-text bg-">
                             <a href="uploads/swekshanudan/<?= $file_upload ?>" target="_blank" class="p-0"><i class="fas fa-eye fa-lg"></i></a>
@@ -272,7 +158,7 @@ if (isset($_REQUEST['edit_id'])) {
             </div>
             <div class="col-lg-6 text-center mb-3">
                 <div class="form-group">
-                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?=$id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
+                    <button class="col-12 text-white btn  text-center shadow" id="Update" type="submit" onclick="update(<?= $id ?>)" style="background-color:#4ac387;" name="Update"><b>Update</b></button>
                 </div>
             </div>
             <div class="col-lg-6 text-center mb-3">
