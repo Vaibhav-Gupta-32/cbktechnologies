@@ -22,14 +22,9 @@ if (isset($_POST['login_otp'])) {
             // Set session variables
             $_SESSION['username'] = $mobile_no;
             $_SESSION['role'] = 'user';
-
-            // Securely insert user login information
-            $stmt = $conn->prepare("INSERT INTO userlogin (username, mobile_no) VALUES (?, ?)");
-            $stmt->bind_param("ss", $mobile_no, $mobile_no); // Assuming username is the same as mobile_no
-            $stmt_execute_result = $stmt->execute();
-            $stmt->close();
-
-            if ($stmt_execute_result) {
+            $user_count = getvalfield($conn, "userlogin", "count(*)", "username = $mobile_no");
+            // echo $user_count;die;
+            if ($user_count > 0) {
                 $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. User Login Successfully!..</b></div>";
                 echo "<script>
                     setTimeout(function() {
@@ -37,7 +32,22 @@ if (isset($_POST['login_otp'])) {
                     }, 2000); // 2000 milliseconds = 2 seconds
                   </script>";
             } else {
-                $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Failed to log in user. Please try again.</b></div>";
+                // Securely insert user login information
+                $stmt = $conn->prepare("INSERT INTO userlogin (username, mobile_no) VALUES (?, ?)");
+                $stmt->bind_param("ss", $mobile_no, $mobile_no); // Assuming username is the same as mobile_no
+                $stmt_execute_result = $stmt->execute();
+                $stmt->close();
+
+                if ($stmt_execute_result) {
+                    $msg = "<div class='msg-container'><b class='alert alert-success msg'>OTP Verified. User Login Successfully!..</b></div>";
+                    echo "<script>
+                    setTimeout(function() {
+                        window.location.href = 'dash/';
+                    }, 2000); // 2000 milliseconds = 2 seconds
+                  </script>";
+                } else {
+                    $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Failed to log in user. Please try again.</b></div>";
+                }
             }
         } else {
             $msg = "<div class='msg-container'><b class='alert alert-danger msg'>Invalid OTP. Please enter the correct OTP !!</b></div>";
@@ -174,7 +184,7 @@ $conn->close();
 
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value);startCountdown()" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10">
+                                    <input type="text" class="form-control" id="mobileNo" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value);startCountdown()" required onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="10">
                                     <label for="floatingInput">User Mobile No. <span class="text-danger">*</span></label>
                                     <div id="aa_container">
                                         <p class="text-success fw-bold" style="font-size:12px" id="aa"></p>
@@ -220,7 +230,7 @@ $conn->close();
             </svg>
         </div>
         <div class="" style="display: flex;align-items: center;justify-content: center;width: 100%;position: relative;bottom: 15px;height: 7px;">
-            <small> <span style="color: black;">&copy; Copyright 2024  </span> <a href="https://cbktechnologies.com/" target="_blank">CBK Technologies</a> <span style="color: black;">| All Rights Reserved</span></small>
+            <small> <span style="color: black;">&copy; Copyright 2024 </span> <a href="https://cbktechnologies.com/" target="_blank">CBK Technologies</a> <span style="color: black;">| All Rights Reserved</span></small>
             <!-- © Copyright 2024 CBK Technologies  | All Rights Reserved -->
         </div>
     </div>
@@ -253,9 +263,10 @@ $conn->close();
             },
             success: function(data) {
                 $('#aa_container').show();
-                $('#aa').append(data);
+                $('#aa').append(data.message);
+                $('#mobileNo').attr('readonly', true);
 
-                if (data.status === success) {
+                if (data.status == success) {
                     startCountdown(); // Call startCountdown if the OTP was sent successfully
                 } else {
                     console.error(data);

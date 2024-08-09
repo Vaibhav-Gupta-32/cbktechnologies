@@ -110,3 +110,87 @@ Decoded OTP Response: stdClass Object
 
 )
 
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTAwNjU=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTIzOTc=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTQzMTA=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTQzODE=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTQ0Mjg=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTQ0NzI=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+

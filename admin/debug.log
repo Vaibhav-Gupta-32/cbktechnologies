@@ -26,3 +26,78 @@ Decoded OTP Response: stdClass Object
 
 )
 
+Raw OTP Response: {"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjQwMzkzMjg=","totnumber":1,"totalcredit":1}}
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwMzkzMjg=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Raw OTP Response: {"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjQwMzk0MzI=","totnumber":1,"totalcredit":1}}
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwMzk0MzI=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Raw OTP Response: {"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjQwMzk0NDQ=","totnumber":1,"totalcredit":1}}
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwMzk0NDQ=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Raw OTP Response: {"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjQwNDA5NzI=","totnumber":1,"totalcredit":1}}
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNDA5NzI=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Raw OTP Response: {"status":"Success","code":"011","description":"Message submitted successfully","data":{"messageid":"MjQwNDE5MjA=","totnumber":1,"totalcredit":1}}
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNDE5MjA=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+

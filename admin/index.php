@@ -11,8 +11,8 @@ if (isset($_POST['login_otp'])) {
 
     if (!empty($otp) && !empty($mobile_no)) {
         // Securely fetch OTP information
-        $stmt = $conn->prepare("SELECT otp FROM otps WHERE otp = ? AND otp = ? AND otpSend_status = 1 AND valid_time >= NOW()");
-        $stmt->bind_param("s", $otp);
+        $stmt = $conn->prepare("SELECT otp FROM otps WHERE phone_number = ? AND otp = ? AND otpSend_status = 1 AND valid_time >= NOW()");
+        $stmt->bind_param("ss", $mobile_no, $otp);
         $stmt->execute();
         $stmt->bind_result($stored_otp);
         $stmt->fetch();
@@ -254,7 +254,7 @@ if (isset($_POST['login'])) {
                                     </a>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="mobile_no" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value); startCountdown()" maxlength="10" required>
+                                    <input type="text" class="form-control" id="mobileNo" name="mobile_no" placeholder="123-456-7890" onchange="otpsend(this.value); startCountdown()" maxlength="10" required onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <label for="floatingInput">Admin Mobile No. <span class="text-danger">*</span></label>
                                     <div id="aa_container">
                                         <p class="text-success fw-bold" style="font-size:12px" id="aa"></p>
@@ -353,6 +353,8 @@ if (isset($_POST['login'])) {
                 success: function(data) {
                     $('#aa_container').show();
                     $('#aa').append(data.message);
+                    $('#mobileNo').attr('readonly', true);
+
 
                     if(data.status === 'success') {
                         startCountdown(); // Call startCountdown if the OTP was sent successfully

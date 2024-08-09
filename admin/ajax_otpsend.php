@@ -5,7 +5,8 @@ header('Content-Type: application/json');
 $phoneNumber = $_REQUEST['mobile_no'];
 $response = [
     'status' => 'error',
-    'message' => 'Unknown error'
+    'message' => 'Unknown error',
+    'view' => 'readonly'
 ];
 
 if (!empty($phoneNumber) && isset($_REQUEST['mobile_no'])) {
@@ -31,6 +32,7 @@ if (!empty($phoneNumber) && isset($_REQUEST['mobile_no'])) {
                     storeOTP($conn, $phoneNumber, $otp, 1);
                     $response['status'] = 'success';
                     $response['message'] = "OTP has been sent to your number.";
+                    $response['view'] = "readonly";
                 } else {
                     $response['message'] = "Failed to send OTP. Reason: " . (isset($otpResponseDecoded->description) ? $otpResponseDecoded->description : "Unknown error");
                 }
