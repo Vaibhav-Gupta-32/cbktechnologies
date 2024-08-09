@@ -1,7 +1,7 @@
 <?php
 // print_r($conn);
 $username=$_SESSION['username'];
-// $password=$_SESSION['password'];
+$name = getvalfield($conn, "userlogin", "name", "username = '$username'");
 ?>
 <!-- Content Start -->
 <div class="content">
@@ -13,6 +13,7 @@ $username=$_SESSION['username'];
         <a href="#" class="sidebar-toggler flex-shrink-0">
             <i class="fa fa-bars"></i>
         </a>
+        <span class="d-none d-lg-inline-flex ms-3 fw-bold text-primary"> H!.. <?=$name;?></span>
         <!-- <form class="d-none d-md-flex ms-4">
             <input class="form-control border-0" type="search" placeholder="Search">
         </form> -->
@@ -86,9 +87,9 @@ $username=$_SESSION['username'];
                     <span class="d-none d-lg-inline-flex"><?=$username;?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                    <a href="#" class="dropdown-item">My Profile</a>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="../config/logout.php" class="dropdown-item">Log Out</a>
+                    <a href="../settings/user-profile.php" class="dropdown-item"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                    <a href="../settings/user-setting.php" class="dropdown-item"><i class="fa-solid fa-gear"></i> Setting</a>
+                    <a href="../config/logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
                 </div>
             </div>
         </div>

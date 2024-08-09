@@ -8,13 +8,48 @@
 <!-- Main Code For Logig -->
 <?php 
 // All Globle Variable
-$current_date = date('Y-m-d');
+// echo $current_date = date("d-m-Y"); // Format: 09/08/24
+$current_date = date("Y-m-d"); // Format: 2024-08-09
+
+$username=$_SESSION['username'];
+
+// Feach Data From Database
+$sql = "SELECT * FROM `userlogin` WHERE username = '$username'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $id = $row['id'];
+    $username = $row['username'];
+    $password = $row['password'];
+    $email = $row['email'];
+    $mobile_no = $row['mobile_no'];
+    $salt = $row['salt'];
+    $created_at = $row['created_at'];
+    $name = $row['name'];
+    $profile_update_date = $row['profile_update_date'];
+    $district_id = $row['district_id'];
+    $vidhansabha_id = $row['vidhansabha_id'];
+    $area_id = $row['area_id'];
+    $vikaskhand_id = $row['vikaskhand_id'];
+    $sector_id = $row['sector_id'];
+    $gram_panchayat_id = $row['gram_panchayat_id'];
+    $gram_id = $row['gram_id'];
+    $profile_img = $row['profile_img'];
+    $status = $row['status'];
+} else {
+    // Handle case when no data is found
+    $id = $username = $password = $email = $mobile_no = $salt = $created_at = 
+    $name = $mobile_no = $profile_update_date = $district_id = $vidhansabha_id = 
+    $area_id = $vikaskhand_id = $sector_id = $gram_panchayat_id = $gram_id = 
+    $profile_img = $status = null;
+}
+
 
 // Update And Save Button 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Update'])) {
     $id = $_POST['id'];
     $name = $_POST['name'];
-    // $phone_number = $_POST['phone_number'];
     $profile_update_date = date('Y-m-d');
     $district_id = $_POST['district_id'];
     $vidhansabha_id = $_POST['vidhansabha_id'];
@@ -28,23 +63,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Update'])) {
     // File upload logic
     if (!empty($profile_img)) {
         $target_dir = "uploads/";
-        $target_file = $target_dir . basename($profile_img);
+        $file_extension = pathinfo($_FILES["profile_img"]["name"], PATHINFO_EXTENSION);
+        $target_file = $target_dir . "Profile-" . $username . "." . $file_extension;
         move_uploaded_file($_FILES["profile_img"]["tmp_name"], $target_file);
     }
 
     // Update query
     $update_query = "UPDATE userlogin SET 
-        name = '$name', 
-        profile_update_date = '$profile_update_date', 
-        district_id = '$district_id', 
-        vidhansabha_id = '$vidhansabha_id', 
-        area_id = '$area_id', 
-        vikaskhand_id = '$vikaskhand_id', 
-        sector_id = '$sector_id', 
-        gram_panchayat_id = '$gram_panchayat_id', 
-        gram_id = '$gram_id', 
-        profile_img = '$profile_img'
-        WHERE id = '$id'";
+    name = '$name', 
+    profile_update_date = '$profile_update_date', 
+    district_id = '$district_id', 
+    vidhansabha_id = '$vidhansabha_id', 
+    area_id = '$area_id', 
+    vikaskhand_id = '$vikaskhand_id', 
+    sector_id = '$sector_id', 
+    gram_panchayat_id = '$gram_panchayat_id', 
+    gram_id = '$gram_id', 
+    profile_img = '$profile_img',
+    status = 1
+    WHERE username = '$username'";
 
     if (mysqli_query($conn, $update_query)) {
         echo "Record Updated successfully...";
@@ -75,15 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Update'])) {
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" maxlength="10" name="phone_number" id="phone_number" value="<?= $phone_number ?>">
-                        <label for="phone_number">आवेदक का फ़ोन नंबर </label>
+                        <input type="text" class="form-control" maxlength="10" name="mobile_no" id="mobile_no" value="<?= $mobile_no ?>">
+                        <label for="mobile_no">आवेदक का फ़ोन नंबर </label>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group shadow">
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="profile_update_date" name="profile_update_date" value="<?= $value="<?= $current_date ?>" ?>" readonly>
+                        <input type="date" class="form-control" id="profile_update_date" name="profile_update_date"  value="<?= $current_date ?>"  readonly>
                         <label for="profile_update_date">अपडेट दिनांक</label>
                     </div>
                 </div>

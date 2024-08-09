@@ -40,17 +40,3 @@ Decoded OTP Response: stdClass Object
 
 )
 
-Decoded OTP Response: stdClass Object
-(
-    [status] => Success
-    [code] => 011
-    [description] => Message submitted successfully
-    [data] => stdClass Object
-        (
-            [messageid] => MjM5Njk3MTI=
-            [totnumber] => 1
-            [totalcredit] => 1
-        )
-
-)
-
