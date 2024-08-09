@@ -40,3 +40,73 @@ Decoded OTP Response: stdClass Object
 
 )
 
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNDYwMjg=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNDYxMzg=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNDYxNjQ=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNDc3ODQ=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+
+Decoded OTP Response: stdClass Object
+(
+    [status] => Success
+    [code] => 011
+    [description] => Message submitted successfully
+    [data] => stdClass Object
+        (
+            [messageid] => MjQwNTU2ODU=
+            [totnumber] => 1
+            [totalcredit] => 1
+        )
+
+)
+

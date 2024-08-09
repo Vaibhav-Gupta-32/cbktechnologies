@@ -2,13 +2,13 @@
 require('../config/dbconnection.php'); // Adjust path as needed
 require('../config/session_check.php'); // Adjust path as needed
 
-if (isset($_POST['sector_id'])) {
+if (isset($_POST['sector_id']) && isset($_POST['area_id'])) {
     $sector_id = $_POST['sector_id'];
-
+    $area_id = $_POST['area_id'];
     // Prepare and execute the query seecurely using prepared statements
-    $query = "SELECT gram_panchayat_id, gram_panchayat_name FROM gram_panchayat_master WHERE sector_id = ?";
+    $query = "SELECT gram_panchayat_id, gram_panchayat_name FROM gram_panchayat_master WHERE sector_id = ? and area_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $sector_id);
+    $stmt->bind_param("ii", $sector_id, $area_id);
     $stmt->execute();
     $result = $stmt->get_result();
     
