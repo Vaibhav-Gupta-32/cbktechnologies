@@ -11,14 +11,14 @@ if (isset($_POST['login_otp'])) {
 
     if (!empty($otp) && !empty($mobile_no)) {
         // Securely fetch OTP information
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM otps WHERE otp = ? AND created_at <= valid_time");
-        $stmt->bind_param("s", $otp);
+        $stmt = $conn->prepare("SELECT otp FROM otps WHERE phone_number = ? AND otp = ? AND otpSend_status = 1 AND valid_time >= NOW()");
+        $stmt->bind_param("ss", $mobile_no, $otp);
         $stmt->execute();
         $stmt->bind_result($stored_otp);
         $stmt->fetch();
         $stmt->close();
 
-        if ($stored_otp > 0) {
+        if ($stored_otp > 0 && $stored_otp === $otp) {
             // Set session variables
             $_SESSION['username'] = $mobile_no;
             $_SESSION['role'] = 'user';

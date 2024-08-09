@@ -11,14 +11,14 @@ if (isset($_POST['login_otp'])) {
 
     if (!empty($otp) && !empty($mobile_no)) {
         // Securely fetch OTP information
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM otps WHERE otp = ? AND created_at <= valid_time");
+        $stmt = $conn->prepare("SELECT otp FROM otps WHERE otp = ? AND otp = ? AND otpSend_status = 1 AND valid_time >= NOW()");
         $stmt->bind_param("s", $otp);
         $stmt->execute();
         $stmt->bind_result($stored_otp);
         $stmt->fetch();
         $stmt->close();
 
-        if ($stored_otp > 0) {
+        if ($stored_otp > 0 && $stored_otp === $otp) {
             // Securely fetch username and password
             $stmt = $conn->prepare("SELECT username, password FROM adminlogin WHERE mobile_no = ?");
             $stmt->bind_param("s", $mobile_no);
